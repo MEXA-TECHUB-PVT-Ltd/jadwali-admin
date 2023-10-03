@@ -2,11 +2,12 @@ import { TextField } from '@mui/material'
 import InputAdornment from '@mui/material/InputAdornment';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 
-const Email = () => {
+const Email = ({field}:any) => {
     return (
         <TextField
             id="outlined-basic"
             variant="outlined"
+            type='email'
             placeholder='Enter Your Email'
             fullWidth
             sx={{
@@ -18,7 +19,7 @@ const Email = () => {
                 '& .MuiOutlinedInput-notchedOutline': {
                     borderColor: 'rgba(0, 0, 0, 0.04)',
                 },
-                mb: 3,
+                // mb: 3,
                 p: 0,
                 backgroundColor: 'rgba(0, 0, 0, 0.04)',
                 borderRadius: '20px',
@@ -32,6 +33,7 @@ const Email = () => {
                 ),
             }}
             size='small'
+            {...field}
         />
     )
 }

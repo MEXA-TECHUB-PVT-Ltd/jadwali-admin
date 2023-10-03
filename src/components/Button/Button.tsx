@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button';
 import { TString } from '../../types/types';
 
-function CustomButton({ text }: TString) {
+function CustomButton({ text, type, disabled, onClick }: any) {
     return (
         <Button
             fullWidth
@@ -13,6 +13,9 @@ function CustomButton({ text }: TString) {
                     backgroundColor: '#6C309C', 
                 }
             }}
+            type={type ? type : 'button'}
+            disabled={disabled}
+            onClick={onClick}
         >
             {text}
         </Button>

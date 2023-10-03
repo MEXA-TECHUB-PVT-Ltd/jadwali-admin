@@ -1,9 +1,10 @@
 import { Card, CardContent, Typography, LinearProgress, Grid } from '@mui/material';
+import AreaChart from '../../../components/dashboard/AreaChart';
 export const WorldWideUsers = () => {
     return (
         <Grid container spacing={2} mt={5}>
-            <Grid item xs={12} md={12} lg={6}>
-                <Card sx={{ borderRadius: '10px' }}>
+            <Grid item xs={12} md={12} lg={6} className='flex'>
+                <Card sx={{ borderRadius: '10px', flexGrow: 1 }}>
                     <CardContent>
                         <Grid container spacing={3}>
                             <Grid item xs={12} md={6}>
@@ -34,12 +35,12 @@ export const WorldWideUsers = () => {
 
 const AppStatistics = () => {
     return (
-        <Card sx={{ borderRadius: '10px' }}>
+        <Card sx={{ borderRadius: '10px', flexGrow: 1 }}>
             <CardContent>
                 <Typography variant="h6">App Statistics</Typography>
                 <Typography color="textSecondary">Last Month report</Typography>
                 <div className='mt-5 bg-gray-300'>
-                    Smooth Line Chart Placeholder
+                    <AreaChart />
                 </div>
             </CardContent>
         </Card>

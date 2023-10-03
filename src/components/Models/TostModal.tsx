@@ -14,8 +14,8 @@ interface ToastModalProps {
 const ToastModal: React.FC<ToastModalProps> = ({ open, onClose, eventMessage }) => {
     return (
         <Snackbar
-            anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-            open={true}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            open={open}
             autoHideDuration={6000}
             onClose={onClose}
             action={
@@ -35,7 +35,9 @@ const ToastModal: React.FC<ToastModalProps> = ({ open, onClose, eventMessage }) 
                     <Typography variant="body1" color='rgba(108, 48, 156, 1)' fontWeight='bold'>
                         Success
                     </Typography>
-                    <Typography variant='body2' color='GrayText'>User Block Successfully</Typography>
+                    <Typography variant='body2' color='GrayText'>
+                        {eventMessage ? eventMessage : "User Block Successfully"}
+                    </Typography>
                 </div>
             </Box>
         </Snackbar>

@@ -5,6 +5,7 @@ export const users = [
     name: "John Doe",
     email: "john.doe@example.com",
     events: 15,
+    status: "Unpaid"
   },
   {
     id: 2,
@@ -12,6 +13,7 @@ export const users = [
     name: "Jane Smith",
     email: "jane.smith@example.com",
     events: 10,
+    status: "Paid"
   },
   {
     id: 1,

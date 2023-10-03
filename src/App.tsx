@@ -7,6 +7,9 @@ import ResetPassword from "./pages/auth/ResetPassword";
 import Layout from "./components/dashboard/Layout";
 import Dashboard from "./pages/dashboard/header/Dashboard";
 import AllUsers from "./pages/dashboard/AllUsers";
+import SubscribedUsers from "./pages/dashboard/SubscribedUsers";
+import PrivacyPolicy from "./pages/dashboard/PrivacyPolicy";
+import TermsConditions from "./pages/dashboard/TermsConditions";
 
 
 function App() {
@@ -19,7 +22,7 @@ function App() {
         />
         <Route
           element={<Forgot />}
-          path="/auth/forgot"
+          path="/auth/forgot-password"
         />
         <Route
           element={<VerificationCode />}
@@ -39,6 +42,9 @@ function App() {
         >
           <Route index element={<Dashboard />} />
           <Route path="all-users" element={<AllUsers />} />
+          <Route path="subscribed-users" element={<SubscribedUsers />} />
+          <Route path="privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="terms-and-conditions" element={<TermsConditions />} />
         </Route>
       </>
     )

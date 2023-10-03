@@ -4,10 +4,13 @@ import CardLayout from '../../components/Card/CardLayout';
 import ButtonLayout from '../../components/Button/Button';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
+import { useNavigate } from 'react-router-dom';
 
 const VerificationCode = () => {
     const [values, setValues] = useState(['', '', '', '']);
     const inputRefs = Array.from({ length: 4 }, () => React.createRef());
+
+    const navigate = useNavigate()
 
     const handleChange = (e: any, index: any) => {
         e.preventDefault();
@@ -30,7 +33,7 @@ const VerificationCode = () => {
     };
 
     return (
-        <FormLayout>
+        <FormLayout link='/auth/forgot-password'>
             <CardLayout title='JADWALI' subTitle='Forgot Password' description='Enter your Email address to send a verification code'>
                 <Grid container spacing={2} justifyContent="center" className='mb-12'>
                     {Array(4).fill(null).map((_, index) => (
@@ -69,7 +72,7 @@ const VerificationCode = () => {
                         </Grid>
                     ))}
                 </Grid>
-                <ButtonLayout text='Send Code' />
+                <ButtonLayout text='Verify' onClick={() => navigate('/auth/reset-password')} />
             </CardLayout>
         </FormLayout>
     )

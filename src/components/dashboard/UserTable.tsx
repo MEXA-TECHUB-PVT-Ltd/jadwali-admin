@@ -2,7 +2,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Check
 import Visibility from '@mui/icons-material/Visibility';
 import { useState } from 'react';
 
-const UserTable = ({ users }: any) => {
+const UserTable = ({ users, status }: any) => {
     const [selectedUsers, setSelectedUsers] = useState<any[]>([]);
     const [page, setPage] = useState(1);
     const rowsPerPage = 10;
@@ -68,10 +68,11 @@ const UserTable = ({ users }: any) => {
                                     style={{ color: '#C4C4C4' }}
                                 />
                             </TableCell>
-                            <TableCell style={{ color: '#6C309C' }}>User</TableCell>
-                            <TableCell style={{ color: '#6C309C' }}>Email Address</TableCell>
-                            <TableCell style={{ color: '#6C309C' }}>Total Events</TableCell>
-                            <TableCell style={{ color: '#6C309C' }}>Actions</TableCell>
+                            <TableCell style={{ color: '#6C309C' }} sx={{ fontWeight: 'bold' }}>USER</TableCell>
+                            <TableCell style={{ color: '#6C309C' }}>EMAIL ADDRESS</TableCell>
+                            <TableCell style={{ color: '#6C309C' }}>TOTAL EVENTS</TableCell>
+                            {status && <TableCell style={{ color: '#6C309C' }}></TableCell>}
+                            <TableCell style={{ color: '#6C309C' }}>ACTIONS</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -93,21 +94,51 @@ const UserTable = ({ users }: any) => {
                                 </TableCell>
                                 <TableCell>{user.email}</TableCell>
                                 <TableCell>{user.events}</TableCell>
-                                <TableCell>
-                                    <Visibility sx={{ color: 'rgba(0, 0, 0, 0.4)', fontSize: '20px' }} className='cursor-pointer me-5' />
-                                    <Button variant="contained"
-                                        sx={{
-                                            backgroundColor: '#FF5858',
-                                            '&:hover': {
-                                                backgroundColor: '#FF5858',
-                                            },
-                                            marginRight: '10px'
-                                        }}
-                                        size='small'
-                                    >
-                                        Block
-                                    </Button>
-                                    <Button variant="contained"
+                                {
+                                    status &&
+                                    <TableCell>
+                                        {
+                                            user.status ?
+                                                <Button
+                                                    variant="contained"
+                                                        sx={{
+                                                            backgroundColor: user.status === 'Unpaid' ? '#FF5858' : '#00C342',
+                                                            '&:hover': {
+                                                                backgroundColor: user.status === 'Unpaid' ? '#FF5858' : '#00C342',
+                                                            },
+                                                            marginRight: '10px'
+                                                        }}
+                                                    size='small'
+                                                >
+                                                    {user.status}
+                                                </Button> : null
+                                        }
+                                    </TableCell>
+                                }
+
+
+
+                                    <TableCell>
+                                        <Visibility sx={{ color: 'rgba(0, 0, 0, 0.4)', fontSize: '20px' }} className='cursor-pointer me-5' />
+                                        {
+                                            (!status) &&
+                                            <Button
+                                                variant="contained"
+                                                sx={{
+                                                    backgroundColor: user.status === 'Block' ? '#FF5858' : '#00C342',
+                                                    '&:hover': {
+                                                        backgroundColor: user.status === 'Unblock' ? '#FF5858' : '#00C342',
+                                                    },
+                                                    marginRight: '10px'
+                                                }}
+                                                size='small'
+                                            >
+                                                Block
+                                            </Button>
+                                        }
+
+
+                                    {/* <Button variant="contained"
                                         sx={{
                                             backgroundColor: '#00C342',
                                             '&:hover': {
@@ -117,7 +148,7 @@ const UserTable = ({ users }: any) => {
                                         size='small'
                                     >
                                         UnBlock
-                                    </Button>
+                                    </Button> */}
                                 </TableCell>
                             </TableRow>
                         ))}

@@ -1,16 +1,22 @@
 import React from "react";
 
 export type TChildren = {
-    children: React.ReactNode;
-    title?: string;
-    subTitle?: string;
-    description?: string;
+  children: React.ReactNode;
+  title?: string;
+  subTitle?: string;
+  description?: string;
+  link?: string;
 };
 
 export type TString = {
-    text: string;
-}
+  text: string;
+};
 
 export type TPassword = {
-    placeholder?: string;
-}
+  placeholder?: string;
+};
+
+export type TCommonTable = {
+  title: string;
+  status?: string;
+};

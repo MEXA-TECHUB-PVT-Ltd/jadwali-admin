@@ -7,7 +7,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { TPassword } from '../../types/types';
 
-const Password = ({placeholder}: TPassword) => {
+const Password = ({placeholder, field}: any) => {
     const [showPassword, setShowPassword] = React.useState<boolean>(false);
 
     const handleTogglePassword = () => {
@@ -30,7 +30,7 @@ const Password = ({placeholder}: TPassword) => {
                 '& .MuiOutlinedInput-notchedOutline': {
                     borderColor: 'rgba(0, 0, 0, 0.04)', 
                 },
-                mb: 2,
+                // mb: 2,
                 p: 0,
                 borderRadius: '20px',
                 backgroundColor: 'rgba(0, 0, 0, 0.04)',
@@ -50,6 +50,7 @@ const Password = ({placeholder}: TPassword) => {
                 ),
             }}
             size='small'
+            {...field}
         />
     );
 };
