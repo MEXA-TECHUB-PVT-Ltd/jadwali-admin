@@ -2,6 +2,7 @@ import { useState } from 'react';
 import UserTable from '../../../components/dashboard/UserTable';
 import { Button, Typography } from '@mui/material';
 import { users } from '../../../utils/dashboard';
+import { Link } from 'react-router-dom';
 
 
 const UserDataTable = () => {
@@ -12,6 +13,8 @@ const UserDataTable = () => {
                 <Typography fontSize='25px'>Recent Users</Typography>
                 <Button
                     variant='contained'
+                    component={Link}
+                    to={'/dashboard/all-users'}
                     sx={{
                         backgroundColor: '#6C309C',
                         borderRadius: '20px',

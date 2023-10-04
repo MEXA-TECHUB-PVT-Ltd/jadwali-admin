@@ -10,12 +10,14 @@ import AllUsers from "./pages/dashboard/AllUsers";
 import SubscribedUsers from "./pages/dashboard/SubscribedUsers";
 import PrivacyPolicy from "./pages/dashboard/PrivacyPolicy";
 import TermsConditions from "./pages/dashboard/TermsConditions";
+import SubscriptionPlan from "./pages/dashboard/SubscriptionPlan";
 
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
+        <Route path="/" element={<Dashboard />} />
         <Route
           element={<SignIn />}
           path="/auth/sign-in"
@@ -45,6 +47,7 @@ function App() {
           <Route path="subscribed-users" element={<SubscribedUsers />} />
           <Route path="privacy-policy" element={<PrivacyPolicy />} />
           <Route path="terms-and-conditions" element={<TermsConditions />} />
+          <Route path="subscription-plan" element={<SubscriptionPlan />} />
         </Route>
       </>
     )
