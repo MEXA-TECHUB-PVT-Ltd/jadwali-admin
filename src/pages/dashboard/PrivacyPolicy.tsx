@@ -5,7 +5,7 @@ import { Link as RouterLink } from 'react-router-dom'
 const PrivacyPolicy = () => {
     return (
         <>
-            <Typography fontWeight='bold' fontSize='20px' mb={5} gutterBottom>
+            <Typography fontWeight='bold' fontSize='20px' color='#342E59' mb={5} gutterBottom>
                 Privacy Policy
             </Typography>
             <Card sx={{ borderRadius: '15px', padding: '10px' }}>

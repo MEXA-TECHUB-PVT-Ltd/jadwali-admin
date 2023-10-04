@@ -28,8 +28,8 @@ const CommonTable = ({ title, status }: TCommonTable) => {
     const numAdjacentButtons = 1;
     return (
         <>
-            <div className="flex justify-between items mt-10 mb-5">
-                <Typography fontSize='25px'>{title}</Typography>
+            <div className="flex justify-between items mb-5">
+                <Typography fontSize='25px' fontWeight='medium' color='#342E59'>{title}</Typography>
                 <Box sx={{
                     display: 'flex', alignItems: 'center', marginLeft: 'auto',
                     backgroundColor: "white", borderRadius: '20px', padding: '0 5px', borderWidth: '1px', borderColor: 'gray'

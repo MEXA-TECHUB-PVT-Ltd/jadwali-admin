@@ -38,7 +38,6 @@ const Forgot = () => {
                                         <TextField
                                             id="outlined-basic"
                                             variant="outlined"
-                                            // type='email'
                                             placeholder='Enter Your Email'
                                             fullWidth
                                             sx={{

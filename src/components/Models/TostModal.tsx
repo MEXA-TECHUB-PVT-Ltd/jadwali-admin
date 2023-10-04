@@ -16,7 +16,7 @@ const ToastModal: React.FC<ToastModalProps> = ({ open, onClose, eventMessage }) 
         <Snackbar
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
             open={open}
-            autoHideDuration={6000}
+            autoHideDuration={1000}
             onClose={onClose}
             action={
                 <IconButton size="small" >

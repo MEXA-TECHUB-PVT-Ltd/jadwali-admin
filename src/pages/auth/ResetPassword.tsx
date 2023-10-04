@@ -43,12 +43,11 @@ const Forgot = () => {
         setToastOpen(false);  
     };
 
-    console.log(toastOpen)
 
     return (
         <FormLayout link='/auth/sign-in'>
             <ToastModal open={toastOpen} onClose={handleCloseToast} eventMessage="Password reset code sent!" />  
-            <CardLayout title='JADWALI' subTitle='Forgot Password' description='Enter your Email address to send a verification code'>
+            <CardLayout title='JADWALI' subTitle='Reset Password' description='Create a strong password'>
                 <Formik
                     initialValues={{ password: '', confirmPassword: '' }}
                     validationSchema={validationSchema}
@@ -108,7 +107,7 @@ const Forgot = () => {
                                         <TextField
                                             {...field}
                                             id="outlined-basic"
-                                            placeholder={"Enter your password"}
+                                            placeholder={"Confirm password"}
                                             variant="outlined"
                                             fullWidth
                                             type={showPassword ? 'text' : 'password'}
@@ -161,7 +160,7 @@ const Forgot = () => {
                                     }
                                 }}
                             >
-                                Send Code
+                                Reset Password
                             </Button>
                         </Form>
                     )}
