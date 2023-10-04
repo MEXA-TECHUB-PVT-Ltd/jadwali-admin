@@ -134,10 +134,10 @@ const UserTable = ({ users, status }: any) => {
                                 />
                             </TableCell>
                             <TableCell style={{ color: '#6C309C' }} sx={{ fontWeight: 'bold' }}>USER</TableCell>
-                            <TableCell style={{ color: '#6C309C' }}>EMAIL ADDRESS</TableCell>
-                            <TableCell style={{ color: '#6C309C' }}>TOTAL EVENTS</TableCell>
-                            {status && <TableCell style={{ color: '#6C309C' }}>Status</TableCell>}
-                            <TableCell style={{ color: '#6C309C' }}>ACTIONS</TableCell>
+                            <TableCell style={{ color: '#6C309C' }} sx={{ fontWeight: 'bold' }}>EMAIL ADDRESS</TableCell>
+                            <TableCell style={{ color: '#6C309C' }} sx={{ fontWeight: 'bold' }}>TOTAL EVENTS</TableCell>
+                            {status && <TableCell style={{ color: '#6C309C' }} sx={{ fontWeight: 'bold' }}>Status</TableCell>}
+                            <TableCell style={{ color: '#6C309C' }} sx={{ fontWeight: 'bold' }}>ACTIONS</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
