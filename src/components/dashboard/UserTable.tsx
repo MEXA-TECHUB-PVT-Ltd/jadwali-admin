@@ -198,7 +198,7 @@ const UserTable = ({ users, status }: any) => {
                                         }}
                                     />
                                     {
-                                        location.pathname === '/dashboard/all-users' ?
+                                        (location.pathname === '/dashboard/all-users' || location.pathname === '/dashboard' || location.pathname === '/') ?
                                             <Button
                                                 variant="contained"
                                                 sx={{

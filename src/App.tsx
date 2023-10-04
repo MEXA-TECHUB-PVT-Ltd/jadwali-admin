@@ -12,7 +12,6 @@ import PrivacyPolicy from "./pages/dashboard/PrivacyPolicy";
 import TermsConditions from "./pages/dashboard/TermsConditions";
 import SubscriptionPlan from "./pages/dashboard/SubscriptionPlan";
 
-
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
