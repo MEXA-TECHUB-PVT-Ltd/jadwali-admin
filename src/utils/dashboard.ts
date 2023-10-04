@@ -20,7 +20,7 @@ export const users = [
   {
     id: 3,
     avatar: "",
-    name: "John Doe",
+    name: "Test",
     email: "john.doe@example.com",
     events: 15,
     payment: "Unpaid",
