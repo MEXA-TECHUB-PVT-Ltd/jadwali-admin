@@ -24,12 +24,16 @@ const validationSchema = Yup.object().shape({
 
 const Forgot = () => {
     const [showPassword, setShowPassword] = React.useState<boolean>(false);
+    const [showConfirmPassword, setShowConfirmPassword] = React.useState<boolean>(false);
     const [toastOpen, setToastOpen] = React.useState<boolean>(false);
 
     const navigate = useNavigate();
 
     const handleTogglePassword = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
+    };
+    const handleToggleConfirmPassword = () => {
+        setShowConfirmPassword((prevShowPassword) => !prevShowPassword);
     };
     const handleSubmit = (values: any, { setSubmitting, setErrors }: any) => {
         console.log("Send the reset to the user: ", values);
@@ -110,7 +114,7 @@ const Forgot = () => {
                                             placeholder={"Confirm password"}
                                             variant="outlined"
                                             fullWidth
-                                            type={showPassword ? 'text' : 'password'}
+                                            type={showConfirmPassword ? 'text' : 'password'}
                                             sx={{
                                                 '& .MuiOutlinedInput-root': {
                                                     borderRadius: '20px',
@@ -132,8 +136,8 @@ const Forgot = () => {
                                                 ),
                                                 endAdornment: (
                                                     <InputAdornment position="end">
-                                                        <IconButton edge="end" onClick={handleTogglePassword}>
-                                                            {showPassword ? <Visibility sx={{ color: 'rgba(0, 0, 0, 0.4)', fontSize: '16px' }} /> : <VisibilityOff sx={{ color: 'rgba(0, 0, 0, 0.4)', fontSize: '16px' }} />}
+                                                        <IconButton edge="end" onClick={handleToggleConfirmPassword}>
+                                                            {showConfirmPassword ? <Visibility sx={{ color: 'rgba(0, 0, 0, 0.4)', fontSize: '16px' }} /> : <VisibilityOff sx={{ color: 'rgba(0, 0, 0, 0.4)', fontSize: '16px' }} />}
                                                         </IconButton>
                                                     </InputAdornment>
                                                 ),

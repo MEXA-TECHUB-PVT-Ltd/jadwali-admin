@@ -6,52 +6,17 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import ToastModal from './TostModal';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { Link } from 'react-router-dom';
-import { useLocation, useNavigate } from 'react-router-dom';
+
 
 
 const SubscriptionSchema = Yup.object().shape({
-    planName: Yup.string()
+    description: Yup.string()
         .required('Required')
 });
 
 
-const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, setModalData }: any) => {
+const AddFeaturesModal = ({ open, setOpen, handleClose }: any) => {
     const [toastOpen, setToastOpen] = React.useState<boolean>(false);
-    const [planName, setPlanName] = React.useState("");
-
-    const { state } = useLocation();
-    const navigate = useNavigate();
-
-    let plan = state?.plan || "";
-    let previousPage = state?.previousPage || "";
-    let selectedFeatures = state?.selectedFeatures || [];
-
-
-
-    React.useEffect(() => {
-        if (previousPage === 'features' && selectedFeatures && modalData) {
-            // Merge modalData and selectedFeatures
-            const updatedFeatures = [...modalData, ...selectedFeatures];
-            setModalData(updatedFeatures);
-            setOpen(true);
-        }
-    }, [])
-
-    React.useEffect(() => {
-        if (previousPage === 'features') {
-            if (localStorage.getItem("shouldOpenSubEdit") === "true") {
-                setOpen(true);
-            }
-            else {
-                setOpen(false);
-                localStorage.setItem("shouldOpenSubEdit", "false");
-            }
-        }
-    }, []);
-
-
 
     const handleCloseToast = () => {
         setToastOpen(false);
@@ -59,7 +24,7 @@ const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, se
 
     const body = (
         <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.16)' }}>
-            <ToastModal open={toastOpen} onClose={handleCloseToast} eventMessage="Edit Plan Successfully!" />
+            <ToastModal open={toastOpen} onClose={handleCloseToast} eventMessage={"Feature added Successfully"} />
             <Box className='flex justify-center items-center h-screen'>
                 <Card className='sm:w-[500px] w-[80%]' sx={{ borderRadius: '30px' }}>
                     <CardContent className='p-0' sx={{ padding: 0 }}>
@@ -70,7 +35,7 @@ const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, se
                                     fontSize: '20px', color: '#6C309C', margin: '0', fontWeight: 'medium'
                                 }}
                             >
-                                Edit Subscription
+                                Add Feature
                             </Typography>
                             <IconButton aria-label="delete" onClick={handleClose} sx={{ padding: '0', color: '#6C309C' }}>
                                 <CancelIcon fontSize="inherit" />
@@ -79,33 +44,29 @@ const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, se
                         <CardContent className='m-3'>
                             <Formik
                                 initialValues={{
-                                    planName: name ? name : '',
-                                    selectFeatures: ''
+                                    description: ''
                                 }}
                                 validationSchema={SubscriptionSchema}
                                 onSubmit={(values) => {
                                     console.log(values);
-                                    navigate('/dashboard/subscription-plan')
                                     setToastOpen(true);
                                     setTimeout(() => {
                                         setOpen(false)
-                                    }, 1000)
+                                    }, 2000)
                                 }}
                             >
-                                {({ errors, touched, isValid, setFieldValue }) => (
+                                {({ errors, touched, isValid }) => (
                                     <Form>
                                         <div className='mb-4'>
                                             <Field
-                                                name="planName"
+                                                name="description"
                                                 as={TextField}
                                                 id="outlined-basic"
-                                                placeholder={'Plan Name'}
+                                                placeholder={'Add Description'}
                                                 variant="outlined"
                                                 fullWidth
-                                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                                    setFieldValue("planName", e.target.value);
-                                                    setPlanName(e.target.value);
-                                                }}
+                                                multiline
+                                                rows={4}
                                                 sx={{
                                                     '& .MuiOutlinedInput-root': {
                                                         borderRadius: '20px',
@@ -121,37 +82,11 @@ const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, se
                                                 }}
                                                 size='small'
                                             />
-                                            {errors.planName && typeof errors.planName === 'string' ? (
+                                            {errors.description && typeof errors.description === 'string' ? (
                                                 <Typography sx={{ mt: 1, fontSize: '0.8rem', color: 'red', ml: 2 }}>
-                                                    {errors.planName}
-                                                </Typography>
-                                            ) : null}
+                                                    {errors.description}
+                                                </Typography>) : null}
                                         </div>
-
-                                        {
-                                            modalData && modalData?.length > 0 && (
-                                                <>
-                                                    <Typography mb={2}>Features</Typography>
-                                                    <div className="flex flex-wrap gap-2 mb-2 max-h-40 overflow-auto">
-                                                        {modalData.map((feature: any, index) => (
-                                                            <span key={index} className="bg-[#F5F5F5] px-3 py-1 rounded-full">
-                                                                {feature.featuresDescription} 
-                                                            </span>
-                                                        ))}
-
-                                                        <Link
-                                                            to='/dashboard/features'
-                                                            state={{ plan: planName ? planName : undefined, previousPage: 'subscription', previousFeatures: modalData, modal: 'Edit' }}
-                                                            className='mb-4 bg-[#6C309C] text-white p-2 px-4 rounded-[20px] flex justify-between items-center cursor-pointer'
-                                                        >
-                                                            <Typography sx={{ color: '#fff' }}>Add more features</Typography>
-                                                            <KeyboardArrowDownIcon />
-                                                        </Link>
-                                                    </div>
-                                                </>
-                                            )
-                                        }
-
 
                                         <div className="mt-10">
                                             <Button
@@ -167,7 +102,7 @@ const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, se
                                                     color: '#fff',
                                                 }}
                                             >
-                                                Edit Plan
+                                                Add Features
                                             </Button>
                                         </div>
                                     </Form>
@@ -194,5 +129,5 @@ const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, se
     )
 }
 
-export default EditSubscriptionModal;
+export default AddFeaturesModal;
 

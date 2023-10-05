@@ -9,6 +9,46 @@ import DeleteModal from '../../components/Models/DeleteModel';
 
 
 
+const bdata = [
+    { id: 1, featuresDescription: 'Up to 50 appointments per month' },
+    { id: 2, featuresDescription: 'Single user access' },
+    { id: 3, featuresDescription: '3 Appointment Type' },
+    { id: 4, featuresDescription: 'E-mail notifications' },
+]
+
+const pdata = [
+    { id: 1, featuresDescription: 'Up to 50 appointments per month' },
+    { id: 2, featuresDescription: 'Single user access' },
+    { id: 3, featuresDescription: '3 Appointment Type' },
+    { id: 4, featuresDescription: 'E-mail notifications' },
+    { id: 5, featuresDescription: 'Basic +' },
+    { id: 6, featuresDescription: 'Up to 300 appointments per month' },
+    { id: 7, featuresDescription: '6 Appointment Type' },
+    { id: 8, featuresDescription: 'Accept Payments' },
+    { id: 9, featuresDescription: 'Group Sessions' }
+]
+
+
+const ppdata = [
+    { id: 1, featuresDescription: 'Up to 50 appointments per month' },
+    { id: 2, featuresDescription: 'Single user access' },
+    { id: 3, featuresDescription: '3 Appointment Type' },
+    { id: 4, featuresDescription: 'E-mail notifications' },
+    { id: 5, featuresDescription: 'Basic +' },
+    { id: 6, featuresDescription: 'Up to 300 appointments per month' },
+    { id: 7, featuresDescription: '6 Appointment Type' },
+    { id: 8, featuresDescription: 'Accept Payments' },
+    { id: 9, featuresDescription: 'Group Sessions' },
+    { id: 10, featuresDescription: 'Professional +' },
+    { id: 11, featuresDescription: 'Unlimited appointments' },
+    { id: 12, featuresDescription: 'Multi-user access (10 sub accounts)' },
+    { id: 13, featuresDescription: '10 Appointment Types' },
+    { id: 14, featuresDescription: 'Payment Link generation (when adding override appointment or past appointment)' },
+    { id: 15, featuresDescription: 'Priority support' },
+
+]
+
+
 const SubscriptionPlan = () => {
     const [isModalOpen, setIsModalOpen] = React.useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
@@ -16,6 +56,9 @@ const SubscriptionPlan = () => {
     const [modalTitle, setModalTitle] = React.useState<string>("");
     const [eventMessage, setEventMessage] = React.useState<string>('');
     const [modalData, setModalData] = React.useState()
+    const [planName, setPlanName] = React.useState('')
+    const [toastOpen, setToastOpen] = React.useState<boolean>(false);
+
 
     const handleOpenModal = (title: string, message: string, data?: any) => {
         setModalTitle(title)
@@ -24,16 +67,22 @@ const SubscriptionPlan = () => {
     };
 
     const handleCloseModal = () => {
+        localStorage.setItem("shouldOpenModal", "false")
         setIsModalOpen(false);
     };
-    const handleEditOpenModal = (title: string, message: string, data?: any) => {
-        setModalTitle(title)
-        setEventMessage(message)
-        setModalData(data)
-        setIsEditModalOpen(true);
-    };
+
+    const handleEditOpenModal = React.useCallback(
+        (data: any, planName: any) => {
+            setModalData(data);
+            setPlanName(planName);
+            setIsEditModalOpen(true);
+        },
+        [] // Dependency array
+    );
+
 
     const handleEditCloseModal = () => {
+        localStorage.setItem("shouldOpenSubEdit", "false");
         setIsEditModalOpen(false);
     };
 
@@ -41,9 +90,18 @@ const SubscriptionPlan = () => {
     const handleDeleteModal = () => {
         setIsDeleteModalOpen(true);
     }
+
+
+    const handleCloseToast = () => {
+        setToastOpen(false);
+    };
     const handleDeleteCloseModal = () => {
-        setIsDeleteModalOpen(false)
+        setToastOpen(true);
+        setTimeout(() => {
+            setIsDeleteModalOpen(false)
+        }, 1000)
     }
+
 
     return (
         <>
@@ -69,7 +127,7 @@ const SubscriptionPlan = () => {
             <Card sx={{ marginBottom: 2, padding: 2, borderRadius: '10px' }}>
                 <CardContent>
                     <div className="flex justify-between items-center mb-4">
-                        <Typography variant="h5" color='#6C309C' fontWeight='medium'>Monthly Plan</Typography>
+                        <Typography variant="h5" color='#6C309C' fontWeight='medium'>Basic Plan - $0</Typography>
                         <div>
                             <Button
                                 variant="contained"
@@ -95,11 +153,7 @@ const SubscriptionPlan = () => {
                                     },
                                     ml: 2
                                 }}
-                                onClick={() => handleEditOpenModal("Edit Plan", "Edit Added Successfully!", {
-                                    planName: 'Free',
-                                    planType: 'NONE',
-                                    description: 'No description'
-                                })}
+                                onClick={() => handleEditOpenModal(bdata, 'Basic Plan - $0')}
                             >
                                 <BorderColorIcon sx={{ fontSize: '20px', mr: 1 }} />
                                 Edit
@@ -107,18 +161,20 @@ const SubscriptionPlan = () => {
 
                         </div>
                     </div>
-                    <div className='mb-3'>
-                        <Typography variant="h6" sx={{ fontSize: '16px' }}>Lorem ipsum dolor sit amet,</Typography>
-                        <Typography variant='body2' color='GrayText' sx={{ fontSize: '14px', mt: 1 }}>Lorem ipsum dolor sit amet, consectetur adipiscing  Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing </Typography>
-                    </div>
-                    <div className='mb-3'>
-                        <Typography variant="h6" sx={{ fontSize: '16px' }}>Lorem ipsum dolor sit amet,</Typography>
-                        <Typography variant='body2' color='GrayText' sx={{ fontSize: '14px', mt: 1 }}>Lorem ipsum dolor sit amet, consectetur adipiscing  Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing </Typography>
-                    </div>
-                    <div className='mb-3'>
-                        <Typography variant="h6" sx={{ fontSize: '16px' }}>Lorem ipsum dolor sit amet,</Typography>
-                        <Typography variant='body2' color='GrayText' sx={{ fontSize: '14px', mt: 1 }}>Lorem ipsum dolor sit amet, consectetur adipiscing  Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing </Typography>
-                    </div>
+
+                    {
+                        bdata.map((d, index) => (
+                            <div className='mb-3 flex items-center gap-x-4' key={index}>
+                                <div style={{
+                                    borderRadius: '50%',
+                                    backgroundColor: 'rgba(108, 48, 156, 1)',
+                                    width: '10px',
+                                    height: '10px'
+                                }}></div>
+                                <Typography variant="h6" sx={{ fontSize: '16px' }}>{d.featuresDescription}</Typography>
+                            </div>
+                        ))
+                    }
                 </CardContent>
             </Card>
 
@@ -126,7 +182,7 @@ const SubscriptionPlan = () => {
             <Card sx={{ marginBottom: 2, padding: 2, borderRadius: '10px' }}>
                 <CardContent>
                     <div className="flex justify-between items-center mb-4">
-                        <Typography variant="h5" color='#6C309C' fontWeight='medium'>Yearly Plan</Typography>
+                        <Typography variant="h5" color='#6C309C' fontWeight='medium'>Professional Plan - $ 34</Typography>
                         <div>
                             <Button
                                 variant="contained"
@@ -152,11 +208,8 @@ const SubscriptionPlan = () => {
                                     },
                                     ml: 2
                                 }}
-                                onClick={() => handleEditOpenModal("Edit Plan", "Edit Added Successfully!", {
-                                    planName: 'Free',
-                                    planType: 'NONE',
-                                    description: 'No description'
-                                })}
+                                onClick={() => handleEditOpenModal(pdata, 'Professional Plan - $ 34')}
+
                             >
                                 <BorderColorIcon sx={{ fontSize: '20px', mr: 1 }} />
                                 Edit
@@ -164,18 +217,72 @@ const SubscriptionPlan = () => {
 
                         </div>
                     </div>
-                    <div className='mb-3'>
-                        <Typography variant="h6" sx={{ fontSize: '16px' }}>Lorem ipsum dolor sit amet,</Typography>
-                        <Typography variant='body2' color='GrayText' sx={{ fontSize: '14px', mt: 1 }}>Lorem ipsum dolor sit amet, consectetur adipiscing  Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing </Typography>
+                    {
+                        pdata.map((d, index) => (
+                            <div className='mb-3 flex items-center gap-x-4' key={index}>
+                                <div style={{
+                                    borderRadius: '50%',
+                                    backgroundColor: 'rgba(108, 48, 156, 1)',
+                                    width: '10px',
+                                    height: '10px'
+                                }}></div>
+                                <Typography variant="h6" sx={{ fontSize: '16px' }}>{d.featuresDescription}</Typography>
+                            </div>
+                        ))
+                    }
+                </CardContent>
+            </Card>
+
+            <Card sx={{ marginBottom: 2, padding: 2, borderRadius: '10px' }}>
+                <CardContent>
+                    <div className="flex justify-between items-center mb-4">
+                        <Typography variant="h5" color='#6C309C' fontWeight='medium'>Pro Plan - $ 345</Typography>
+                        <div>
+                            <Button
+                                variant="contained"
+                                sx={{
+                                    backgroundColor: '#6C309C',
+                                    borderRadius: '20px',
+                                    '&:hover': {
+                                        backgroundColor: '#6C309C',
+                                    }
+                                }}
+                                onClick={() => handleDeleteModal()}
+                            >
+                                <DeleteIcon sx={{ fontSize: '20px', mr: 1 }} />
+                                Delete
+                            </Button>
+                            <Button
+                                variant="contained"
+                                sx={{
+                                    backgroundColor: '#6C309C',
+                                    borderRadius: '20px',
+                                    '&:hover': {
+                                        backgroundColor: '#6C309C',
+                                    },
+                                    ml: 2
+                                }}
+                                onClick={() => handleEditOpenModal(ppdata, 'Pro Plan - $ 345')}
+                            >
+                                <BorderColorIcon sx={{ fontSize: '20px', mr: 1 }} />
+                                Edit
+                            </Button>
+
+                        </div>
                     </div>
-                    <div className='mb-3'>
-                        <Typography variant="h6" sx={{ fontSize: '16px' }}>Lorem ipsum dolor sit amet,</Typography>
-                        <Typography variant='body2' color='GrayText' sx={{ fontSize: '14px', mt: 1 }}>Lorem ipsum dolor sit amet, consectetur adipiscing  Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing </Typography>
-                    </div>
-                    <div className='mb-3'>
-                        <Typography variant="h6" sx={{ fontSize: '16px' }}>Lorem ipsum dolor sit amet,</Typography>
-                        <Typography variant='body2' color='GrayText' sx={{ fontSize: '14px', mt: 1 }}>Lorem ipsum dolor sit amet, consectetur adipiscing  Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing </Typography>
-                    </div>
+                    {
+                        ppdata.map((d, index) => (
+                            <div className='mb-3 flex items-center gap-x-4' key={index}>
+                                <div style={{
+                                    borderRadius: '50%',
+                                    backgroundColor: 'rgba(108, 48, 156, 1)',
+                                    width: '10px',
+                                    height: '10px'
+                                }}></div>
+                                <Typography variant="h6" sx={{ fontSize: '16px' }}>{d.featuresDescription}</Typography>
+                            </div>
+                        ))
+                    }
                 </CardContent>
             </Card>
 
@@ -190,10 +297,10 @@ const SubscriptionPlan = () => {
             <EditSubscriptionModel
                 open={isEditModalOpen}
                 handleClose={handleEditCloseModal}
-                setOpen={handleEditOpenModal}
-                title={modalTitle}
+                setOpen={setIsEditModalOpen}
                 modalData={modalData}
-                eventMessage={eventMessage}
+                name={planName}
+                setModalData={setModalData}
             />
             <DeleteModal
                 open={isDeleteModalOpen}
@@ -202,6 +309,9 @@ const SubscriptionPlan = () => {
                 title="Delete Subscription Plan"
                 paragraph="Do you want to delete this subscription plan?"
                 actionText="Delete"
+                eventMessage="Subscription Plan Deleted Successfully"
+                handleCloseToast={handleCloseToast}
+                toastOpen={toastOpen}
             />
         </>
     );

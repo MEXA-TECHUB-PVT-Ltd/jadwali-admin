@@ -11,6 +11,8 @@ import SubscribedUsers from "./pages/dashboard/SubscribedUsers";
 import PrivacyPolicy from "./pages/dashboard/PrivacyPolicy";
 import TermsConditions from "./pages/dashboard/TermsConditions";
 import SubscriptionPlan from "./pages/dashboard/SubscriptionPlan";
+import Tb from "./components/Tb";
+import Features from "./pages/dashboard/Features";
 
 function App() {
   const router = createBrowserRouter(
@@ -18,6 +20,7 @@ function App() {
       <>
         <Route path="/" element={<Layout />} >
           <Route index element={<Dashboard />} />
+          <Route path="table" element={<Tb />} />
         </Route>
         <Route
           element={<SignIn />}
@@ -49,6 +52,7 @@ function App() {
           <Route path="privacy-policy" element={<PrivacyPolicy />} />
           <Route path="terms-and-conditions" element={<TermsConditions />} />
           <Route path="subscription-plan" element={<SubscriptionPlan />} />
+          <Route path="features" element={<Features />} />
         </Route>
       </>
     )

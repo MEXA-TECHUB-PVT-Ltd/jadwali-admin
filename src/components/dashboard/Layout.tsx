@@ -21,18 +21,30 @@ import ChangePasswordModel from '../Models/ChangePassword';
 import DeleteModal from '../Models/DeleteModel';
 import { useNavigate } from 'react-router-dom';
 import { users } from '../../utils/dashboard';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, Drawer } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import { useState, useEffect } from 'react';
 import UserDetailModel from '../Models/UserDetailModel';
-
+import MenuIcon from '@mui/icons-material/Menu';
 import ToastModal from '../Models/TostModal';
-
+import CssBaseline from '@mui/material/CssBaseline';
 
 
 
 const Layout = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
+    const [isMobileNavOpen, setIsMobileNavOpen] = React.useState(false);
+    const [innerWidth, setInnerWidth] = React.useState(window.innerWidth > 1100);
+
+    const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+
+    const handleDrawerOpen = () => {
+        setIsDrawerOpen(true);
+    };
+
+    const handleDrawerClose = () => {
+        setIsDrawerOpen(false);
+    }
 
     const navigate = useNavigate();
 
@@ -47,23 +59,54 @@ const Layout = () => {
     const onLogout = () => {
         navigate('/auth/sign-in');
     }
+
+    React.useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth > 1100) {
+                setInnerWidth(true);
+            }
+            else {
+                setInnerWidth(false);
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        handleResize();
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+
+
     return (
         <>
             <div style={{ display: 'flex' }}>
-                <SideNav
-                    handleDeleteModal={handleDeleteModal}
-                    handleDeleteCloseModal={handleDeleteCloseModal}
-                    onLogout={onLogout}
-                    isDeleteModalOpen={isDeleteModalOpen}
-                />
+                {innerWidth && (
+                    <SideNav
+                        handleDeleteModal={handleDeleteModal}
+                        handleDeleteCloseModal={handleDeleteCloseModal}
+                        onLogout={onLogout}
+                        isDeleteModalOpen={isDeleteModalOpen}
+                        setIsDrawerOpen={setIsDrawerOpen}
+                    />
+                )}
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                     <TopHeader
                         handleDeleteModal={handleDeleteModal}
                         handleDeleteCloseModal={handleDeleteCloseModal}
                         onLogout={onLogout}
                         isDeleteModalOpen={isDeleteModalOpen}
+                        setIsMobileNavOpen={setIsMobileNavOpen}
+                        isDrawerOpen={isDrawerOpen}
+                        handleDrawerOpen={handleDrawerOpen}
+                        handleDrawerClose={handleDrawerClose}
+                        innerWidth={innerWidth}
                     />
-                    <div style={{ padding: '20px', marginLeft: '250px' }}>
+                    <div style={{ padding: '20px', marginLeft: innerWidth ? '250px' : '0' }}>
+                <CssBaseline />
                         <Outlet />
                     </div>
                 </div>
@@ -76,7 +119,7 @@ const Layout = () => {
 export default Layout
 
 
-const SideNav = ({ handleDeleteModal, handleDeleteCloseModal, isDeleteModalOpen, onLogout }: any) => {
+const SideNav = ({ handleDeleteModal, handleDeleteCloseModal, isDeleteModalOpen, onLogout, setIsDrawerOpen }: any) => {
     const [hoverIndex, setHoverIndex] = React.useState<any>(null);
 
     const handleHover = (index: any) => {
@@ -88,13 +131,14 @@ const SideNav = ({ handleDeleteModal, handleDeleteCloseModal, isDeleteModalOpen,
     };
     return (
 
-        <div style={{
+        <div
+            style={{
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
             // width: '250px',
             backgroundColor: 'rgba(108, 48, 156, 1)',
-            height: '100vh',
+            height: '100%',
             position: 'fixed',
         }}>
             <div>
@@ -128,6 +172,7 @@ const SideNav = ({ handleDeleteModal, handleDeleteCloseModal, isDeleteModalOpen,
                                     className={isActive ? 'link activeLink' : 'link'}
                                 >
                                     <ListItemIcon
+                                        onClick={() => setIsDrawerOpen(false)}
                                         className="listItemIcon"
                                         style={{
                                             color: index === hoverIndex || isActive ? 'rgba(108, 48, 156, 1)' : 'white',
@@ -162,7 +207,9 @@ const SideNav = ({ handleDeleteModal, handleDeleteCloseModal, isDeleteModalOpen,
     );
 };
 
-const TopHeader = ({ handleDeleteModal, handleDeleteCloseModal, isDeleteModalOpen, onLogout }: any) => {
+const TopHeader = ({ handleDeleteModal, handleDeleteCloseModal, isDeleteModalOpen, onLogout, isDrawerOpen, handleDrawerOpen,
+    handleDrawerClose, innerWidth
+}: any) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
     const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -212,12 +259,24 @@ const TopHeader = ({ handleDeleteModal, handleDeleteCloseModal, isDeleteModalOpe
                     height: '70px'
                 }}
             >
+                {
+                    !innerWidth &&
+                    <IconButton
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                            onClick={handleDrawerOpen}
+                        sx={{marginRight: '50px'}}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                }
                 <Box sx={{
                     display: 'flex', alignItems: 'center', marginLeft: 'auto',
                     backgroundColor: "white", borderRadius: '20px', padding: '0 5px'
                 }}>
                     <SearchIcon sx={{
-                        fontSize: '20px',
+                        // fontSize: '20px',
                         color: '#959595',
                     }} />
                     <InputBase
@@ -255,22 +314,31 @@ const TopHeader = ({ handleDeleteModal, handleDeleteCloseModal, isDeleteModalOpe
                     }}
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
-                    sx={{ mt: 4, width: '900px' }}
+                    sx={{ mt: 6, width: '900px' }}
                 >
-                    <div className="flex items-center pe-2 bg-[#6C309C]">
-                        <MenuItem onClick={handleDeleteModal} className='flex-grow' sx={{ color: 'white' }}>
+                    <div className="flex items-center pe-2 bg-[#6C309C] cursor-pointer" onClick={handleDeleteModal} >
+                        <MenuItem className='flex-grow' sx={{ color: 'white' }}>
                             example@gamil.com
                         </MenuItem>
                         <LogoutIcon sx={{ color: 'white' }} />
                     </div>
-                    <div className="flex items-center pe-2">
-                        <MenuItem onClick={handleOpenModal} className='flex-grow'>
+                    <div className="flex items-center pe-2 cursor-pointer" onClick={handleOpenModal}>
+                        <MenuItem className='flex-grow'>
                             Change Password
                         </MenuItem>
                         <ChevronRightIcon />
                     </div>
                 </Menu>
             </Box>
+
+            <Drawer
+                anchor="top"
+                open={isDrawerOpen}
+                onClose={handleDrawerClose}
+                sx={{ width: '900px' }}
+            >
+                <SideNav />
+            </Drawer>
 
 
             {
@@ -305,6 +373,7 @@ const TopHeader = ({ handleDeleteModal, handleDeleteCloseModal, isDeleteModalOpe
                 title="Logout"
                 paragraph="Do you want to logout?"
                 actionText="Logout"
+                eventMessage="Logout Successfully"
             />
         </>
     )
