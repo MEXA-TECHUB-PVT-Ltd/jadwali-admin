@@ -6,21 +6,54 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import ToastModal from './TostModal';
-
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { Link } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 const SubscriptionSchema = Yup.object().shape({
     planName: Yup.string()
-        .required('Required'),
-    planType: Yup.string()
-        .required('Required'),
-    description: Yup.string()
         .required('Required')
 });
 
 
-const EditSubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage, modalData }: any) => {
+const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, setModalData }: any) => {
     const [toastOpen, setToastOpen] = React.useState<boolean>(false);
+    const [planName, setPlanName] = React.useState("");
+
+    const { state } = useLocation();
+    const navigate = useNavigate();
+
+    let plan = state?.plan || "";
+    let previousPage = state?.previousPage || "";
+    let selectedFeatures = state?.selectedFeatures || [];
+    let openAddModal = state?.openAddModal || '';
+
+    console.log("Edit modal: ", openAddModal);
+
+
+
+    React.useEffect(() => {
+        if (previousPage === 'features' && selectedFeatures && modalData && openAddModal === 'false') {
+            const updatedFeatures = [...modalData, ...selectedFeatures];
+            setModalData(updatedFeatures);
+            setOpen(true);
+        }
+    }, [])
+
+    React.useEffect(() => {
+        if (previousPage === 'features' && openAddModal === 'false') {
+            if (localStorage.getItem("shouldOpenSubEdit") === "true") {
+                setOpen(true);
+            }
+            else {
+                setOpen(false);
+                localStorage.setItem("shouldOpenSubEdit", "false");
+            }
+        }
+    }, []);
+
+
 
     const handleCloseToast = () => {
         setToastOpen(false);
@@ -28,9 +61,9 @@ const EditSubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage
 
     const body = (
         <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.16)' }}>
-            <ToastModal open={toastOpen} onClose={handleCloseToast} eventMessage={eventMessage} />
+            <ToastModal open={toastOpen} onClose={handleCloseToast} eventMessage="Edit Plan Successfully!" />
             <Box className='flex justify-center items-center h-screen'>
-                <Card className='sm:w-[450px] w-[80%]' sx={{ borderRadius: '30px' }}>
+                <Card className='sm:w-[500px] w-[80%]' sx={{ borderRadius: '30px' }}>
                     <CardContent className='p-0' sx={{ padding: 0 }}>
                         <div className='mb-12 bg-[#C7AEDB] px-5 py-3 flex justify-between items-center'>
                             <Typography
@@ -39,7 +72,7 @@ const EditSubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage
                                     fontSize: '20px', color: '#6C309C', margin: '0', fontWeight: 'medium'
                                 }}
                             >
-                                {title}
+                                Edit Subscription
                             </Typography>
                             <IconButton aria-label="delete" onClick={handleClose} sx={{ padding: '0', color: '#6C309C' }}>
                                 <CancelIcon fontSize="inherit" />
@@ -48,20 +81,20 @@ const EditSubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage
                         <CardContent className='m-3'>
                             <Formik
                                 initialValues={{
-                                    planName: modalData ? modalData.planName : '',
-                                    planType: modalData ? modalData.planType : '',
-                                    description: modalData ? modalData.description : ''
+                                    planName: name ? name : '',
+                                    selectFeatures: ''
                                 }}
                                 validationSchema={SubscriptionSchema}
                                 onSubmit={(values) => {
                                     console.log(values);
+                                    navigate('/dashboard/subscription-plan')
                                     setToastOpen(true);
                                     setTimeout(() => {
                                         setOpen(false)
-                                    }, 2000)
+                                    }, 1000)
                                 }}
                             >
-                                {({ errors, touched, isValid }) => (
+                                {({ errors, touched, isValid, setFieldValue }) => (
                                     <Form>
                                         <div className='mb-4'>
                                             <Field
@@ -71,6 +104,10 @@ const EditSubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage
                                                 placeholder={'Plan Name'}
                                                 variant="outlined"
                                                 fullWidth
+                                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                                    setFieldValue("planName", e.target.value);
+                                                    setPlanName(e.target.value);
+                                                }}
                                                 sx={{
                                                     '& .MuiOutlinedInput-root': {
                                                         borderRadius: '20px',
@@ -93,67 +130,30 @@ const EditSubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage
                                             ) : null}
                                         </div>
 
-                                        <div className='mb-4'>
-                                            <Field
-                                                name="planType"
-                                                as={TextField}
-                                                id="outlined-basic"
-                                                placeholder={'Plan Type'}
-                                                variant="outlined"
-                                                fullWidth
-                                                sx={{
-                                                    '& .MuiOutlinedInput-root': {
-                                                        borderRadius: '20px',
-                                                        borderColor: 'rgba(0, 0, 0, 0.04)',
-                                                        borderWidth: '0px',
-                                                    },
-                                                    '& .MuiOutlinedInput-notchedOutline': {
-                                                        borderColor: 'rgba(0, 0, 0, 0.04)',
-                                                    },
-                                                    p: 0,
-                                                    borderRadius: '20px',
-                                                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                                                }}
-                                                size='small'
-                                            />
-                                            {errors.planType && typeof errors.planType === 'string' ? (
-                                                <Typography sx={{ mt: 1, fontSize: '0.8rem', color: 'red', ml: 2 }}>
-                                                    {errors.planType}
-                                                </Typography>
-                                            ) : null}
-                                        </div>
+                                        {
+                                            modalData && modalData?.length > 0 && (
+                                                <>
+                                                    <Typography mb={2}>Features</Typography>
+                                                    <div className="flex flex-wrap gap-2 mb-2 max-h-40 overflow-auto">
+                                                        {modalData.map((feature: any, index) => (
+                                                            <span key={index} className="bg-[#F5F5F5] px-3 py-1 rounded-full">
+                                                                {feature.featuresDescription} 
+                                                            </span>
+                                                        ))}
 
-                                        <div className='mb-4'>
-                                            <Field
-                                                name="description"
-                                                as={TextField}
-                                                id="outlined-basic"
-                                                placeholder={'Description'}
-                                                variant="outlined"
-                                                fullWidth
-                                                value={modalData && modalData.description}
-                                                multiline
-                                                rows={4}
-                                                sx={{
-                                                    '& .MuiOutlinedInput-root': {
-                                                        borderRadius: '20px',
-                                                        borderColor: 'rgba(0, 0, 0, 0.04)',
-                                                        borderWidth: '0px',
-                                                    },
-                                                    '& .MuiOutlinedInput-notchedOutline': {
-                                                        borderColor: 'rgba(0, 0, 0, 0.04)',
-                                                    },
-                                                    p: 0,
-                                                    borderRadius: '20px',
-                                                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                                                }}
-                                                size='small'
-                                            />
-                                            {errors.description && typeof errors.description === 'string' ? (
-                                                <Typography sx={{ mt: 1, fontSize: '0.8rem', color: 'red', ml: 2 }}>
-                                                    {errors.description}
-                                                </Typography>) : null}
-                                        </div>
+                                                        <Link
+                                                            to='/dashboard/features'
+                                                            state={{ plan: planName ? planName : undefined, previousPage: 'subscription', previousFeatures: modalData, openAddModal: 'false' }}
+                                                            className='mb-4 bg-[#6C309C] text-white p-2 px-4 rounded-[20px] flex justify-between items-center cursor-pointer'
+                                                        >
+                                                            <Typography sx={{ color: '#fff' }}>Add more features</Typography>
+                                                            <KeyboardArrowDownIcon />
+                                                        </Link>
+                                                    </div>
+                                                </>
+                                            )
+                                        }
+
 
                                         <div className="mt-10">
                                             <Button
@@ -168,7 +168,9 @@ const EditSubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage
                                                     },
                                                     color: '#fff',
                                                 }}
-                                            >Submit</Button>
+                                            >
+                                                Edit Plan
+                                            </Button>
                                         </div>
                                     </Form>
                                 )}
@@ -194,5 +196,5 @@ const EditSubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage
     )
 }
 
-export default EditSubscriptionModel;
+export default EditSubscriptionModal;
 

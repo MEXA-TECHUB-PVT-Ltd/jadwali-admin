@@ -11,7 +11,7 @@ const OverviewCard = ({ children }: TChildren) => {
                 boxShadow: 'none',
                 transition: 'background-color 0.3s ease-in-out',
                 '&:hover': {
-                    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                    backgroundColor: '#C7AEDB',
                     '& .icon': {
                         backgroundColor: '#ffffff',
                     },

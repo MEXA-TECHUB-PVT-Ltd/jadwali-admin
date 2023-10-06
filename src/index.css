@@ -12,8 +12,6 @@
   font-family: 'Noto Sans', sans-serif !important; 
 }
 
-
-
 .activeLink,
 .link:hover {
   color: rgba(108, 48, 156, 1) !important;
@@ -46,4 +44,17 @@
 
 .activeLink .listItemIcon {
   color: black
+}
+
+
+
+/* Add this to your CSS */
+.mobile-menu-button {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .mobile-menu-button {
+    display: block;
+  }
 }

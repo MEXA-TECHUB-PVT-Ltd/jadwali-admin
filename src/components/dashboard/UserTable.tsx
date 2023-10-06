@@ -2,9 +2,12 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Check
 import Visibility from '@mui/icons-material/Visibility';
 import { useState, useEffect } from 'react';
 import UserDetailModel from '../Models/UserDetailModel';
-
+import { useTheme } from '@mui/material/styles';
 import { useLocation } from 'react-router-dom';
 import ToastModal from '../Models/TostModal';
+import * as React from 'react';
+
+
 
 const UserTable = ({ users, status }: any) => {
     const [selectedUsers, setSelectedUsers] = useState<any[]>([]);
@@ -15,7 +18,7 @@ const UserTable = ({ users, status }: any) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [toastMessage, setToastMessage] = useState("");
 
-
+    const theme = useTheme();
 
     const rowsPerPage = 10;
 
@@ -110,7 +113,7 @@ const UserTable = ({ users, status }: any) => {
         setPage(value);
     };
     // const paginatedUsers = users.slice((page - 1) * rowsPerPage, page * rowsPerPage);
-    const paginatedUsers = currentUsers.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+    const paginatedUsers = users.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
     const numAdjacentButtons = 1;
     const handleCloseToast = () => {
@@ -118,13 +121,20 @@ const UserTable = ({ users, status }: any) => {
     };
 
     return (
-        <>
+        <div >
             <ToastModal open={toastOpen} onClose={handleCloseToast} eventMessage={toastMessage} />
-            <TableContainer component={Paper} sx={{ borderRadius: '10px' }}>
-                <Table>
+            <TableContainer  component={Paper}
+                sx={{
+                    borderRadius: '10px',
+                    width: '100%',
+                    maxWidth: '100%',
+                    overflowX: 'scroll'
+                }}
+            >
+                <Table sx={{ minWidth: '250px' }}>
                     <TableHead style={{ backgroundColor: '#F4E9FD' }}>
                         <TableRow>
-                            <TableCell padding="checkbox">
+                            <TableCell padding="checkbox" sx={{ minWidth: 170 }} >
                                 <Checkbox
                                     color="primary"
                                     indeterminate={selectedUsers.length > 0 && selectedUsers.length < users.length}
@@ -133,17 +143,17 @@ const UserTable = ({ users, status }: any) => {
                                     style={{ color: '#C4C4C4' }}
                                 />
                             </TableCell>
-                            <TableCell style={{ color: '#6C309C' }} sx={{ fontWeight: 'bold' }}>USER</TableCell>
-                            <TableCell style={{ color: '#6C309C' }} sx={{ fontWeight: 'bold' }}>EMAIL ADDRESS</TableCell>
-                            <TableCell style={{ color: '#6C309C' }} sx={{ fontWeight: 'bold' }}>TOTAL EVENTS</TableCell>
+                            <TableCell style={{ color: '#6C309C', minWidth: 170 }} sx={{ fontWeight: 'bold' }}>USER</TableCell>
+                            <TableCell style={{ color: '#6C309C', minWidth: 170 }} sx={{ fontWeight: 'bold' }}>EMAIL ADDRESS</TableCell>
+                            <TableCell style={{ color: '#6C309C', minWidth: 170 }} sx={{ fontWeight: 'bold' }}>TOTAL EVENTS</TableCell>
                             {status && <TableCell style={{ color: '#6C309C' }} sx={{ fontWeight: 'bold' }}>Status</TableCell>}
-                            <TableCell style={{ color: '#6C309C' }} sx={{ fontWeight: 'bold' }}>ACTIONS</TableCell>
+                            <TableCell style={{ color: '#6C309C', minWidth: 170 }} sx={{ fontWeight: 'bold' }}>ACTIONS</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {paginatedUsers.map((user: any) => (
-                            <TableRow key={user.id} role="checkbox" tabIndex={-1} selected={isSelected(user.id)}>
-                                <TableCell padding="checkbox">
+                            <TableRow hover key={user.id} role="checkbox" tabIndex={-1} selected={isSelected(user.id)}>
+                                <TableCell padding="checkbox" sx={{}}>
                                     <Checkbox
                                         color="primary"
                                         checked={isSelected(user.id)}
@@ -152,17 +162,19 @@ const UserTable = ({ users, status }: any) => {
                                     />
                                 </TableCell>
 
-                                <TableCell>
-                                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                                        <Avatar src='' style={{ marginRight: '8px' }} />
+                                <TableCell sx={{}}>
+                                    <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+                                        <Avatar src=''
+                                        style={{ marginRight: '8px' }}
+                                        />
                                         {user.name}
                                     </div>
                                 </TableCell>
-                                <TableCell>{user.email}</TableCell>
-                                <TableCell>{user.events}</TableCell>
+                                <TableCell sx={{}}>{user.email}</TableCell>
+                                <TableCell sx={{}}>{user.events}</TableCell>
                                 {
                                     status &&
-                                    <TableCell>
+                                    <TableCell sx={{}}>
                                         {
                                             user.payment === 'Unpaid' || user.payment === 'Paid' ?
                                                 <div
@@ -173,8 +185,11 @@ const UserTable = ({ users, status }: any) => {
                                                         color: 'white',
                                                         marginTop: '10px',
                                                         padding: '6px 16px',
-                                                        display: 'inline-block',
-                                                        fontWeight: 'bold'
+                                                        // display: 'inline-block',
+                                                            fontWeight: 'bold',
+                                                            width: '100px',
+                                                            textAlign: 'center'
+
                                                     }}
                                                 >
                                                     {user.payment}
@@ -185,7 +200,7 @@ const UserTable = ({ users, status }: any) => {
 
 
 
-                                <TableCell>
+                                <TableCell >
                                     <Visibility
                                         sx={{ color: 'rgba(0, 0, 0, 0.4)', fontSize: '20px' }}
                                         className='cursor-pointer me-5'
@@ -198,7 +213,7 @@ const UserTable = ({ users, status }: any) => {
                                         }}
                                     />
                                     {
-                                        location.pathname === '/dashboard/all-users' ?
+                                        (location.pathname === '/dashboard/all-users' || location.pathname === '/dashboard' || location.pathname === '/') ?
                                             <Button
                                                 variant="contained"
                                                 sx={{
@@ -206,7 +221,8 @@ const UserTable = ({ users, status }: any) => {
                                                     '&:hover': {
                                                         backgroundColor: user.status === 'Unblock' ? '#00C342' : '#FF5858',
                                                     },
-                                                    marginRight: '10px'
+                                                    marginRight: '10px',
+                                                    width: '100px'
                                                 }}
                                                 size='small'
                                                 onClick={() => toggleUserStatus(user.id)}
@@ -215,35 +231,46 @@ const UserTable = ({ users, status }: any) => {
                                             </Button>
                                             :
                                             ''
-                                        // <Button
-                                        //     variant="contained"
-                                        //     sx={{
-                                        //         backgroundColor: user.payment === 'Paid' ? '#FF5858' : '#00C342',
-                                        //         '&:hover': {
-                                        //             backgroundColor: user.payment === 'Unpaid' ? '#FF5858' : '#00C342',
-                                        //         },
-                                        //         marginRight: '10px'
-                                        //     }}
-                                        //     size='small'
-                                        // >
-                                        //     {user.payment}
-                                        // </Button>
-
                                     }
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
-            </TableContainer>
+            </TableContainer >
             <UserDetailModel
                 open={isModalOpen}
                 handleClose={handleCloseModal}
                 status={selectedStatus}
             />
 
-        </>
+        </div>
     )
 }
 
 export default UserTable
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

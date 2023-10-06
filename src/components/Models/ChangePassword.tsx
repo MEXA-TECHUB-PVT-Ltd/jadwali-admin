@@ -52,7 +52,7 @@ const ChangePasswordModel = ({ open, setOpen, handleClose, status }: any) => {
         <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.16)' }}>
             <ToastModal open={toastOpen} onClose={handleCloseToast} eventMessage="Password Changed Successfully!" />
             <Box className='flex justify-center items-center h-screen'>
-                <Card className='sm:w-[450px] w-[80%]' sx={{ borderRadius: '30px' }}>
+                <Card className='sm:w-[500px] w-[80%]' sx={{ borderRadius: '30px' }}>
                     <CardContent className='p-0' sx={{ padding: 0 }}>
                         <div className='mb-12 bg-[#C7AEDB] px-5 py-3 flex justify-between items-center'>
                             <Typography

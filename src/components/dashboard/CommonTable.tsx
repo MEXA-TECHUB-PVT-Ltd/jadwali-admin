@@ -9,6 +9,11 @@ import { TCommonTable } from '../../types/types';
 
 const CommonTable = ({ title, status }: TCommonTable) => {
     const [page, setPage] = React.useState(1);
+    const [searchTerm, setSearchTerm] = React.useState<string>("");
+    React.useEffect(() => {
+        setPage(1);
+    }, [searchTerm]);
+
     const rowsPerPage = 10;
 
 
@@ -26,27 +31,44 @@ const CommonTable = ({ title, status }: TCommonTable) => {
         setPage(value);
     };
     const numAdjacentButtons = 1;
+
+
+    const filteredUsers = users.filter(
+        user => {
+            return user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            user.email.toLowerCase().includes(searchTerm.toLowerCase())
+        }
+        )
     return (
         <>
             <div className="flex justify-between items mb-5">
                 <Typography fontSize='25px' fontWeight='medium' color='#342E59'>{title}</Typography>
                 <Box sx={{
-                    display: 'flex', alignItems: 'center', marginLeft: 'auto',
+                    display: 'flex', alignItems: 'center',
                     backgroundColor: "white", borderRadius: '20px', padding: '0 5px', borderWidth: '1px', borderColor: 'gray'
                 }}>
                     <SearchIcon sx={{
                         fontSize: '20px',
                         color: '#959595',
                     }} />
-                    <InputBase placeholder="Search…" sx={{ pl: 1 }} />
+                    <InputBase
+                        placeholder="Search…" sx={{ pl: 1, fontSize:'14px' }}
+                        value={searchTerm}
+                        onChange={e => setSearchTerm(e.target.value)}
+                    />
                 </Box>
             </div>
 
-            <UserTable
+            {/* <UserTable
                 users={users}
                 status={status}
+            /> */}
+            <UserTable
+                users={filteredUsers}
+                status={status}
             />
-            <Box display="flex" justifyContent="space-between" alignItems="center" marginTop="1rem">
+
+            <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap='wrap' marginTop="1rem">
                 <span>
                     Showing
                     {((page - 1) * rowsPerPage) + 1}
