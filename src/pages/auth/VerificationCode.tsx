@@ -34,7 +34,7 @@ const VerificationCode = () => {
 
     return (
         <FormLayout link='/auth/forgot-password'>
-            <CardLayout title='JADWALI' subTitle='Forgot Password' description='Enter your Email address to send a verification code'>
+            <CardLayout title='JADWALI' subTitle='Verification' description='Enter code that you received on example@gmail.com'>
                 <Grid container spacing={2} justifyContent="center" className='mb-12'>
                     {Array(4).fill(null).map((_, index) => (
                         <Grid item key={index}>

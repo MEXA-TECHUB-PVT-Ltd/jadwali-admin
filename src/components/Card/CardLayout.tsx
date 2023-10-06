@@ -5,7 +5,7 @@ import { CardContent, Typography } from '@mui/material';
 
 export default function CardLayout({ children, title, subTitle, description }: TChildren) {
     return (
-        <Box className='flex justify-center items-center h-screen'>
+        <Box className='flex bg-[#C7AEDB] justify-center items-center h-screen'>
             <Card className='sm:w-[450px] w-[80%]' sx={{ borderRadius: '30px' }}>
                 <CardContent className='m-3'>
                     <Typography

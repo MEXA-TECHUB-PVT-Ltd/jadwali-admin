@@ -35,7 +35,7 @@ const SignIn = () => {
     };
 
     return (
-        <CardLayout title='JADWALI' subTitle='Login' description='Sign in to your account'>
+        <CardLayout title='JADWALI' subTitle='Sign In' description='Sign in to your account'>
             <Formik
                 initialValues={{ email: '', password: '' }}
                 validationSchema={validationSchema}
