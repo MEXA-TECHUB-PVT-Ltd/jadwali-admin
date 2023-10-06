@@ -6,6 +6,7 @@ import { useTheme } from '@mui/material/styles';
 import { useLocation } from 'react-router-dom';
 import ToastModal from '../Models/TostModal';
 import * as React from 'react';
+import DeleteModal from '../Models/DeleteModel';
 
 
 
@@ -17,6 +18,22 @@ const UserTable = ({ users, status }: any) => {
     const [toastOpen, setToastOpen] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [toastMessage, setToastMessage] = useState("");
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [currentUserId, setCurrentUserId] = useState<number | null>(null);
+
+
+    const handleOpenDeleteModal = (userId: number) => {
+        setCurrentUserId(userId);
+        setIsDeleteModalOpen(true);
+    }
+
+    const handleBlockUser = () => {
+        if (currentUserId) {
+            toggleUserStatus(currentUserId);
+            setIsDeleteModalOpen(false);
+        }
+    }
+
 
     const theme = useTheme();
 
@@ -51,10 +68,18 @@ const UserTable = ({ users, status }: any) => {
 
 
 
-    const handleOpenModal = (status: string) => {
+    const handleOpenModal = (status: string, userId: number) => {
         setSelectedStatus(status);
+        setCurrentUserId(userId);
         setIsModalOpen(true);
     };
+
+    const handleToggleStatusFromModal = () => {
+        if (currentUserId) {
+            toggleUserStatus(currentUserId);
+            setIsDeleteModalOpen(false);
+        }
+    }
 
 
     const handleCloseModal = () => {
@@ -120,10 +145,14 @@ const UserTable = ({ users, status }: any) => {
         setToastOpen(false);
     };
 
+    const handleDeleteCloseModal = () => {
+        setIsDeleteModalOpen(false);
+    }
+
     return (
         <div >
             <ToastModal open={toastOpen} onClose={handleCloseToast} eventMessage={toastMessage} />
-            <TableContainer  component={Paper}
+            <TableContainer component={Paper}
                 sx={{
                     borderRadius: '10px',
                     width: '100%',
@@ -134,47 +163,36 @@ const UserTable = ({ users, status }: any) => {
                 <Table sx={{ minWidth: '250px' }}>
                     <TableHead style={{ backgroundColor: '#F4E9FD' }}>
                         <TableRow>
-                            <TableCell padding="checkbox" sx={{ minWidth: 170 }} >
-                                <Checkbox
-                                    color="primary"
-                                    indeterminate={selectedUsers.length > 0 && selectedUsers.length < users.length}
-                                    checked={users.length > 0 && selectedUsers.length === users.length}
-                                    onChange={handleSelectAllClick}
-                                    style={{ color: '#C4C4C4' }}
-                                />
+                            <TableCell align='left' sx={{ minWidth: 120, color: '#6C309C' }} >
+                                NO
                             </TableCell>
-                            <TableCell style={{ color: '#6C309C', minWidth: 170 }} sx={{ fontWeight: 'bold' }}>USER</TableCell>
-                            <TableCell style={{ color: '#6C309C', minWidth: 170 }} sx={{ fontWeight: 'bold' }}>EMAIL ADDRESS</TableCell>
-                            <TableCell style={{ color: '#6C309C', minWidth: 170 }} sx={{ fontWeight: 'bold' }}>TOTAL EVENTS</TableCell>
-                            {status && <TableCell style={{ color: '#6C309C' }} sx={{ fontWeight: 'bold' }}>Status</TableCell>}
-                            <TableCell style={{ color: '#6C309C', minWidth: 170 }} sx={{ fontWeight: 'bold' }}>ACTIONS</TableCell>
+                            <TableCell align='left' style={{ color: '#6C309C', minWidth: 120 }} sx={{ fontWeight: 'bold' }}>USER</TableCell>
+                            <TableCell align='left' style={{ color: '#6C309C', minWidth: 120 }} sx={{ fontWeight: 'bold' }}>EMAIL ADDRESS</TableCell>
+                            <TableCell align='left' style={{ color: '#6C309C', minWidth: 120 }} sx={{ fontWeight: 'bold' }}>TOTAL EVENTS</TableCell>
+                            {status && <TableCell align='left' style={{ color: '#6C309C' }} sx={{ fontWeight: 'bold' }}>Status</TableCell>}
+                            <TableCell align='left' style={{ color: '#6C309C', minWidth: 120 }} sx={{ fontWeight: 'bold' }}>ACTIONS</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {paginatedUsers.map((user: any) => (
+                        {paginatedUsers.map((user: any, index:any) => (
                             <TableRow hover key={user.id} role="checkbox" tabIndex={-1} selected={isSelected(user.id)}>
-                                <TableCell padding="checkbox" sx={{}}>
-                                    <Checkbox
-                                        color="primary"
-                                        checked={isSelected(user.id)}
-                                        style={{ color: '#C4C4C4' }}
-                                        onChange={(event) => handleClick(event, user.id)}
-                                    />
+                                <TableCell align='left' sx={{}}>
+                                    {index+1}
                                 </TableCell>
 
-                                <TableCell sx={{}}>
+                                <TableCell align='left' sx={{}}>
                                     <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
                                         <Avatar src=''
-                                        style={{ marginRight: '8px' }}
+                                            style={{ marginRight: '8px' }}
                                         />
                                         {user.name}
                                     </div>
                                 </TableCell>
-                                <TableCell sx={{}}>{user.email}</TableCell>
-                                <TableCell sx={{}}>{user.events}</TableCell>
+                                <TableCell align='left' sx={{}}>{user.email}</TableCell>
+                                <TableCell align='left' sx={{}}>{user.events}</TableCell>
                                 {
                                     status &&
-                                    <TableCell sx={{}}>
+                                    <TableCell align='left' sx={{}}>
                                         {
                                             user.payment === 'Unpaid' || user.payment === 'Paid' ?
                                                 <div
@@ -186,9 +204,9 @@ const UserTable = ({ users, status }: any) => {
                                                         marginTop: '10px',
                                                         padding: '6px 16px',
                                                         // display: 'inline-block',
-                                                            fontWeight: 'bold',
-                                                            width: '100px',
-                                                            textAlign: 'center'
+                                                        fontWeight: 'bold',
+                                                        width: '100px',
+                                                        textAlign: 'center'
 
                                                     }}
                                                 >
@@ -200,15 +218,15 @@ const UserTable = ({ users, status }: any) => {
 
 
 
-                                <TableCell >
+                                <TableCell align='left' >
                                     <Visibility
                                         sx={{ color: 'rgba(0, 0, 0, 0.4)', fontSize: '20px' }}
                                         className='cursor-pointer me-5'
                                         onClick={() => {
                                             if (location.pathname === "/dashboard/all-users") {
-                                                handleOpenModal(user.status);
+                                                handleOpenModal(user.status, user.id);
                                             } else {
-                                                handleOpenModal(user.payment);
+                                                handleOpenModal(user.payment, user.id);
                                             }
                                         }}
                                     />
@@ -225,7 +243,7 @@ const UserTable = ({ users, status }: any) => {
                                                     width: '100px'
                                                 }}
                                                 size='small'
-                                                onClick={() => toggleUserStatus(user.id)}
+                                                onClick={() => handleOpenDeleteModal(user.id)}
                                             >
                                                 {user.status}
                                             </Button>
@@ -240,8 +258,21 @@ const UserTable = ({ users, status }: any) => {
             </TableContainer >
             <UserDetailModel
                 open={isModalOpen}
+                setOpen={setIsModalOpen}
                 handleClose={handleCloseModal}
                 status={selectedStatus}
+                onToggleStatus={handleToggleStatusFromModal}
+                handleDeleteCloseModal={handleDeleteCloseModal}
+                isDeleteModalOpen={isDeleteModalOpen}
+                setIsDeleteModalOpen={setIsDeleteModalOpen}
+            />
+            <DeleteModal
+                open={isDeleteModalOpen}
+                handleClose={handleDeleteCloseModal}
+                onDelete={handleBlockUser}
+                title="Block User"
+                paragraph="Do you really want to block this User?"
+                actionText="Block"
             />
 
         </div>
@@ -249,28 +280,3 @@ const UserTable = ({ users, status }: any) => {
 }
 
 export default UserTable
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

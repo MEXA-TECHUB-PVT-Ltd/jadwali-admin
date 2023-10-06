@@ -3,17 +3,21 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import { CardContent, Typography, IconButton, Avatar, Button, Modal } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { useLocation } from 'react-router-dom';
+import DeleteModal from './DeleteModel';
 
 
-const UserDetailModel = ({ open, setOpen, handleClose, status } :any) => {
+const UserDetailModel = ({ open, setOpen, handleClose, status, onToggleStatus, isDeleteModalOpen, handleDeleteCloseModal, setIsDeleteModalOpen }: any) => {
 
-
-    const location = useLocation();
+    const handleStatusClick = () => {
+        if (status === 'Unblock' || status === 'Block') {
+            setIsDeleteModalOpen(true);
+            setOpen(false);
+        }
+    }
 
     const body = (
         <Box className='flex justify-center items-center h-screen'>
-            <Card className='sm:w-[500px] w-[80%]' sx={{ borderRadius: '30px' }}>
+            <Card className='sm:w-[550px] w-[80%]' sx={{ borderRadius: '30px' }}>
                 <CardContent className='p-0' sx={{ padding: 0 }}>
                     <div className='px-5 py-3 flex justify-between items-center'>
                         <Typography
@@ -32,7 +36,7 @@ const UserDetailModel = ({ open, setOpen, handleClose, status } :any) => {
                     </div>
                     <CardContent className='m-3'>
                         <Box className='flex flex-col items-center'>
-                            <Avatar src='' sx={{ width: 60, height: 60 }} />
+                            <Avatar src='' sx={{ width: 60, height: 60, mb: 2 }} />
                             <Typography variant="h6" gutterBottom color='rgba(108, 48, 156, 1)'>
                                 Username
                             </Typography>
@@ -55,9 +59,11 @@ const UserDetailModel = ({ open, setOpen, handleClose, status } :any) => {
                                     },
                                     borderColor: 'inherit',
                                     color: 'white',
-                                    mt: '10px',
+                                    mt: status === 'Unpaid' || status === 'Paid' ? 3 : 6,
+                                    cursor: status === 'Unpaid' || status === 'Paid' ? 'default' : 'pointer',
                                 }}
                                 fullWidth={status === 'Block' || status === 'Unblock'}
+                                onClick={handleStatusClick}
                             >
                                 {
                                     status === 'Block' ? 'Block User' :
@@ -73,16 +79,26 @@ const UserDetailModel = ({ open, setOpen, handleClose, status } :any) => {
     );
 
     return (
-        <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.16)' }}>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="user-detail-modal-title"
-                aria-describedby="user-detail-modal-description"
-            >
-                {body}
-            </Modal>
-        </div>
+        <>
+            <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.16)' }}>
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="user-detail-modal-title"
+                    aria-describedby="user-detail-modal-description"
+                >
+                    {body}
+                </Modal>
+            </div>
+            <DeleteModal
+                open={isDeleteModalOpen}
+                handleClose={handleDeleteCloseModal}
+                onDelete={onToggleStatus}
+                title="Block User"
+                paragraph="Do you really want to block this User?"
+                actionText="Block"
+            />
+        </>
     )
 }
 

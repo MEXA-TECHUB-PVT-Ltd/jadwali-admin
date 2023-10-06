@@ -47,12 +47,19 @@ const Features = () => {
         if (previousFeatures && previousFeatures.length > 0) {
             localStorage.setItem("shouldOpenSubEdit", "true");
             const mergedFeatures = [...new Set([...selectedFeatures, ...previousFeatures])];
+            localStorage.setItem("EditFeatures", JSON.stringify([...new Set([...selectedFeatures, ...previousFeatures])]));
             setSelectedFeatures(mergedFeatures);
         } else {
             localStorage.setItem("shouldOpenModal", "true");
             setSelectedFeatures([...selectedFeatures]);
         }
     }, [previousFeatures]);
+
+
+    React.useEffect(() => {
+        const featuresToStore = [...new Set([...selectedFeatures, ...previousFeatures])];
+        localStorage.setItem("EditFeatures", JSON.stringify(featuresToStore));
+    }, [selectedFeatures, previousFeatures]);
 
 
 
