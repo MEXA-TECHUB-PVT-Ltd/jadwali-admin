@@ -28,15 +28,17 @@ const SubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage }: 
     
     // let plan = state?.plan || "";
     // let previousPage = state?.previousPage || "";
+    let openAddModal = state?.openAddModal || "";
     // let selectedFeatures = state?.selectedFeatures || [];
 
     const [plan, setPlan] = React.useState(state?.plan || "");
     const [previousPage, setPreviousPage] = React.useState(state?.previousPage || "");
     const [selectedFeatures, setSelectedFeatures] = React.useState(state?.selectedFeatures || []);
+    console.log("Add modal: ", openAddModal);
 
 
     React.useEffect(() => {
-        if (previousPage === 'features') {
+        if (previousPage === 'features' && openAddModal === 'true') {
             if (localStorage.getItem("shouldOpenModal") === "true") {
                 setOpen(true);
             }
@@ -150,7 +152,7 @@ const SubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage }: 
                                                     </div>
                                                 </>
                                             ) : (
-                                                <Link to='/dashboard/features' state={{ plan: planName ? planName : undefined, previousPage: 'subscription' }} className='mb-4 bg-[#F5F5F5] p-2 px-4 rounded-[20px] flex justify-between items-center cursor-pointer'>
+                                                <Link to='/dashboard/features' state={{ plan: planName ? planName : undefined, previousPage: 'subscription', openAddModal: 'true' }} className='mb-4 bg-[#F5F5F5] p-2 px-4 rounded-[20px] flex justify-between items-center cursor-pointer'>
                                                     <Typography sx={{ color: '#787878' }}>Select Features</Typography>
                                                     <KeyboardArrowDownIcon />
                                                 </Link>

@@ -37,8 +37,11 @@ const Features = () => {
         plan = "",
         previousPage = "",
         previousFeatures = [],
-        modal = ''
+        openAddModal = ''
     } = state ?? {};
+
+
+    console.log("Features: ", openAddModal)
 
     React.useEffect(() => {
         if (previousFeatures && previousFeatures.length > 0) {
@@ -95,8 +98,10 @@ const Features = () => {
                     {
                         previousPage === 'subscription' ?
                             (
-                                <div className="flex">
-                                    <ArrowBackIosNewIcon />
+                                <div className="flex items-center gap-x-2">
+                                    <Link to='/dashboard/subscription-plan' className='cursor-pointer'>
+                                        <ArrowBackIosNewIcon />
+                                    </Link>    
                                     <Typography>Select Features</Typography>
                                 </div>
                             )

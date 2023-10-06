@@ -77,7 +77,7 @@ const SubscriptionPlan = () => {
             setPlanName(planName);
             setIsEditModalOpen(true);
         },
-        [] // Dependency array
+        [] 
     );
 
 

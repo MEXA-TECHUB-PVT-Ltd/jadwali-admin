@@ -27,12 +27,14 @@ const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, se
     let plan = state?.plan || "";
     let previousPage = state?.previousPage || "";
     let selectedFeatures = state?.selectedFeatures || [];
+    let openAddModal = state?.openAddModal || '';
+
+    console.log("Edit modal: ", openAddModal);
 
 
 
     React.useEffect(() => {
-        if (previousPage === 'features' && selectedFeatures && modalData) {
-            // Merge modalData and selectedFeatures
+        if (previousPage === 'features' && selectedFeatures && modalData && openAddModal === 'false') {
             const updatedFeatures = [...modalData, ...selectedFeatures];
             setModalData(updatedFeatures);
             setOpen(true);
@@ -40,7 +42,7 @@ const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, se
     }, [])
 
     React.useEffect(() => {
-        if (previousPage === 'features') {
+        if (previousPage === 'features' && openAddModal === 'false') {
             if (localStorage.getItem("shouldOpenSubEdit") === "true") {
                 setOpen(true);
             }
@@ -141,7 +143,7 @@ const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, se
 
                                                         <Link
                                                             to='/dashboard/features'
-                                                            state={{ plan: planName ? planName : undefined, previousPage: 'subscription', previousFeatures: modalData, modal: 'Edit' }}
+                                                            state={{ plan: planName ? planName : undefined, previousPage: 'subscription', previousFeatures: modalData, openAddModal: 'false' }}
                                                             className='mb-4 bg-[#6C309C] text-white p-2 px-4 rounded-[20px] flex justify-between items-center cursor-pointer'
                                                         >
                                                             <Typography sx={{ color: '#fff' }}>Add more features</Typography>
