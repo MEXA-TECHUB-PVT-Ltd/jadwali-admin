@@ -6,7 +6,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Avatar from '@mui/material/Avatar';
 import InputBase from '@mui/material/InputBase';
 import { Box, Button, Typography, Paper } from '@mui/material';
-import { NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
@@ -28,8 +28,7 @@ import UserDetailModel from '../Models/UserDetailModel';
 import MenuIcon from '@mui/icons-material/Menu';
 import ToastModal from '../Models/TostModal';
 import CssBaseline from '@mui/material/CssBaseline';
-
-
+import logo from '../../../public/images/logo.png'
 
 const Layout = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
@@ -106,7 +105,7 @@ const Layout = () => {
                         innerWidth={innerWidth}
                     />
                     <div style={{ padding: '20px', marginLeft: innerWidth ? '250px' : '0' }}>
-                <CssBaseline />
+                        <CssBaseline />
                         <Outlet />
                     </div>
                 </div>
@@ -133,28 +132,18 @@ const SideNav = ({ handleDeleteModal, handleDeleteCloseModal, isDeleteModalOpen,
 
         <div
             style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            // width: '250px',
-            backgroundColor: 'rgba(108, 48, 156, 1)',
-            height: '100%',
-            position: 'fixed',
-        }}>
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                backgroundColor: 'rgba(108, 48, 156, 1)',
+                height: '100%',
+                position: 'fixed',
+            }}>
             <div>
                 <List>
-                    <Typography
-                        className='text-center'
-                        sx={{
-                            fontSize: '30px',
-                            color: '#fff',
-                            fontWeight: 'medium',
-                            mt: 3,
-                            mb: 6
-                        }}
-                    >
-                        JADWALI
-                    </Typography>
+                    <Link to='/' className='flex justify-center items-center mt-3 mb-5'>
+                        <img src={logo} alt="Logo" width={120} height={150} />
+                    </Link>
                     {navItems.map(({ text, icon, path }, index) => {
                         const location = useLocation();
 
@@ -265,8 +254,8 @@ const TopHeader = ({ handleDeleteModal, handleDeleteCloseModal, isDeleteModalOpe
                         edge="start"
                         color="inherit"
                         aria-label="menu"
-                            onClick={handleDrawerOpen}
-                        sx={{marginRight: '50px'}}
+                        onClick={handleDrawerOpen}
+                        sx={{ marginRight: '50px' }}
                     >
                         <MenuIcon />
                     </IconButton>

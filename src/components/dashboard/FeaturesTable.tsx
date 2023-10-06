@@ -27,6 +27,7 @@ const FeaturesTable = ({ features, updateSelectedFeatures }: any) => {
 
 
 
+
     const theme = useTheme();
 
     const rowsPerPage = 10;
@@ -68,7 +69,10 @@ const FeaturesTable = ({ features, updateSelectedFeatures }: any) => {
     const handleIsEditModalClose = () => {
         setIsEditModalOpen(false);
     }
-
+    
+    const handleOpenDeleteModal = () => {
+        setIsDeleteModalOpen(true);
+    }
     const handleDeleteCloseModal = () => {
         setIsDeleteModalOpen(false);
     }
@@ -81,9 +85,6 @@ const FeaturesTable = ({ features, updateSelectedFeatures }: any) => {
         setIsModalOpen(true);
     };
 
-    const handleOpenDeleteModal = () => {
-        setIsDeleteModalOpen(true);
-    }
 
     const handleCloseModal = () => {
         setIsModalOpen(false);

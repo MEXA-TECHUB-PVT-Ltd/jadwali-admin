@@ -15,8 +15,8 @@ const DeleteModal = ({ open, setOpen, handleClose, onDelete, title, paragraph, a
                     <CardContent className='p-0' sx={{ m: 2 }}>
                         <Typography
                             sx={{
-                                m: 0,
-                                fontSize: '20px', color: '#6C309C', margin: '0', fontWeight: 'medium'
+                                mb: 1,
+                                fontSize: '20px', color: '#6C309C', margin: '0', fontWeight: 'bold'
                             }}
                         >
                             {title}
@@ -30,6 +30,9 @@ const DeleteModal = ({ open, setOpen, handleClose, onDelete, title, paragraph, a
                         <div className='flex mt-7 justify-end'>
                             <Button
                                 onClick={handleClose}
+                                sx={{
+                                    color: '#6C309C'
+                                }}
                             >
                                 Cancel
                             </Button>
