@@ -37,14 +37,15 @@ const Features = () => {
         plan = "",
         previousPage = "",
         previousFeatures = [],
-        openAddModal = ''
+        openAddModal = '',
+        modalName = ''
     } = state ?? {};
 
 
     console.log("Features: ", openAddModal)
 
     React.useEffect(() => {
-        if (previousFeatures && previousFeatures.length > 0) {
+        if (previousFeatures && previousFeatures.length > 0 && modalName === 'Edit') {
             localStorage.setItem("shouldOpenSubEdit", "true");
             const mergedFeatures = [...new Set([...selectedFeatures, ...previousFeatures])];
             localStorage.setItem("EditFeatures", JSON.stringify([...new Set([...selectedFeatures, ...previousFeatures])]));
@@ -52,14 +53,17 @@ const Features = () => {
         } else {
             localStorage.setItem("shouldOpenModal", "true");
             setSelectedFeatures([...selectedFeatures]);
+            localStorage.setItem("AddFeatures", JSON.stringify([...selectedFeatures]));
         }
-    }, [previousFeatures]);
+    }, [previousFeatures, selectedFeatures]);
 
 
-    React.useEffect(() => {
-        const featuresToStore = [...new Set([...selectedFeatures, ...previousFeatures])];
-        localStorage.setItem("EditFeatures", JSON.stringify(featuresToStore));
-    }, [selectedFeatures, previousFeatures]);
+    // React.useEffect(() => {
+    //     if (previousFeatures && previousFeatures.length > 0) {
+    //         const featuresToStore = [...new Set([...selectedFeatures, ...previousFeatures])];
+    //         localStorage.setItem("EditFeatures", JSON.stringify(featuresToStore));
+    //     }
+    // }, [selectedFeatures, previousFeatures]);
 
 
 
@@ -137,8 +141,9 @@ const Features = () => {
                                 state={{
                                     selectedFeatures: [...new Set([...selectedFeatures, ...previousFeatures])],
                                     plan: plan,
-                                    previousPage: 'features'
-                                }}
+                                    previousPage: 'features',
+                                    openAddModal: openAddModal
+                            }}
                             >
                                 Select
                             </Button>

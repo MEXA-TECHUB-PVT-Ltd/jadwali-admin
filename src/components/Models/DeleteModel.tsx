@@ -5,12 +5,20 @@ import { CardContent, Typography, IconButton, Avatar, Button, Modal } from '@mui
 import CancelIcon from '@mui/icons-material/Cancel';
 import ToastModal from './TostModal';
 
+
+const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+};
+
 const DeleteModal = ({ open, setOpen, handleClose, onDelete, title, paragraph, actionText, eventMessage, handleCloseToast, toastOpen }: any) => {
 
     const body = (
         <>
             <ToastModal open={toastOpen} onClose={handleCloseToast} eventMessage={eventMessage} />
-            <Box className='flex justify-center items-center h-screen'>
+            <Box style={style}>
                 <Card className='sm:w-[450px] w-[80%]' sx={{ borderRadius: '30px' }}>
                     <CardContent className='p-0' sx={{ m: 2 }}>
                         <Typography
@@ -59,17 +67,29 @@ const DeleteModal = ({ open, setOpen, handleClose, onDelete, title, paragraph, a
     );
 
     return (
-        <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.16)' }}>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="user-detail-modal-title"
-                aria-describedby="user-detail-modal-description"
-            >
-                {body}
-            </Modal>
-        </div>
-    )
+        <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="user-detail-modal-title"
+            aria-describedby="user-detail-modal-description"
+            slotProps={{
+                backdrop: { style: { opacity: 0.1, backgroundColor: 'rgba(0, 0, 0, 0.5)' } }
+            }}
+        >
+            {body}
+        </Modal>
+        )
 }
 
 export default DeleteModal;
+
+
+const CustomBackdrop: React.FC<any> = (props) => (
+    <div
+        {...props}
+        onClick={props.closeModal}  
+        style={{ ...props.style, opacity: 1, backgroundColor: '#000' }}
+    />
+);
+;
+

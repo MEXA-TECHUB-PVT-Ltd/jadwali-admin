@@ -16,6 +16,13 @@ const SubscriptionSchema = Yup.object().shape({
         .required('Required')
 });
 
+const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+};
+
 
 const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, setModalData }: any) => {
     const [toastOpen, setToastOpen] = React.useState<boolean>(false);
@@ -30,20 +37,18 @@ const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, se
     let openAddModal = state?.openAddModal || '';
 
     console.log("Edit modal: ", openAddModal);
+    const addFeatures: any = localStorage.getItem('EditFeatures');
+    const feature = JSON.parse(addFeatures) || null
 
+    console.log(feature)
 
 
     React.useEffect(() => {
-        if (previousPage === 'features' && selectedFeatures && modalData && openAddModal === 'false') {
-            const updatedFeatures = [...modalData, ...selectedFeatures];
-            setModalData(updatedFeatures);
-            setOpen(true);
-        }
-    }, [])
-
-    React.useEffect(() => {
-        if (previousPage === 'features' && openAddModal === 'false') {
+        if (previousPage === 'features' && localStorage.getItem("shouldOpenSubEdit") === "true") {
             if (localStorage.getItem("shouldOpenSubEdit") === "true") {
+                setOpen(true);
+                // const updatedFeatures = [...feature];
+                // setModalData(updatedFeatures);
                 setOpen(true);
             }
             else {
@@ -51,7 +56,12 @@ const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, se
                 localStorage.setItem("shouldOpenSubEdit", "false");
             }
         }
-    }, []);
+    }, [])
+
+    // React.useEffect(() => {
+    //     if (previousPage === 'features' && openAddModal === 'false') {
+    //     }
+    // }, []);
 
 
 
@@ -62,7 +72,7 @@ const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, se
     const body = (
         <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.16)' }}>
             <ToastModal open={toastOpen} onClose={handleCloseToast} eventMessage="Edit Plan Successfully!" />
-            <Box className='flex justify-center items-center h-screen'>
+            <Box style={style}>
                 <Card className='sm:w-[500px] w-[80%]' sx={{ borderRadius: '30px' }}>
                     <CardContent className='p-0' sx={{ padding: 0 }}>
                         <div className='mb-12 bg-[#C7AEDB] px-5 py-3 flex justify-between items-center'>
@@ -87,11 +97,13 @@ const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, se
                                 validationSchema={SubscriptionSchema}
                                 onSubmit={(values) => {
                                     console.log(values);
+                                    // setToastOpen(true);
                                     navigate('/dashboard/subscription-plan')
-                                    setToastOpen(true);
-                                    setTimeout(() => {
+                                    localStorage.setItem('shouldOpenSubEdit', JSON.stringify(false));
+                                    localStorage.setItem('EditFeatures', JSON.stringify([]));
+                                    // setTimeout(() => {
                                         setOpen(false)
-                                    }, 1000)
+                                    // }, 1000)
                                 }}
                             >
                                 {({ errors, touched, isValid, setFieldValue }) => (
@@ -131,19 +143,19 @@ const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, se
                                         </div>
 
                                         {
-                                            modalData && modalData?.length > 0 && (
+                                            feature?.length > 0 && (
                                                 <>
                                                     <Typography mb={2}>Features</Typography>
                                                     <div className="flex flex-wrap gap-2 mb-2 max-h-40 overflow-auto">
-                                                        {modalData.map((feature: any, index) => (
+                                                        {feature.map((feature: any, index) => (
                                                             <span key={index} className="bg-[#F5F5F5] px-3 py-1 rounded-full">
-                                                                {feature.featuresDescription} 
+                                                                {feature.featuresDescription}
                                                             </span>
                                                         ))}
 
                                                         <Link
                                                             to='/dashboard/features'
-                                                            state={{ plan: planName ? planName : undefined, previousPage: 'subscription', previousFeatures: modalData, openAddModal: 'false' }}
+                                                            state={{ plan: planName ? planName : undefined, previousPage: 'subscription', previousFeatures: modalData, openAddModal: 'false', modalName: 'Edit' }}
                                                             className='mb-4 bg-[#6C309C] text-white p-2 px-4 rounded-[20px] flex justify-between items-center cursor-pointer'
                                                         >
                                                             <Typography sx={{ color: '#fff' }}>Add more features</Typography>

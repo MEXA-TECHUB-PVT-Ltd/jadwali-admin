@@ -68,12 +68,14 @@ const SubscriptionPlan = () => {
 
     const handleCloseModal = () => {
         localStorage.setItem("shouldOpenModal", "false")
+        localStorage.setItem('AddFeatures', JSON.stringify([]));
         setIsModalOpen(false);
     };
 
     const handleEditOpenModal = React.useCallback(
         (data: any, planName: any) => {
             setModalData(data);
+            localStorage.setItem("EditFeatures", JSON.stringify(data));
             setPlanName(planName);
             setIsEditModalOpen(true);
         },
@@ -83,6 +85,7 @@ const SubscriptionPlan = () => {
 
     const handleEditCloseModal = () => {
         localStorage.setItem("shouldOpenSubEdit", "false");
+        localStorage.setItem('EditFeatures', JSON.stringify([]));
         setIsEditModalOpen(false);
     };
 

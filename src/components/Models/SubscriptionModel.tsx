@@ -16,16 +16,23 @@ const SubscriptionSchema = Yup.object().shape({
         .required('Required')
 });
 
+const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+};
+
 
 const SubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage }: any) => {
     const [toastOpen, setToastOpen] = React.useState<boolean>(false);
     const [planName, setPlanName] = React.useState("");
-    
-    
+
+
     const { state } = useLocation();
     const navigate = useNavigate();
-    
-    
+
+
     // let plan = state?.plan || "";
     // let previousPage = state?.previousPage || "";
     let openAddModal = state?.openAddModal || "";
@@ -34,15 +41,34 @@ const SubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage }: 
     const [plan, setPlan] = React.useState(state?.plan || "");
     const [previousPage, setPreviousPage] = React.useState(state?.previousPage || "");
     const [selectedFeatures, setSelectedFeatures] = React.useState(state?.selectedFeatures || []);
-    console.log("Add modal: ", openAddModal);
 
+
+    // React.useEffect(() => {
+    //     const addfeatures = localStorage.getItem('AddFeatures') || null;
+    //     if (addfeatures) {
+    //         const features = JSON.parse(addfeatures);
+    //         setOpen(true)
+
+    //     }
+
+
+
+    // }, [])
+
+    console.log(openAddModal)
+
+    const addFeatures:any = localStorage.getItem('AddFeatures');
+    const feature  = JSON.parse(addFeatures) || null
 
     React.useEffect(() => {
-        if (previousPage === 'features' && openAddModal === 'true') {
+        if (previousPage === 'features' && localStorage.getItem("shouldOpenModal") === "true") {
+            console.log("opent the modal");
             if (localStorage.getItem("shouldOpenModal") === "true") {
                 setOpen(true);
+                console.log('open the modal')
             }
             else {
+                console.log('close the modal')
                 setOpen(false);
                 setPlan('');
                 setPreviousPage('');
@@ -61,7 +87,7 @@ const SubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage }: 
     const body = (
         <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.16)' }}>
             <ToastModal open={toastOpen} onClose={handleCloseToast} eventMessage="Add Plan Successfully" />
-            <Box className='flex justify-center items-center h-screen'>
+            <Box style={style}>
                 <Card className='sm:w-[500px] w-[80%]' sx={{ borderRadius: '30px' }}>
                     <CardContent className='p-0' sx={{ padding: 0 }}>
                         <div className='mb-12 bg-[#C7AEDB] px-5 py-3 flex justify-between items-center'>
@@ -88,9 +114,12 @@ const SubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage }: 
                                     console.log(values);
                                     navigate('/dashboard/subscription-plan')
                                     setToastOpen(true);
+                                    setOpen(false);
                                     setTimeout(() => {
                                         setOpen(false)
+                                        localStorage.setItem('shouldOpenModal', JSON.stringify(false));
                                     }, 1000)
+                                    localStorage.setItem('AddFeatures', JSON.stringify([]));
                                 }}
                             >
                                 {({ errors, touched, isValid, setFieldValue }) => (
@@ -130,7 +159,7 @@ const SubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage }: 
                                         </div>
 
                                         {
-                                            selectedFeatures && selectedFeatures?.length > 0 ? (
+                                            feature && feature?.length > 0 ? (
                                                 <>
                                                     <div className="">
                                                     </div>
@@ -143,7 +172,8 @@ const SubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage }: 
                                                         ))}
                                                         <Link
                                                             to='/dashboard/features'
-                                                            state={{ plan: planName ? planName : undefined, previousPage: 'subscription', previousFeatures: selectedFeatures }}
+                                                            state={{
+                                                                plan: planName ? planName : undefined, previousPage: 'subscription', previousFeatures: selectedFeatures, modalName: 'Add', openAddModal: 'true' }}
                                                             className='mb-4 bg-[#6C309C] text-white p-2 px-4 rounded-[20px] flex justify-between items-center cursor-pointer'
                                                         >
                                                             <Typography sx={{ color: '#fff' }}>Add more features</Typography>
@@ -192,6 +222,9 @@ const SubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage }: 
                 onClose={handleClose}
                 aria-labelledby="user-detail-modal-title"
                 aria-describedby="user-detail-modal-description"
+                slotProps={{
+                    backdrop: { style: { opacity: 0.1, backgroundColor: 'rgba(0, 0, 0, 0.5)' } }
+                }}
             >
                 {body}
             </Modal>
