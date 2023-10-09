@@ -53,14 +53,14 @@ const SubscriptionPlan = () => {
     const [isModalOpen, setIsModalOpen] = React.useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
-    const [modalTitle, setModalTitle] = React.useState<string>("");
-    const [eventMessage, setEventMessage] = React.useState<string>('');
+    const [modalTitle, setModalTitle] = React.useState("");
+    const [eventMessage, setEventMessage] = React.useState('');
     const [modalData, setModalData] = React.useState()
     const [planName, setPlanName] = React.useState('')
-    const [toastOpen, setToastOpen] = React.useState<boolean>(false);
+    const [toastOpen, setToastOpen] = React.useState(false);
 
 
-    const handleOpenModal = useCallback((title: string, message: string, data?: any) => {
+    const handleOpenModal = useCallback((title, message, data) => {
         setModalTitle(title)
         setEventMessage(message)
         setIsModalOpen(true);
@@ -72,7 +72,7 @@ const SubscriptionPlan = () => {
         setIsModalOpen(false);
     }, []);
 
-    const handleEditOpenModal = useCallback((data: any, planName: any) => {
+    const handleEditOpenModal = useCallback((data, planName) => {
         setToastOpen(false);
         setModalData(data);
         localStorage.setItem("EditFeatures", JSON.stringify(data));

@@ -7,13 +7,13 @@ import ToastModal from './TostModal';
 import { useLocation } from 'react-router-dom';
 
 const style = {
-    position: 'absolute' as 'absolute',
+    position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
 };
 
-const DeleteModal = ({ open, setOpen, handleClose, onDelete, title, paragraph, actionText, eventMessage, handleCloseToast, toastOpen, setToastOpen }: any) => {
+const DeleteModal = ({ open, setOpen, handleClose, onDelete, title, paragraph, actionText, eventMessage, handleCloseToast, toastOpen, setToastOpen }) => {
 
     const location = useLocation()
 
@@ -94,13 +94,4 @@ return (
 
 export default DeleteModal;
 
-
-const CustomBackdrop: React.FC<any> = (props) => (
-    <div
-        {...props}
-        onClick={props.closeModal}
-        style={{ ...props.style, opacity: 1, backgroundColor: '#000' }}
-    />
-);
-;
 

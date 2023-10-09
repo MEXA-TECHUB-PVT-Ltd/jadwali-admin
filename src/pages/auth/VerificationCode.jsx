@@ -12,7 +12,7 @@ const VerificationCode = () => {
 
     const navigate = useNavigate()
 
-    const handleChange = (e: any, index: any) => {
+    const handleChange = (e, index) => {
         e.preventDefault();
         const val = e.target.value;
         if (/^[0-9]$/.test(val) || val === '') {
@@ -25,9 +25,9 @@ const VerificationCode = () => {
         }
     };
 
-    const focusNextInput = (index: any) => {
+    const focusNextInput = (index) => {
         if (index < inputRefs.length - 1) {
-            const nextInput: any = inputRefs[index + 1].current;
+            const nextInput = inputRefs[index + 1].current;
             nextInput && nextInput.focus();
         }
     };

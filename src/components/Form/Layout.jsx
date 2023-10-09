@@ -1,9 +1,8 @@
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { TChildren } from '../../types/types';
 import { Link } from 'react-router-dom';
 
-const FormLayout = ({ children, link }: TChildren) => {
+const FormLayout = ({ children, link }) => {
     return (
         <div className='bg-[#C7AEDB] overflow-hidden h-screen'>
             <Link to={link ? link : '#'}>

@@ -10,19 +10,19 @@ import DeleteModal from '../Models/DeleteModel';
 
 
 
-const UserTable = ({ users, status }: any) => {
-    const [selectedUsers, setSelectedUsers] = useState<any[]>([]);
+const UserTable = ({ users, status }) => {
+    const [selectedUsers, setSelectedUsers] = useState([]);
     const [page, setPage] = useState(1);
-    const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
+    const [selectedStatus, setSelectedStatus] = useState(null);
     const [currentUsers, setCurrentUsers] = useState(users);
-    const [toastOpen, setToastOpen] = useState<boolean>(false);
+    const [toastOpen, setToastOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [toastMessage, setToastMessage] = useState("");
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [currentUserId, setCurrentUserId] = useState<number | null>(null);
+    const [currentUserId, setCurrentUserId] = useState(null);
 
 
-    const handleOpenDeleteModal = (userId: number) => {
+    const handleOpenDeleteModal = (userId) => {
         setCurrentUserId(userId);
         setIsDeleteModalOpen(true);
     }
@@ -41,8 +41,8 @@ const UserTable = ({ users, status }: any) => {
 
     const location = useLocation();
 
-    const toggleUserStatus = (userId: number) => {
-        const updatedUsers = currentUsers.map((user: any) => {
+    const toggleUserStatus = (userId) => {
+        const updatedUsers = currentUsers.map((user) => {
             if (user.id === userId) {
                 const newStatus = user.status === "Block" ? "Unblock" : "Block";
                 setToastMessage(`User ${newStatus === "Block" ? "blocked" : "unblocked"} successfully!`);
@@ -68,7 +68,7 @@ const UserTable = ({ users, status }: any) => {
 
 
 
-    const handleOpenModal = (status: string, userId: number) => {
+    const handleOpenModal = (status, userId) => {
         setSelectedStatus(status);
         setCurrentUserId(userId);
         setIsModalOpen(true);
@@ -88,18 +88,18 @@ const UserTable = ({ users, status }: any) => {
 
 
 
-    const handleSelectAllClick = (event: any) => {
+    const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = users.map((n: any) => n.id);
+            const newSelecteds = users.map((n) => n.id);
             setSelectedUsers(newSelecteds);
             return;
         }
         setSelectedUsers([]);
     };
 
-    const handleClick = (event: any, id: any) => {
+    const handleClick = (event, id) => {
         const selectedIndex = selectedUsers.indexOf(id);
-        let newSelected: any[] = [];
+        let newSelected = [];
 
         if (selectedIndex === -1) {
             newSelected = newSelected.concat(selectedUsers, id);
@@ -114,7 +114,7 @@ const UserTable = ({ users, status }: any) => {
             );
         }
 
-        const clickedUser = paginatedUsers.find((user: any) => user.id === id);
+        const clickedUser = paginatedUsers.find((user) => user.id === id);
         if (clickedUser) {
             setSelectedStatus(clickedUser.status);
         }
@@ -122,7 +122,7 @@ const UserTable = ({ users, status }: any) => {
         setSelectedUsers(newSelected);
     };
 
-    const isSelected = (id: any) => selectedUsers.indexOf(id) !== -1;
+    const isSelected = (id) => selectedUsers.indexOf(id) !== -1;
 
     const maxPages = Math.ceil(users.length / rowsPerPage);
 
@@ -134,7 +134,7 @@ const UserTable = ({ users, status }: any) => {
         if (page > 1) setPage(page - 1);
     }
 
-    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    const handlePageChange = (event, value) => {
         setPage(value);
     };
     // const paginatedUsers = users.slice((page - 1) * rowsPerPage, page * rowsPerPage);
@@ -174,7 +174,7 @@ const UserTable = ({ users, status }: any) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {paginatedUsers.map((user: any, index:any) => (
+                        {paginatedUsers.map((user, index) => (
                             <TableRow hover key={user.id} role="checkbox" tabIndex={-1} selected={isSelected(user.id)}>
                                 <TableCell align='left' sx={{}}>
                                     {index+1}

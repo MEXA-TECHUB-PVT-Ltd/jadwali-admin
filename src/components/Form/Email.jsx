@@ -2,7 +2,7 @@ import { TextField } from '@mui/material'
 import InputAdornment from '@mui/material/InputAdornment';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 
-const Email = ({field}:any) => {
+const Email = ({field}) => {
     return (
         <TextField
             id="outlined-basic"

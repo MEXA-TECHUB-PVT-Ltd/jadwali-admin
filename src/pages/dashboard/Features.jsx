@@ -2,21 +2,19 @@ import React from 'react'
 import { users } from '../../utils/dashboard'
 import { Box, Button, Typography, InputBase } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import FeaturesTable from '../../components/dashboard/FeaturesTable';
 import { features } from '../../utils/featuresData';
 
 import AddIcon from '@mui/icons-material/Add';
 import AddFeaturesModal from '../../components/Models/AddFeaturesModal';
-import EditFeaturesModal from '../../components/Models/EditFeaturesModal';
 import { Link, useLocation } from 'react-router-dom';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 const Features = () => {
     const [page, setPage] = React.useState(1);
-    const [searchTerm, setSearchTerm] = React.useState<string>("");
+    const [searchTerm, setSearchTerm] = React.useState("");
     const [isAddModalOpen, setIsAddModalOpen] = React.useState(false);
-    const [selectedFeatures, setSelectedFeatures] = React.useState<any[]>([]);
+    const [selectedFeatures, setSelectedFeatures] = React.useState([]);
 
 
 
@@ -86,7 +84,7 @@ const Features = () => {
         if (page > 1) setPage(page - 1);
     }
 
-    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    const handlePageChange = (event, value) => {
         setPage(value);
     };
     const numAdjacentButtons = 1;

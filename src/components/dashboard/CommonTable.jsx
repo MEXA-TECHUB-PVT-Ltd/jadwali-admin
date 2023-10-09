@@ -1,15 +1,14 @@
 import React from 'react'
-import UserTable from '../../components/dashboard/UserTable'
+import UserTable from './UserTable'
 import { users } from '../../utils/dashboard'
 import { Box, Button, Typography, InputBase } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { TCommonTable } from '../../types/types';
 
 
 
-const CommonTable = ({ title, status }: TCommonTable) => {
+const CommonTable = ({ title, status }) => {
     const [page, setPage] = React.useState(1);
-    const [searchTerm, setSearchTerm] = React.useState<string>("");
+    const [searchTerm, setSearchTerm] = React.useState("");
     React.useEffect(() => {
         setPage(1);
     }, [searchTerm]);
@@ -27,7 +26,7 @@ const CommonTable = ({ title, status }: TCommonTable) => {
         if (page > 1) setPage(page - 1);
     }
 
-    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    const handlePageChange = (event, value) => {
         setPage(value);
     };
     const numAdjacentButtons = 1;

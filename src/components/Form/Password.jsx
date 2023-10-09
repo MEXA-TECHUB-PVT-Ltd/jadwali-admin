@@ -5,10 +5,9 @@ import IconButton from '@mui/material/IconButton';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { TPassword } from '../../types/types';
 
-const Password = ({placeholder, field}: any) => {
-    const [showPassword, setShowPassword] = React.useState<boolean>(false);
+const Password = ({ placeholder, field }) => {
+    const [showPassword, setShowPassword] = React.useState(false);
 
     const handleTogglePassword = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);

@@ -9,7 +9,7 @@ const AreaChart = () => {
         data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
     }]);
 
-    const [options, setOptions] = React.useState<ApexOptions>({
+    const [options, setOptions] = React.useState({
         chart: {
             height: 350,
             type: 'area', 

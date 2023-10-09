@@ -16,7 +16,7 @@ const validationSchema = Yup.object().shape({
 
 const Forgot = () => {
     const navigate = useNavigate();
-    const handleSubmit = (values: any, { setSubmitting }: any) => {
+    const handleSubmit = (values, { setSubmitting }) => {
         console.log("user is authenticated:", values.email);
         navigate('/auth/verification-code')
         setSubmitting(false);
@@ -34,7 +34,7 @@ const Forgot = () => {
                         <Form>
                             <div className='mb-12'>
                                 <Field name="email">
-                                    {({ field }:any) => (
+                                    {({ field }) => (
                                         <TextField
                                             id="outlined-basic"
                                             variant="outlined"
