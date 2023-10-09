@@ -273,6 +273,7 @@ const UserTable = ({ users, status }: any) => {
                 title="Block User"
                 paragraph="Do you really want to block this User?"
                 actionText="Block"
+                eventMessage="User Block Successfully!"
             />
 
         </div>

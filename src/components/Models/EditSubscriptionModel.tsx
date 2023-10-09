@@ -24,8 +24,7 @@ const style = {
 };
 
 
-const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, setModalData }: any) => {
-    const [toastOpen, setToastOpen] = React.useState<boolean>(false);
+const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, setModalData, setToastOpen, toastOpen }: any) => {
     const [planName, setPlanName] = React.useState("");
 
     const { state } = useLocation();
@@ -36,11 +35,9 @@ const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, se
     let selectedFeatures = state?.selectedFeatures || [];
     let openAddModal = state?.openAddModal || '';
 
-    console.log("Edit modal: ", openAddModal);
     const addFeatures: any = localStorage.getItem('EditFeatures');
     const feature = JSON.parse(addFeatures) || null
 
-    console.log(feature)
 
 
     React.useEffect(() => {
@@ -58,10 +55,11 @@ const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, se
         }
     }, [])
 
-    // React.useEffect(() => {
-    //     if (previousPage === 'features' && openAddModal === 'false') {
-    //     }
-    // }, []);
+    React.useEffect(() => {
+        if (localStorage.getItem("shouldOpenSubEdit") === 'false') {
+            setToastOpen(false);
+        }
+    }, []);
 
 
 
@@ -97,13 +95,12 @@ const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, se
                                 validationSchema={SubscriptionSchema}
                                 onSubmit={(values) => {
                                     console.log(values);
-                                    // setToastOpen(true);
-                                    navigate('/dashboard/subscription-plan')
-                                    localStorage.setItem('shouldOpenSubEdit', JSON.stringify(false));
-                                    localStorage.setItem('EditFeatures', JSON.stringify([]));
-                                    // setTimeout(() => {
+                                    setToastOpen(true);
+                                    setTimeout(() => {
                                         setOpen(false)
-                                    // }, 1000)
+                                        localStorage.setItem('shouldOpenSubEdit', JSON.stringify(false));
+                                        localStorage.setItem('EditFeatures', JSON.stringify([]));
+                                    }, 1000)
                                 }}
                             >
                                 {({ errors, touched, isValid, setFieldValue }) => (

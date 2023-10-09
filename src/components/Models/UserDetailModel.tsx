@@ -93,7 +93,7 @@ const UserDetailModel = ({ open, setOpen, handleClose, status, onToggleStatus, i
                     aria-labelledby="user-detail-modal-title"
                     aria-describedby="user-detail-modal-description"
                     slotProps={{
-                        backdrop: { style: { opacity: 0.1, backgroundColor: 'rgba(0, 0, 0, 0.5)' } }
+                        backdrop: { style: { opacity: 0.5, backgroundColor: 'rgba(0, 0, 0, 1)' } }
                     }}
                 >
                     {body}

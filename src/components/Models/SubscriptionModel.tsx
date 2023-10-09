@@ -24,8 +24,7 @@ const style = {
 };
 
 
-const SubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage }: any) => {
-    const [toastOpen, setToastOpen] = React.useState<boolean>(false);
+const SubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage, setToastOpen, toastOpen }: any) => {
     const [planName, setPlanName] = React.useState("");
 
 
@@ -33,32 +32,13 @@ const SubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage }: 
     const navigate = useNavigate();
 
 
-    // let plan = state?.plan || "";
-    // let previousPage = state?.previousPage || "";
-    let openAddModal = state?.openAddModal || "";
-    // let selectedFeatures = state?.selectedFeatures || [];
-
     const [plan, setPlan] = React.useState(state?.plan || "");
     const [previousPage, setPreviousPage] = React.useState(state?.previousPage || "");
     const [selectedFeatures, setSelectedFeatures] = React.useState(state?.selectedFeatures || []);
 
 
-    // React.useEffect(() => {
-    //     const addfeatures = localStorage.getItem('AddFeatures') || null;
-    //     if (addfeatures) {
-    //         const features = JSON.parse(addfeatures);
-    //         setOpen(true)
-
-    //     }
-
-
-
-    // }, [])
-
-    console.log(openAddModal)
-
-    const addFeatures:any = localStorage.getItem('AddFeatures');
-    const feature  = JSON.parse(addFeatures) || null
+    const addFeatures: any = localStorage.getItem('AddFeatures');
+    const feature = JSON.parse(addFeatures) || null
 
     React.useEffect(() => {
         if (previousPage === 'features' && localStorage.getItem("shouldOpenModal") === "true") {
@@ -76,13 +56,27 @@ const SubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage }: 
                 localStorage.setItem("shouldOpenModal", "false");
             }
         }
+        else {
+            localStorage.setItem("shouldOpenModal", "false");
+            setPlan('');
+            setPreviousPage('');
+            setSelectedFeatures([]);
+
+        }
     }, []);
 
 
 
+    React.useEffect(() => {
+        if (localStorage.getItem("shouldOpenModal") === 'false') {
+            setToastOpen(false);
+        }
+    }, []);
+
     const handleCloseToast = () => {
         setToastOpen(false);
     };
+
 
     const body = (
         <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.16)' }}>
@@ -112,14 +106,16 @@ const SubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage }: 
                                 validationSchema={SubscriptionSchema}
                                 onSubmit={(values) => {
                                     console.log(values);
-                                    navigate('/dashboard/subscription-plan')
                                     setToastOpen(true);
-                                    setOpen(false);
+                                    // navigate('/dashboard/subscription-plan')
                                     setTimeout(() => {
                                         setOpen(false)
+                                        setPlan('');
+                                        setPreviousPage('');
+                                        setToastOpen(false);
                                         localStorage.setItem('shouldOpenModal', JSON.stringify(false));
+                                        localStorage.setItem('AddFeatures', JSON.stringify([]));
                                     }, 1000)
-                                    localStorage.setItem('AddFeatures', JSON.stringify([]));
                                 }}
                             >
                                 {({ errors, touched, isValid, setFieldValue }) => (
@@ -173,7 +169,8 @@ const SubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage }: 
                                                         <Link
                                                             to='/dashboard/features'
                                                             state={{
-                                                                plan: planName ? planName : undefined, previousPage: 'subscription', previousFeatures: selectedFeatures, modalName: 'Add', openAddModal: 'true' }}
+                                                                plan: planName ? planName : undefined, previousPage: 'subscription', previousFeatures: selectedFeatures, modalName: 'Add', openAddModal: 'true'
+                                                            }}
                                                             className='mb-4 bg-[#6C309C] text-white p-2 px-4 rounded-[20px] flex justify-between items-center cursor-pointer'
                                                         >
                                                             <Typography sx={{ color: '#fff' }}>Add more features</Typography>
@@ -216,19 +213,17 @@ const SubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage }: 
     );
 
     return (
-        <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.16)' }}>
             <Modal
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="user-detail-modal-title"
                 aria-describedby="user-detail-modal-description"
-                slotProps={{
-                    backdrop: { style: { opacity: 0.1, backgroundColor: 'rgba(0, 0, 0, 0.5)' } }
-                }}
+                // slotProps={{
+                //     backdrop: { style: { opacity: 0.1, backgroundColor: 'rgba(0, 0, 0, 3)' } }
+                // }}
             >
                 {body}
             </Modal>
-        </div>
     )
 }
 

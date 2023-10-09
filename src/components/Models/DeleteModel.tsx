@@ -4,7 +4,7 @@ import Card from '@mui/material/Card';
 import { CardContent, Typography, IconButton, Avatar, Button, Modal } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ToastModal from './TostModal';
-
+import { useLocation } from 'react-router-dom';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -13,11 +13,14 @@ const style = {
     transform: 'translate(-50%, -50%)',
 };
 
-const DeleteModal = ({ open, setOpen, handleClose, onDelete, title, paragraph, actionText, eventMessage, handleCloseToast, toastOpen }: any) => {
+const DeleteModal = ({ open, setOpen, handleClose, onDelete, title, paragraph, actionText, eventMessage, handleCloseToast, toastOpen, setToastOpen }: any) => {
+
+    const location = useLocation()
+
 
     const body = (
         <>
-            <ToastModal open={toastOpen} onClose={handleCloseToast} eventMessage={eventMessage} />
+            <ToastModal open={toastOpen} onClose={handleCloseToast} eventMessage={(location.pathname === '/dashboard/features') ? "Feature Deleted Successfully" : eventMessage} />
             <Box style={style}>
                 <Card className='sm:w-[450px] w-[80%]' sx={{ borderRadius: '30px' }}>
                     <CardContent className='p-0' sx={{ m: 2 }}>
@@ -57,28 +60,36 @@ const DeleteModal = ({ open, setOpen, handleClose, onDelete, title, paragraph, a
                                 }}
                                 onClick={onDelete}
                             >
-                                {actionText}
-                            </Button>
-                        </div>
-                    </CardContent>
-                </Card>
-            </Box>
+                            {actionText}
+                        </Button>
+                    </div>
+                </CardContent>
+            </Card>
+        </Box>
         </>
     );
 
-    return (
-        <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="user-detail-modal-title"
-            aria-describedby="user-detail-modal-description"
-            slotProps={{
-                backdrop: { style: { opacity: 0.1, backgroundColor: 'rgba(0, 0, 0, 0.5)' } }
-            }}
-        >
-            {body}
-        </Modal>
-        )
+const opLow = { opacity: .2 }
+const opHigh = { opacity: .5 }
+
+const backdropStyle = title === "Block User" ? opLow : opHigh;
+
+return (
+    <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="user-detail-modal-title"
+        aria-describedby="user-detail-modal-description"
+        slotProps={{
+            backdrop: {
+                style: { ...backdropStyle, backgroundColor: 'rgba(0, 0, 0, 1)' }
+            }
+        }}
+    >
+        {body}
+    </Modal>
+)
+
 }
 
 export default DeleteModal;
@@ -87,7 +98,7 @@ export default DeleteModal;
 const CustomBackdrop: React.FC<any> = (props) => (
     <div
         {...props}
-        onClick={props.closeModal}  
+        onClick={props.closeModal}
         style={{ ...props.style, opacity: 1, backgroundColor: '#000' }}
     />
 );

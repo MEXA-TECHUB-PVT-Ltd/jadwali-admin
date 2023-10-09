@@ -50,7 +50,7 @@ const Forgot = () => {
 
     return (
         <FormLayout link='/auth/sign-in'>
-            <ToastModal open={toastOpen} onClose={handleCloseToast} eventMessage="Password reset code sent!" />  
+            <ToastModal open={toastOpen} onClose={handleCloseToast} eventMessage="Password Reset Successfully!" />  
             <CardLayout title='JADWALI' subTitle='Reset Password' description='Create a strong password'>
                 <Formik
                     initialValues={{ password: '', confirmPassword: '' }}

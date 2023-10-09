@@ -20,13 +20,13 @@ const Features = () => {
 
 
 
-    const handleIsAddModalOpen = () => {
+    const handleIsAddModalOpen = React.useCallback(() => {
         setIsAddModalOpen(true);
-    }
+    }, []);
 
-    const handleIsAddModalClose = () => {
+    const handleIsAddModalClose = React.useCallback(() => {
         setIsAddModalOpen(false);
-    }
+    }, [])
 
 
     const location = useLocation();
@@ -41,9 +41,6 @@ const Features = () => {
         modalName = ''
     } = state ?? {};
 
-
-    console.log("Features: ", openAddModal)
-
     React.useEffect(() => {
         if (previousFeatures && previousFeatures.length > 0 && modalName === 'Edit') {
             localStorage.setItem("shouldOpenSubEdit", "true");
@@ -55,7 +52,8 @@ const Features = () => {
             setSelectedFeatures([...selectedFeatures]);
             localStorage.setItem("AddFeatures", JSON.stringify([...selectedFeatures]));
         }
-    }, [previousFeatures, selectedFeatures]);
+    }, [previousFeatures]);
+
 
 
     // React.useEffect(() => {
