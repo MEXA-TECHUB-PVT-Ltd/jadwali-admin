@@ -1,6 +1,6 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, Button, Paper, Avatar, Box, Pagination } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import UserDetailModel from '../Models/UserDetailModel';
 import { useTheme } from '@mui/material/styles';
 import { useLocation } from 'react-router-dom';
@@ -60,35 +60,45 @@ const FeaturesTable = ({ features, updateSelectedFeatures }: any) => {
 
 
 
-    const handleIsEditModalOpen = (data: any) => {
+    const handleIsEditModalOpen = useCallback((data: any) => {
         setEditData(data);
         setIsEditModalOpen(true);
         (true);
-    }
+    }, []);
 
-    const handleIsEditModalClose = () => {
+    const handleIsEditModalClose = useCallback(() => {
         setIsEditModalOpen(false);
-    }
+    }, []);
     
-    const handleOpenDeleteModal = () => {
+    const handleOpenDeleteModal = useCallback(() => {
         setIsDeleteModalOpen(true);
-    }
-    const handleDeleteCloseModal = () => {
+    }, []);
+
+    const handleDeleteModal = useCallback(() => {
+        setToastOpen(true);
+        setTimeout(() => {
+            setToastOpen(false);
+            setIsDeleteModalOpen(false);
+        }, 500);
+    }, []);
+
+    const hanldeDeleteCloseModal = useCallback(() => { 
         setIsDeleteModalOpen(false);
-    }
+    }, [])
 
 
 
 
-    const handleOpenModal = (status: string) => {
+
+    const handleOpenModal = useCallback((status: string) => {
         setSelectedStatus(status);
         setIsModalOpen(true);
-    };
+    }, []);
 
 
-    const handleCloseModal = () => {
+    const handleCloseModal = useCallback(() => {
         setIsModalOpen(false);
-    };
+    }, []);
 
 
     React.useEffect(() => {
@@ -99,16 +109,16 @@ const FeaturesTable = ({ features, updateSelectedFeatures }: any) => {
 
 
 
-    const handleSelectAllClick = (event: any) => {
+    const handleSelectAllClick = useCallback((event: any) => {
         if (event.target.checked) {
             const newSelecteds = features.map((n: any) => n.id);
             setSelectedUsers(newSelecteds);
             return;
         }
         setSelectedUsers([]);
-    };
+    }, []);
 
-    const handleClick = (event: any, id: any) => {
+    const handleClick = useCallback((event: any, id: any) => {
         const selectedIndex = selectedUsers.indexOf(id);
         let newSelected: any[] = [];
 
@@ -131,7 +141,7 @@ const FeaturesTable = ({ features, updateSelectedFeatures }: any) => {
         }
 
         setSelectedUsers(newSelected);
-    };
+    }, []);
 
     const isSelected = (id: any) => selectedUsers.indexOf(id) !== -1;
 
@@ -230,17 +240,19 @@ const FeaturesTable = ({ features, updateSelectedFeatures }: any) => {
             />
             <DeleteModal
                 open={isDeleteModalOpen}
-                handleClose={handleDeleteCloseModal}
-                onDelete={handleDeleteCloseModal}
+                handleClose={hanldeDeleteCloseModal}
+                onDelete={handleDeleteModal}
                 title="Delete Feature"
                 paragraph="Do you want to delete this feature?"
+                eventMessage="Feature Deleted Successfully!"
                 actionText="Delete"
+                setToastOpen={setToastOpen}
             />
         </div>
     )
 }
 
-export default FeaturesTable
+export default React.memo(FeaturesTable)
 
 
 

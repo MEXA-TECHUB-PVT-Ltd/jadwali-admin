@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Typography, Card, CardContent, CardActions, Button, IconButton } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
@@ -60,50 +60,55 @@ const SubscriptionPlan = () => {
     const [toastOpen, setToastOpen] = React.useState<boolean>(false);
 
 
-    const handleOpenModal = (title: string, message: string, data?: any) => {
+    const handleOpenModal = useCallback((title: string, message: string, data?: any) => {
         setModalTitle(title)
         setEventMessage(message)
         setIsModalOpen(true);
-    };
+    }, []);
 
-    const handleCloseModal = () => {
+    const handleCloseModal = useCallback(() => {
         localStorage.setItem("shouldOpenModal", "false")
         localStorage.setItem('AddFeatures', JSON.stringify([]));
         setIsModalOpen(false);
-    };
+    }, []);
 
-    const handleEditOpenModal = React.useCallback(
-        (data: any, planName: any) => {
-            setModalData(data);
-            localStorage.setItem("EditFeatures", JSON.stringify(data));
-            setPlanName(planName);
-            setIsEditModalOpen(true);
-        },
-        [] 
-    );
+    const handleEditOpenModal = useCallback((data: any, planName: any) => {
+        setToastOpen(false);
+        setModalData(data);
+        localStorage.setItem("EditFeatures", JSON.stringify(data));
+        setPlanName(planName);
+        setIsEditModalOpen(true);
+    }, []);
 
 
-    const handleEditCloseModal = () => {
+    const handleEditCloseModal = useCallback(() => {
+        setToastOpen(false);
         localStorage.setItem("shouldOpenSubEdit", "false");
         localStorage.setItem('EditFeatures', JSON.stringify([]));
         setIsEditModalOpen(false);
-    };
+    }, []);
 
 
-    const handleDeleteModal = () => {
-        setIsDeleteModalOpen(true);
-    }
-
-
-    const handleCloseToast = () => {
+    const handleDeleteModal = useCallback(() => {
         setToastOpen(false);
-    };
-    const handleDeleteCloseModal = () => {
+        setIsDeleteModalOpen(true);
+    }, []);
+
+
+    const handleCloseToast = useCallback(() => {
+        setToastOpen(false);
+    }, []);
+
+    const handleDeleteClick = useCallback(() => {
         setToastOpen(true);
         setTimeout(() => {
-            setIsDeleteModalOpen(false)
-        }, 1000)
-    }
+            setIsDeleteModalOpen(false);
+        }, 500)
+    }, [])
+
+    const handleDeleteCloseModal = useCallback(() => {
+        setIsDeleteModalOpen(false)
+    }, [])
 
 
     return (
@@ -126,7 +131,6 @@ const SubscriptionPlan = () => {
                 </Button>
             </div>
 
-            {/* Monthly Plan */}
             <Card sx={{ marginBottom: 2, padding: 2, borderRadius: '10px' }}>
                 <CardContent>
                     <div className="flex justify-between items-center mb-4">
@@ -181,7 +185,6 @@ const SubscriptionPlan = () => {
                 </CardContent>
             </Card>
 
-            {/* Yearly Plan */}
             <Card sx={{ marginBottom: 2, padding: 2, borderRadius: '10px' }}>
                 <CardContent>
                     <div className="flex justify-between items-center mb-4">
@@ -296,6 +299,8 @@ const SubscriptionPlan = () => {
                 setOpen={setIsModalOpen}
                 title={modalTitle}
                 eventMessage={eventMessage}
+                setToastOpen={setToastOpen}
+                toastOpen={toastOpen}
             />
             <EditSubscriptionModel
                 open={isEditModalOpen}
@@ -304,11 +309,13 @@ const SubscriptionPlan = () => {
                 modalData={modalData}
                 name={planName}
                 setModalData={setModalData}
+                setToastOpen={setToastOpen}
+                toastOpen={toastOpen}
             />
             <DeleteModal
                 open={isDeleteModalOpen}
                 handleClose={handleDeleteCloseModal}
-                onDelete={handleDeleteCloseModal}
+                onDelete={handleDeleteClick}
                 title="Delete Subscription Plan"
                 paragraph="Do you want to delete this subscription plan?"
                 actionText="Delete"
@@ -320,5 +327,5 @@ const SubscriptionPlan = () => {
     );
 }
 
-export default SubscriptionPlan;
+export default React.memo(SubscriptionPlan);
 

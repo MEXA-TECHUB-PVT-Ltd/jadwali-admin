@@ -36,7 +36,7 @@ const ToastModal: React.FC<ToastModalProps> = ({ open, onClose, eventMessage }) 
                         Success
                     </Typography>
                     <Typography variant='body2' color='GrayText'>
-                        {eventMessage ? eventMessage : "User Block Successfully"}
+                        {eventMessage ? eventMessage : "Feature Deleted Successfully!"}
                     </Typography>
                 </div>
             </Box>
