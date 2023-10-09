@@ -16,7 +16,7 @@ export const features = [
   {
     id: 15,
     featuresDescription:
-      "Payment Link generation (when adding override appointment or past appointment)",
+      "Payment Link generation (when adding override appointment or past appointment)", 
   },
   { id: 16, featuresDescription: "Priority support" },
 ];
