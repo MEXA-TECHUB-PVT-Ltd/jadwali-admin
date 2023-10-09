@@ -14,6 +14,13 @@ const SubscriptionSchema = Yup.object().shape({
         .required('Required')
 });
 
+const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+};
+
 
 const AddFeaturesModal = ({ open, setOpen, handleClose }: any) => {
     const [toastOpen, setToastOpen] = React.useState<boolean>(false);
@@ -25,7 +32,7 @@ const AddFeaturesModal = ({ open, setOpen, handleClose }: any) => {
     const body = (
         <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.16)' }}>
             <ToastModal open={toastOpen} onClose={handleCloseToast} eventMessage={"Feature added Successfully"} />
-            <Box className='flex justify-center items-center h-screen'>
+            <Box style={style}>
                 <Card className='sm:w-[500px] w-[80%]' sx={{ borderRadius: '30px' }}>
                     <CardContent className='p-0' sx={{ padding: 0 }}>
                         <div className='mb-12 bg-[#C7AEDB] px-5 py-3 flex justify-between items-center'>
@@ -49,10 +56,10 @@ const AddFeaturesModal = ({ open, setOpen, handleClose }: any) => {
                                 validationSchema={SubscriptionSchema}
                                 onSubmit={(values) => {
                                     console.log(values);
-                                    setToastOpen(true);
-                                    setTimeout(() => {
-                                        setOpen(false)
-                                    }, 2000)
+                                    // setToastOpen(true);
+                                    // setTimeout(() => {
+                                    setOpen(false)
+                                    // }, 2000)
                                 }}
                             >
                                 {({ errors, touched, isValid }) => (
@@ -122,6 +129,9 @@ const AddFeaturesModal = ({ open, setOpen, handleClose }: any) => {
                 onClose={handleClose}
                 aria-labelledby="user-detail-modal-title"
                 aria-describedby="user-detail-modal-description"
+                slotProps={{
+                    backdrop: { style: { opacity: 0.1, backgroundColor: 'rgba(0, 0, 0, 0.5)' } }
+                }}
             >
                 {body}
             </Modal>

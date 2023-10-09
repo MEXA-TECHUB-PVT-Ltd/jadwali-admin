@@ -6,17 +6,23 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import DeleteModal from './DeleteModel';
 
 
+const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+};
+
 const UserDetailModel = ({ open, setOpen, handleClose, status, onToggleStatus, isDeleteModalOpen, handleDeleteCloseModal, setIsDeleteModalOpen }: any) => {
 
     const handleStatusClick = () => {
         if (status === 'Unblock' || status === 'Block') {
             setIsDeleteModalOpen(true);
-            setOpen(false);
         }
     }
 
     const body = (
-        <Box className='flex justify-center items-center h-screen'>
+        <Box style={style}>
             <Card className='sm:w-[550px] w-[80%]' sx={{ borderRadius: '30px' }}>
                 <CardContent className='p-0' sx={{ padding: 0 }}>
                     <div className='px-5 py-3 flex justify-between items-center'>
@@ -86,6 +92,9 @@ const UserDetailModel = ({ open, setOpen, handleClose, status, onToggleStatus, i
                     onClose={handleClose}
                     aria-labelledby="user-detail-modal-title"
                     aria-describedby="user-detail-modal-description"
+                    slotProps={{
+                        backdrop: { style: { opacity: 0.1, backgroundColor: 'rgba(0, 0, 0, 0.5)' } }
+                    }}
                 >
                     {body}
                 </Modal>
@@ -97,6 +106,7 @@ const UserDetailModel = ({ open, setOpen, handleClose, status, onToggleStatus, i
                 title="Block User"
                 paragraph="Do you really want to block this User?"
                 actionText="Block"
+                setOpen={setOpen}
             />
         </>
     )

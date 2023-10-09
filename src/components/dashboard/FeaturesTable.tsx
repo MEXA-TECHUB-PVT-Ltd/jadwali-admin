@@ -173,8 +173,6 @@ const FeaturesTable = ({ features, updateSelectedFeatures }: any) => {
                             <TableCell padding="checkbox" sx={{ minWidth: 170 }} >
                                 <Checkbox
                                     color="primary"
-                                    indeterminate={selectedUsers.length > 0 && selectedUsers.length < features.length}
-                                    checked={features.length > 0 && selectedUsers.length === features.length}
                                     onChange={handleSelectAllClick}
                                     style={{ color: '#C4C4C4' }}
                                 />

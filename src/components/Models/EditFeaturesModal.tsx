@@ -15,6 +15,14 @@ const SubscriptionSchema = Yup.object().shape({
 });
 
 
+const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+};
+
+
 const EditFeaturesModal = ({ open, setOpen, handleClose, description }: any) => {
     const [toastOpen, setToastOpen] = React.useState<boolean>(false);
 
@@ -25,7 +33,7 @@ const EditFeaturesModal = ({ open, setOpen, handleClose, description }: any) => 
     const body = (
         <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.16)' }}>
             <ToastModal open={toastOpen} onClose={handleCloseToast} eventMessage={"Feature Edit Successfully"} />
-            <Box className='flex justify-center items-center h-screen'>
+            <Box style={style}>
                 <Card className='sm:w-[500px] w-[80%]' sx={{ borderRadius: '30px' }}>
                     <CardContent className='p-0' sx={{ padding: 0 }}>
                         <div className='mb-12 bg-[#C7AEDB] px-5 py-3 flex justify-between items-center'>
@@ -121,6 +129,9 @@ const EditFeaturesModal = ({ open, setOpen, handleClose, description }: any) => 
                 onClose={handleClose}
                 aria-labelledby="user-detail-modal-title"
                 aria-describedby="user-detail-modal-description"
+                slotProps={{
+                    backdrop: { style: { opacity: 0.1, backgroundColor: 'rgba(0, 0, 0, 0.5)' } }
+                }}
             >
                 {body}
             </Modal>
