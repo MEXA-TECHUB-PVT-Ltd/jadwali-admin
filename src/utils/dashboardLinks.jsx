@@ -6,7 +6,7 @@ import PrivacyTipIcon from "@mui/icons-material/PrivacyTip";
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
-export const navItems: { text: string; icon: React.ReactElement; path: string }[] = [
+export const navItems = [
   { text: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
   { text: "All Users", icon: <PeopleIcon />, path: "/dashboard/all-users" },
   {
