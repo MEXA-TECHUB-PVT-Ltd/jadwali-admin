@@ -7,13 +7,13 @@ import DeleteModal from './DeleteModel';
 
 
 const style = {
-    position: 'absolute' as 'absolute',
+    position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
 };
 
-const UserDetailModel = ({ open, setOpen, handleClose, status, onToggleStatus, isDeleteModalOpen, handleDeleteCloseModal, setIsDeleteModalOpen }: any) => {
+const UserDetailModel = ({ open, setOpen, handleClose, status, onToggleStatus, isDeleteModalOpen, handleDeleteCloseModal, setIsDeleteModalOpen }) => {
 
     const handleStatusClick = () => {
         if (status === 'Unblock' || status === 'Block') {

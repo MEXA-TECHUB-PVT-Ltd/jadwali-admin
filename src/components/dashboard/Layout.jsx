@@ -118,10 +118,10 @@ const Layout = () => {
 export default Layout
 
 
-const SideNav = ({ handleDeleteModal, handleDeleteCloseModal, isDeleteModalOpen, onLogout, setIsDrawerOpen }: any) => {
-    const [hoverIndex, setHoverIndex] = React.useState<any>(null);
+const SideNav = ({ handleDeleteModal, handleDeleteCloseModal, isDeleteModalOpen, onLogout, setIsDrawerOpen }) => {
+    const [hoverIndex, setHoverIndex] = React.useState(null);
 
-    const handleHover = (index: any) => {
+    const handleHover = (index) => {
         setHoverIndex(index);
     };
 
@@ -198,14 +198,14 @@ const SideNav = ({ handleDeleteModal, handleDeleteCloseModal, isDeleteModalOpen,
 
 const TopHeader = ({ handleDeleteModal, handleDeleteCloseModal, isDeleteModalOpen, onLogout, isDrawerOpen, handleDrawerOpen,
     handleDrawerClose, innerWidth
-}: any) => {
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+}) => {
+    const [anchorEl, setAnchorEl] = React.useState(null);
 
     const [isModalOpen, setIsModalOpen] = React.useState(false);
 
-    const [searchTerm, setSearchTerm] = React.useState<string>("");
+    const [searchTerm, setSearchTerm] = React.useState("");
 
-    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
     };
 
@@ -215,20 +215,20 @@ const TopHeader = ({ handleDeleteModal, handleDeleteCloseModal, isDeleteModalOpe
     )
 
 
-    const handleOpenModal = (event: React.MouseEvent<HTMLElement>) => {
+    const handleOpenModal = (event) => {
         event.stopPropagation();
         setIsModalOpen(true);
     };
 
 
 
-    const handleCloseModal = (event: React.MouseEvent<HTMLElement>) => {
+    const handleCloseModal = (event) => {
         event.stopPropagation();
         console.log("CLICKED")
         setIsModalOpen(false);
     };
 
-    const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
@@ -369,18 +369,18 @@ const TopHeader = ({ handleDeleteModal, handleDeleteCloseModal, isDeleteModalOpe
 };
 
 
-const UserTable = ({ users, status }: any) => {
-    const [selectedUsers, setSelectedUsers] = useState<any[]>([]);
-    const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
+const UserTable = ({ users, status }) => {
+    const [selectedUsers, setSelectedUsers] = useState([]);
+    const [selectedStatus, setSelectedStatus] = useState(null);
     const [currentUsers, setCurrentUsers] = useState(users);
-    const [toastOpen, setToastOpen] = useState<boolean>(false);
+    const [toastOpen, setToastOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [toastMessage, setToastMessage] = useState("");
 
     const location = useLocation();
 
-    const toggleUserStatus = (userId: number) => {
-        const updatedUsers = currentUsers.map((user: any) => {
+    const toggleUserStatus = (userId) => {
+        const updatedUsers = currentUsers.map((user) => {
             if (user.id === userId) {
                 const newStatus = user.status === "Block" ? "Unblock" : "Block";
                 setToastMessage(`User ${newStatus === "Block" ? "blocked" : "unblocked"} successfully!`);
@@ -406,7 +406,7 @@ const UserTable = ({ users, status }: any) => {
 
 
 
-    const handleOpenModal = (status: string) => {
+    const handleOpenModal = (status) => {
         setSelectedStatus(status);
         setIsModalOpen(true);
     };
@@ -418,18 +418,18 @@ const UserTable = ({ users, status }: any) => {
 
 
 
-    const handleSelectAllClick = (event: any) => {
+    const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = users.map((n: any) => n.id);
+            const newSelecteds = users.map((n) => n.id);
             setSelectedUsers(newSelecteds);
             return;
         }
         setSelectedUsers([]);
     };
 
-    const handleClick = (event: any, id: any) => {
+    const handleClick = (event, id) => {
         const selectedIndex = selectedUsers.indexOf(id);
-        let newSelected: any[] = [];
+        let newSelected = [];
 
         if (selectedIndex === -1) {
             newSelected = newSelected.concat(selectedUsers, id);
@@ -444,7 +444,7 @@ const UserTable = ({ users, status }: any) => {
             );
         }
 
-        const clickedUser = users.find((user: any) => user.id === id);
+        const clickedUser = users.find((user) => user.id === id);
         if (clickedUser) {
             setSelectedStatus(clickedUser.status);
         }
@@ -452,7 +452,7 @@ const UserTable = ({ users, status }: any) => {
         setSelectedUsers(newSelected);
     };
 
-    const isSelected = (id: any) => selectedUsers.indexOf(id) !== -1;
+    const isSelected = (id) => selectedUsers.indexOf(id) !== -1;
 
 
     const numAdjacentButtons = 1;
@@ -485,7 +485,7 @@ const UserTable = ({ users, status }: any) => {
                     </TableHead>
                     <TableBody>
                         {
-                            users.map((user: any) => (
+                            users.map((user) => (
                                 <TableRow key={user.id} role="checkbox" tabIndex={-1} selected={isSelected(user.id)}>
                                     <TableCell padding="checkbox">
                                         <Checkbox

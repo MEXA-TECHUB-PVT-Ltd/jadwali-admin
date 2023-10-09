@@ -6,25 +6,62 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import ToastModal from './TostModal';
-
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { Link } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 const SubscriptionSchema = Yup.object().shape({
-    description: Yup.string()
+    planName: Yup.string()
         .required('Required')
 });
 
-
 const style = {
-    position: 'absolute' as 'absolute',
+    position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
 };
 
 
-const EditFeaturesModal = ({ open, setOpen, handleClose, description }: any) => {
-    const [toastOpen, setToastOpen] = React.useState<boolean>(false);
+const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, setModalData, setToastOpen, toastOpen }) => {
+    const [planName, setPlanName] = React.useState("");
+
+    const { state } = useLocation();
+    const navigate = useNavigate();
+
+    let plan = state?.plan || "";
+    let previousPage = state?.previousPage || "";
+    let selectedFeatures = state?.selectedFeatures || [];
+    let openAddModal = state?.openAddModal || '';
+
+    const addFeatures = localStorage.getItem('EditFeatures');
+    const feature = JSON.parse(addFeatures) || null
+
+
+
+    React.useEffect(() => {
+        if (previousPage === 'features' && localStorage.getItem("shouldOpenSubEdit") === "true") {
+            if (localStorage.getItem("shouldOpenSubEdit") === "true") {
+                setOpen(true);
+                // const updatedFeatures = [...feature];
+                // setModalData(updatedFeatures);
+                setOpen(true);
+            }
+            else {
+                setOpen(false);
+                localStorage.setItem("shouldOpenSubEdit", "false");
+            }
+        }
+    }, [])
+
+    React.useEffect(() => {
+        if (localStorage.getItem("shouldOpenSubEdit") === 'false') {
+            setToastOpen(false);
+        }
+    }, []);
+
+
 
     const handleCloseToast = () => {
         setToastOpen(false);
@@ -32,7 +69,7 @@ const EditFeaturesModal = ({ open, setOpen, handleClose, description }: any) => 
 
     const body = (
         <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.16)' }}>
-            <ToastModal open={toastOpen} onClose={handleCloseToast} eventMessage={"Feature Edit Successfully"} />
+            <ToastModal open={toastOpen} onClose={handleCloseToast} eventMessage="Edit Plan Successfully!" />
             <Box style={style}>
                 <Card className='sm:w-[500px] w-[80%]' sx={{ borderRadius: '30px' }}>
                     <CardContent className='p-0' sx={{ padding: 0 }}>
@@ -43,7 +80,7 @@ const EditFeaturesModal = ({ open, setOpen, handleClose, description }: any) => 
                                     fontSize: '20px', color: '#6C309C', margin: '0', fontWeight: 'medium'
                                 }}
                             >
-                                Edit Feature
+                                Edit Subscription
                             </Typography>
                             <IconButton aria-label="delete" onClick={handleClose} sx={{ padding: '0', color: '#6C309C' }}>
                                 <CancelIcon fontSize="inherit" />
@@ -52,7 +89,8 @@ const EditFeaturesModal = ({ open, setOpen, handleClose, description }: any) => 
                         <CardContent className='m-3'>
                             <Formik
                                 initialValues={{
-                                    description: description,
+                                    planName: name ? name : '',
+                                    selectFeatures: ''
                                 }}
                                 validationSchema={SubscriptionSchema}
                                 onSubmit={(values) => {
@@ -60,20 +98,25 @@ const EditFeaturesModal = ({ open, setOpen, handleClose, description }: any) => 
                                     setToastOpen(true);
                                     setTimeout(() => {
                                         setOpen(false)
-                                    }, 2000)
+                                        localStorage.setItem('shouldOpenSubEdit', JSON.stringify(false));
+                                        localStorage.setItem('EditFeatures', JSON.stringify([]));
+                                    }, 1000)
                                 }}
                             >
-                                {({ errors, touched, isValid }) => (
+                                {({ errors, touched, isValid, setFieldValue }) => (
                                     <Form>
                                         <div className='mb-4'>
                                             <Field
-                                                name="description"
+                                                name="planName"
                                                 as={TextField}
                                                 id="outlined-basic"
+                                                placeholder={'Plan Name'}
                                                 variant="outlined"
                                                 fullWidth
-                                                multiline
-                                                rows={4}
+                                                onChange={(e) => {
+                                                    setFieldValue("planName", e.target.value);
+                                                    setPlanName(e.target.value);
+                                                }}
                                                 sx={{
                                                     '& .MuiOutlinedInput-root': {
                                                         borderRadius: '20px',
@@ -89,11 +132,37 @@ const EditFeaturesModal = ({ open, setOpen, handleClose, description }: any) => 
                                                 }}
                                                 size='small'
                                             />
-                                            {errors.description && typeof errors.description === 'string' ? (
+                                            {errors.planName && typeof errors.planName === 'string' ? (
                                                 <Typography sx={{ mt: 1, fontSize: '0.8rem', color: 'red', ml: 2 }}>
-                                                    {errors.description}
-                                                </Typography>) : null}
+                                                    {errors.planName}
+                                                </Typography>
+                                            ) : null}
                                         </div>
+
+                                        {
+                                            feature?.length > 0 && (
+                                                <>
+                                                    <Typography mb={2}>Features</Typography>
+                                                    <div className="flex flex-wrap gap-2 mb-2 max-h-40 overflow-auto">
+                                                        {feature.map((feature, index) => (
+                                                            <span key={index} className="bg-[#F5F5F5] px-3 py-1 rounded-full">
+                                                                {feature.featuresDescription}
+                                                            </span>
+                                                        ))}
+
+                                                        <Link
+                                                            to='/dashboard/features'
+                                                            state={{ plan: planName ? planName : undefined, previousPage: 'subscription', previousFeatures: modalData, openAddModal: 'false', modalName: 'Edit' }}
+                                                            className='mb-4 bg-[#6C309C] text-white p-2 px-4 rounded-[20px] flex justify-between items-center cursor-pointer'
+                                                        >
+                                                            <Typography sx={{ color: '#fff' }}>Add more features</Typography>
+                                                            <KeyboardArrowDownIcon />
+                                                        </Link>
+                                                    </div>
+                                                </>
+                                            )
+                                        }
+
 
                                         <div className="mt-10">
                                             <Button
@@ -109,7 +178,7 @@ const EditFeaturesModal = ({ open, setOpen, handleClose, description }: any) => 
                                                     color: '#fff',
                                                 }}
                                             >
-                                                Edit Features
+                                                Edit Plan
                                             </Button>
                                         </div>
                                     </Form>
@@ -129,9 +198,6 @@ const EditFeaturesModal = ({ open, setOpen, handleClose, description }: any) => 
                 onClose={handleClose}
                 aria-labelledby="user-detail-modal-title"
                 aria-describedby="user-detail-modal-description"
-                slotProps={{
-                    backdrop: { style: { opacity: 0.1, backgroundColor: 'rgba(0, 0, 0, 0.5)' } }
-                }}
             >
                 {body}
             </Modal>
@@ -139,5 +205,5 @@ const EditFeaturesModal = ({ open, setOpen, handleClose, description }: any) => 
     )
 }
 
-export default EditFeaturesModal;
+export default EditSubscriptionModal;
 

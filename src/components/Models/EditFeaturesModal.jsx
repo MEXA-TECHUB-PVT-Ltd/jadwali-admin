@@ -14,16 +14,17 @@ const SubscriptionSchema = Yup.object().shape({
         .required('Required')
 });
 
+
 const style = {
-    position: 'absolute' as 'absolute',
+    position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
 };
 
 
-const AddFeaturesModal = ({ open, setOpen, handleClose }: any) => {
-    const [toastOpen, setToastOpen] = React.useState<boolean>(false);
+const EditFeaturesModal = ({ open, setOpen, handleClose, description }) => {
+    const [toastOpen, setToastOpen] = React.useState(false);
 
     const handleCloseToast = () => {
         setToastOpen(false);
@@ -31,7 +32,7 @@ const AddFeaturesModal = ({ open, setOpen, handleClose }: any) => {
 
     const body = (
         <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.16)' }}>
-            <ToastModal open={toastOpen} onClose={handleCloseToast} eventMessage={"Feature added Successfully"} />
+            <ToastModal open={toastOpen} onClose={handleCloseToast} eventMessage={"Feature Edit Successfully"} />
             <Box style={style}>
                 <Card className='sm:w-[500px] w-[80%]' sx={{ borderRadius: '30px' }}>
                     <CardContent className='p-0' sx={{ padding: 0 }}>
@@ -42,7 +43,7 @@ const AddFeaturesModal = ({ open, setOpen, handleClose }: any) => {
                                     fontSize: '20px', color: '#6C309C', margin: '0', fontWeight: 'medium'
                                 }}
                             >
-                                Add Feature
+                                Edit Feature
                             </Typography>
                             <IconButton aria-label="delete" onClick={handleClose} sx={{ padding: '0', color: '#6C309C' }}>
                                 <CancelIcon fontSize="inherit" />
@@ -51,15 +52,15 @@ const AddFeaturesModal = ({ open, setOpen, handleClose }: any) => {
                         <CardContent className='m-3'>
                             <Formik
                                 initialValues={{
-                                    description: ''
+                                    description: description,
                                 }}
                                 validationSchema={SubscriptionSchema}
                                 onSubmit={(values) => {
                                     console.log(values);
-                                    // setToastOpen(true);
-                                    // setTimeout(() => {
-                                    setOpen(false)
-                                    // }, 2000)
+                                    setToastOpen(true);
+                                    setTimeout(() => {
+                                        setOpen(false)
+                                    }, 2000)
                                 }}
                             >
                                 {({ errors, touched, isValid }) => (
@@ -69,7 +70,6 @@ const AddFeaturesModal = ({ open, setOpen, handleClose }: any) => {
                                                 name="description"
                                                 as={TextField}
                                                 id="outlined-basic"
-                                                placeholder={'Add Description'}
                                                 variant="outlined"
                                                 fullWidth
                                                 multiline
@@ -89,7 +89,8 @@ const AddFeaturesModal = ({ open, setOpen, handleClose }: any) => {
                                                 }}
                                                 size='small'
                                             />
-                                            {errors.description && typeof errors.description === 'string' ? (
+                                            {errors.description
+                                             ? (
                                                 <Typography sx={{ mt: 1, fontSize: '0.8rem', color: 'red', ml: 2 }}>
                                                     {errors.description}
                                                 </Typography>) : null}
@@ -109,7 +110,7 @@ const AddFeaturesModal = ({ open, setOpen, handleClose }: any) => {
                                                     color: '#fff',
                                                 }}
                                             >
-                                                Add Features
+                                                Edit Features
                                             </Button>
                                         </div>
                                     </Form>
@@ -139,5 +140,5 @@ const AddFeaturesModal = ({ open, setOpen, handleClose }: any) => {
     )
 }
 
-export default AddFeaturesModal;
+export default EditFeaturesModal;
 

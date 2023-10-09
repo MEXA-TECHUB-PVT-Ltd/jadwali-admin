@@ -1,7 +1,6 @@
 import Button from '@mui/material/Button';
-import { TString } from '../../types/types';
 
-function CustomButton({ text, type, disabled, onClick }: any) {
+function CustomButton({ text, type, disabled, onClick }) {
     return (
         <Button
             fullWidth

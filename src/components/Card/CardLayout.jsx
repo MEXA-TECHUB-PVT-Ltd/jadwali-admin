@@ -1,11 +1,10 @@
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import { TChildren } from '../../types/types';
 import { CardContent, Typography } from '@mui/material';
 import logo from '../../../public/images/logopink.png'
 
 
-export default function CardLayout({ children, title, subTitle, description }: TChildren) {
+export default function CardLayout({ children, title, subTitle, description }) {
     return (
         <Box className='flex bg-[#C7AEDB] justify-center items-center h-screen'>
             <Card className='sm:w-[500px] w-[80%]' sx={{ borderRadius: '30px' }}>

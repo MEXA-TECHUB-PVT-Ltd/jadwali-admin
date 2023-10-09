@@ -5,13 +5,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, Typography } from '@mui/material';
 
-interface ToastModalProps {
-    open?: boolean;
-    onClose?: () => void;
-    eventMessage?: string;
-}
 
-const ToastModal: React.FC<ToastModalProps> = ({ open, onClose, eventMessage }) => {
+const ToastModal = ({ open, onClose, eventMessage }) => {
     return (
         <Snackbar
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}

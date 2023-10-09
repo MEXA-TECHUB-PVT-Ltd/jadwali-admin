@@ -1,8 +1,7 @@
 import React from 'react'
-import { TChildren } from '../../types/types'
 import { Card } from '@mui/material'
 
-const OverviewCard = ({ children }: TChildren) => {
+const OverviewCard = ({ children }) => {
     return (
         <Card
             sx={{

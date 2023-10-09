@@ -12,12 +12,12 @@ import EditFeaturesModal from '../Models/EditFeaturesModal';
 import DeleteModal from '../Models/DeleteModel';
 
 
-const FeaturesTable = ({ features, updateSelectedFeatures }: any) => {
-    const [selectedUsers, setSelectedUsers] = useState<any[]>([]);
+const FeaturesTable = ({ features, updateSelectedFeatures }) => {
+    const [selectedUsers, setSelectedUsers] = useState([]);
     const [page, setPage] = useState(1);
-    const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
+    const [selectedStatus, setSelectedStatus] = useState(null);
     const [currentUsers, setCurrentUsers] = useState(features);
-    const [toastOpen, setToastOpen] = useState<boolean>(false);
+    const [toastOpen, setToastOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [toastMessage, setToastMessage] = useState("");
     const [editData, setEditData] = React.useState();
@@ -34,8 +34,8 @@ const FeaturesTable = ({ features, updateSelectedFeatures }: any) => {
 
     const location = useLocation();
 
-    const toggleUserStatus = (userId: number) => {
-        const updatedUsers = currentUsers.map((user: any) => {
+    const toggleUserStatus = (userId) => {
+        const updatedUsers = currentUsers.map((user) => {
             if (user.id === userId) {
                 const newStatus = user.status === "Block" ? "Unblock" : "Block";
                 setToastMessage(`User ${newStatus === "Block" ? "blocked" : "unblocked"} successfully!`);
@@ -60,7 +60,7 @@ const FeaturesTable = ({ features, updateSelectedFeatures }: any) => {
 
 
 
-    const handleIsEditModalOpen = useCallback((data: any) => {
+    const handleIsEditModalOpen = useCallback((data) => {
         setEditData(data);
         setIsEditModalOpen(true);
         (true);
@@ -90,7 +90,7 @@ const FeaturesTable = ({ features, updateSelectedFeatures }: any) => {
 
 
 
-    const handleOpenModal = useCallback((status: string) => {
+    const handleOpenModal = useCallback((status) => {
         setSelectedStatus(status);
         setIsModalOpen(true);
     }, []);
@@ -102,25 +102,25 @@ const FeaturesTable = ({ features, updateSelectedFeatures }: any) => {
 
 
     React.useEffect(() => {
-        const selectedFeaturesData = features.filter((feature:any) => selectedUsers.includes(feature.id));
+        const selectedFeaturesData = features.filter((feature) => selectedUsers.includes(feature.id));
         updateSelectedFeatures(selectedFeaturesData);
     }, [selectedUsers, features, updateSelectedFeatures]);
 
 
 
 
-    const handleSelectAllClick = useCallback((event: any) => {
+    const handleSelectAllClick = useCallback((event) => {
         if (event.target.checked) {
-            const newSelecteds = features.map((n: any) => n.id);
+            const newSelecteds = features.map((n) => n.id);
             setSelectedUsers(newSelecteds);
             return;
         }
         setSelectedUsers([]);
     }, []);
 
-    const handleClick = useCallback((event: any, id: any) => {
+    const handleClick = useCallback((event, id) => {
         const selectedIndex = selectedUsers.indexOf(id);
-        let newSelected: any[] = [];
+        let newSelected = [];
 
         if (selectedIndex === -1) {
             newSelected = newSelected.concat(selectedUsers, id);
@@ -135,7 +135,7 @@ const FeaturesTable = ({ features, updateSelectedFeatures }: any) => {
             );
         }
 
-        const clickedUser = paginationData.find((user: any) => user.id === id);
+        const clickedUser = paginationData.find((user) => user.id === id);
         if (clickedUser) {
             setSelectedStatus(clickedUser.status);
         }
@@ -143,7 +143,7 @@ const FeaturesTable = ({ features, updateSelectedFeatures }: any) => {
         setSelectedUsers(newSelected);
     }, []);
 
-    const isSelected = (id: any) => selectedUsers.indexOf(id) !== -1;
+    const isSelected = (id) => selectedUsers.indexOf(id) !== -1;
 
     const maxPages = Math.ceil(features.length / rowsPerPage);
 
@@ -155,7 +155,7 @@ const FeaturesTable = ({ features, updateSelectedFeatures }: any) => {
         if (page > 1) setPage(page - 1);
     }
 
-    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    const handlePageChange = (event, value) => {
         setPage(value);
     };
     // const paginatedUsers = users.slice((page - 1) * rowsPerPage, page * rowsPerPage);
@@ -192,7 +192,7 @@ const FeaturesTable = ({ features, updateSelectedFeatures }: any) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {paginationData.map((feature: any) => (
+                        {paginationData.map((feature) => (
                             <TableRow hover key={feature.id} role="checkbox" tabIndex={-1} selected={isSelected(feature.id)}>
                                 <TableCell padding="checkbox" sx={{}}>
                                     <Checkbox

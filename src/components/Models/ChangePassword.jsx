@@ -13,7 +13,7 @@ import ToastModal from './TostModal';
 
 
 const style = {
-    position: 'absolute' as 'absolute',
+    position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
@@ -33,12 +33,12 @@ const PasswordChangeSchema = Yup.object().shape({
 
 
 
-const ChangePasswordModel = ({ open, setOpen, handleClose, status }: any) => {
+const ChangePasswordModel = ({ open, setOpen, handleClose, status }) => {
 
-    const [showPassword, setShowPassword] = React.useState<boolean>(false);
-    const [showNewPassword, setShowNewPassword] = React.useState<boolean>(false);
-    const [showConfirmPassword, setShowConfirmPassword] = React.useState<boolean>(false);
-    const [toastOpen, setToastOpen] = React.useState<boolean>(false);
+    const [showPassword, setShowPassword] = React.useState(false);
+    const [showNewPassword, setShowNewPassword] = React.useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+    const [toastOpen, setToastOpen] = React.useState(false);
 
 
     const handleTogglePassword = () => {

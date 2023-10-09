@@ -17,59 +17,70 @@ const SubscriptionSchema = Yup.object().shape({
 });
 
 const style = {
-    position: 'absolute' as 'absolute',
+    position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
 };
 
 
-const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, setModalData, setToastOpen, toastOpen }: any) => {
+const SubscriptionModel = ({ open, setOpen, handleClose, title, eventMessage, setToastOpen, toastOpen }) => {
     const [planName, setPlanName] = React.useState("");
+
 
     const { state } = useLocation();
     const navigate = useNavigate();
 
-    let plan = state?.plan || "";
-    let previousPage = state?.previousPage || "";
-    let selectedFeatures = state?.selectedFeatures || [];
-    let openAddModal = state?.openAddModal || '';
 
-    const addFeatures: any = localStorage.getItem('EditFeatures');
+    const [plan, setPlan] = React.useState(state?.plan || "");
+    const [previousPage, setPreviousPage] = React.useState(state?.previousPage || "");
+    const [selectedFeatures, setSelectedFeatures] = React.useState(state?.selectedFeatures || []);
+
+
+    const addFeatures = localStorage.getItem('AddFeatures');
     const feature = JSON.parse(addFeatures) || null
 
-
-
     React.useEffect(() => {
-        if (previousPage === 'features' && localStorage.getItem("shouldOpenSubEdit") === "true") {
-            if (localStorage.getItem("shouldOpenSubEdit") === "true") {
+        if (previousPage === 'features' && localStorage.getItem("shouldOpenModal") === "true") {
+            console.log("opent the modal");
+            if (localStorage.getItem("shouldOpenModal") === "true") {
                 setOpen(true);
-                // const updatedFeatures = [...feature];
-                // setModalData(updatedFeatures);
-                setOpen(true);
+                console.log('open the modal')
             }
             else {
+                console.log('close the modal')
                 setOpen(false);
-                localStorage.setItem("shouldOpenSubEdit", "false");
+                setPlan('');
+                setPreviousPage('');
+                setSelectedFeatures([]);
+                localStorage.setItem("shouldOpenModal", "false");
             }
         }
-    }, [])
+        else {
+            localStorage.setItem("shouldOpenModal", "false");
+            setPlan('');
+            setPreviousPage('');
+            setSelectedFeatures([]);
 
-    React.useEffect(() => {
-        if (localStorage.getItem("shouldOpenSubEdit") === 'false') {
-            setToastOpen(false);
         }
     }, []);
 
 
 
+    React.useEffect(() => {
+        if (localStorage.getItem("shouldOpenModal") === 'false') {
+            setToastOpen(false);
+        }
+    }, []);
+
     const handleCloseToast = () => {
         setToastOpen(false);
     };
 
+
     const body = (
         <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.16)' }}>
-            <ToastModal open={toastOpen} onClose={handleCloseToast} eventMessage="Edit Plan Successfully!" />
+            <ToastModal open={toastOpen} onClose={handleCloseToast} eventMessage="Add Plan Successfully" />
             <Box style={style}>
                 <Card className='sm:w-[500px] w-[80%]' sx={{ borderRadius: '30px' }}>
                     <CardContent className='p-0' sx={{ padding: 0 }}>
@@ -80,7 +91,7 @@ const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, se
                                     fontSize: '20px', color: '#6C309C', margin: '0', fontWeight: 'medium'
                                 }}
                             >
-                                Edit Subscription
+                                {title}
                             </Typography>
                             <IconButton aria-label="delete" onClick={handleClose} sx={{ padding: '0', color: '#6C309C' }}>
                                 <CancelIcon fontSize="inherit" />
@@ -89,17 +100,21 @@ const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, se
                         <CardContent className='m-3'>
                             <Formik
                                 initialValues={{
-                                    planName: name ? name : '',
+                                    planName: plan ? plan : '',
                                     selectFeatures: ''
                                 }}
                                 validationSchema={SubscriptionSchema}
                                 onSubmit={(values) => {
                                     console.log(values);
                                     setToastOpen(true);
+                                    // navigate('/dashboard/subscription-plan')
                                     setTimeout(() => {
                                         setOpen(false)
-                                        localStorage.setItem('shouldOpenSubEdit', JSON.stringify(false));
-                                        localStorage.setItem('EditFeatures', JSON.stringify([]));
+                                        setPlan('');
+                                        setPreviousPage('');
+                                        setToastOpen(false);
+                                        localStorage.setItem('shouldOpenModal', JSON.stringify(false));
+                                        localStorage.setItem('AddFeatures', JSON.stringify([]));
                                     }, 1000)
                                 }}
                             >
@@ -113,7 +128,7 @@ const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, se
                                                 placeholder={'Plan Name'}
                                                 variant="outlined"
                                                 fullWidth
-                                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                                onChange={(e) => {
                                                     setFieldValue("planName", e.target.value);
                                                     setPlanName(e.target.value);
                                                 }}
@@ -140,19 +155,22 @@ const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, se
                                         </div>
 
                                         {
-                                            feature?.length > 0 && (
+                                            feature && feature?.length > 0 ? (
                                                 <>
+                                                    <div className="">
+                                                    </div>
                                                     <Typography mb={2}>Features</Typography>
-                                                    <div className="flex flex-wrap gap-2 mb-2 max-h-40 overflow-auto">
-                                                        {feature.map((feature: any, index) => (
-                                                            <span key={index} className="bg-[#F5F5F5] px-3 py-1 rounded-full">
+                                                    <div className="flex flex-wrap gap-2 mb-2">
+                                                        {selectedFeatures.map((feature) => (
+                                                            <span key={feature.id} className="bg-[#F5F5F5] px-2 py-1 rounded-full">
                                                                 {feature.featuresDescription}
                                                             </span>
                                                         ))}
-
                                                         <Link
                                                             to='/dashboard/features'
-                                                            state={{ plan: planName ? planName : undefined, previousPage: 'subscription', previousFeatures: modalData, openAddModal: 'false', modalName: 'Edit' }}
+                                                            state={{
+                                                                plan: planName ? planName : undefined, previousPage: 'subscription', previousFeatures: selectedFeatures, modalName: 'Add', openAddModal: 'true'
+                                                            }}
                                                             className='mb-4 bg-[#6C309C] text-white p-2 px-4 rounded-[20px] flex justify-between items-center cursor-pointer'
                                                         >
                                                             <Typography sx={{ color: '#fff' }}>Add more features</Typography>
@@ -160,6 +178,11 @@ const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, se
                                                         </Link>
                                                     </div>
                                                 </>
+                                            ) : (
+                                                <Link to='/dashboard/features' state={{ plan: planName ? planName : undefined, previousPage: 'subscription', openAddModal: 'true' }} className='mb-4 bg-[#F5F5F5] p-2 px-4 rounded-[20px] flex justify-between items-center cursor-pointer'>
+                                                    <Typography sx={{ color: '#787878' }}>Select Features</Typography>
+                                                    <KeyboardArrowDownIcon />
+                                                </Link>
                                             )
                                         }
 
@@ -177,9 +200,7 @@ const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, se
                                                     },
                                                     color: '#fff',
                                                 }}
-                                            >
-                                                Edit Plan
-                                            </Button>
+                                            >Add Plan</Button>
                                         </div>
                                     </Form>
                                 )}
@@ -192,18 +213,19 @@ const EditSubscriptionModal = ({ open, setOpen, handleClose, modalData, name, se
     );
 
     return (
-        <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.16)' }}>
             <Modal
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="user-detail-modal-title"
                 aria-describedby="user-detail-modal-description"
+                // slotProps={{
+                //     backdrop: { style: { opacity: 0.1, backgroundColor: 'rgba(0, 0, 0, 3)' } }
+                // }}
             >
                 {body}
             </Modal>
-        </div>
     )
 }
 
-export default EditSubscriptionModal;
+export default SubscriptionModel;
 

@@ -55,7 +55,7 @@ const AppStatistics = () => {
     );
 };
 
-const renderCountryProgress = (countryName: any, value: any, imageSrc: string) => (
+const renderCountryProgress = (countryName, value, imageSrc) => (
     <div className="mt-2 mb-5">
         <div className="flex items-center mb-3">
             <div className='me-5'>

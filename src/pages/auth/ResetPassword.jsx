@@ -23,9 +23,9 @@ const validationSchema = Yup.object().shape({
 });
 
 const Forgot = () => {
-    const [showPassword, setShowPassword] = React.useState<boolean>(false);
-    const [showConfirmPassword, setShowConfirmPassword] = React.useState<boolean>(false);
-    const [toastOpen, setToastOpen] = React.useState<boolean>(false);
+    const [showPassword, setShowPassword] = React.useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+    const [toastOpen, setToastOpen] = React.useState(false);
 
     const navigate = useNavigate();
 
@@ -35,7 +35,7 @@ const Forgot = () => {
     const handleToggleConfirmPassword = () => {
         setShowConfirmPassword((prevShowPassword) => !prevShowPassword);
     };
-    const handleSubmit = (values: any, { setSubmitting, setErrors }: any) => {
+    const handleSubmit = (values, { setSubmitting, setErrors }) => {
         console.log("Send the reset to the user: ", values);
         setToastOpen(true);
         setTimeout(() => {
@@ -61,7 +61,7 @@ const Forgot = () => {
                         <Form>
                             <div className='mb-5'>
                                 <Field name="password">
-                                    {({ field }: any) => (
+                                    {({ field }) => (
                                         <TextField
                                             {...field}
                                             id="outlined-basic"
@@ -107,7 +107,7 @@ const Forgot = () => {
                             </div>
                             <div className='mb-12'>
                                 <Field name="confirmPassword">
-                                    {({ field }: any) => (
+                                    {({ field }) => (
                                         <TextField
                                             {...field}
                                             id="outlined-basic"
