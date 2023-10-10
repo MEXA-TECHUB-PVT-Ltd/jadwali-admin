@@ -8,15 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
-interface Column {
-    id: 'name' | 'code' | 'population' | 'size' | 'density';
-    label: string;
-    minWidth?: number;
-    align?: 'right';
-    format?: (value: number) => string;
-}
-
-const columns: Column[] = [
+const columns = [
     { id: 'name', label: 'Name', minWidth: 170 },
     { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
     {
@@ -24,37 +16,30 @@ const columns: Column[] = [
         label: 'Population',
         minWidth: 170,
         align: 'right',
-        format: (value: number) => value.toLocaleString('en-US'),
+        format: (value) => value.toLocaleString('en-US'),
     },
     {
         id: 'size',
         label: 'Size\u00a0(km\u00b2)',
         minWidth: 170,
         align: 'right',
-        format: (value: number) => value.toLocaleString('en-US'),
+        format: (value) => value.toLocaleString('en-US'),
     },
     {
         id: 'density',
         label: 'Density',
         minWidth: 170, align: 'right',
-        format: (value: number) => value.toFixed(2),
+        format: (value) => value.toFixed(2),
     },
 ];
 
-interface Data {
-    name: string;
-    code: string;
-    population: number;
-    size: number;
-    density: number;
-}
 
 function createData(
-    name: string,
-    code: string,
-    population: number,
-    size: number,
-): Data {
+    name,
+    code,
+    population,
+    size
+) {
     const density = population / size;
     return { name, code, population, size, density };
 }
@@ -81,12 +66,12 @@ export default function Tb() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-    const handleChangePage = (event: unknown, newPage: number) => {
+    const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
 
-    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRowsPerPage(+event.target.value);
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(event.target.value);
         setPage(0);
     };
 
