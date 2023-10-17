@@ -30,7 +30,7 @@ function App() {
           />
           <Route
             element={<Forgot />}
-            path="/auth/forgot-password"
+            path="/auth/forgot-password" 
           />
           <Route
             element={<VerificationCode />}
