@@ -1,7 +1,7 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { Typography, TextField, Button } from "@mui/material";
+import { Typography, TextField, Button, Alert, CircularProgress } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -10,29 +10,49 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import FormLayout from "../../components/Form/Layout";
 import CardLayout from "../../components/Card/CardLayout";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import { post } from "../../server/server";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
-  password: Yup.string()
-    .min(8, "Password must be at least 8 characters")
-    .required("Password is required"),
+  password: Yup.string().required("Password is required"),
 });
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = React.useState(false);
-  const navigate = useNavigate();
+  const [error, setError] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+  // const navigate = useNavigate();
 
   const handleTogglePassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
-  const handleSubmit = (values) => {
-    console.log("Login data: ", values);
-    navigate("/dashboard");
+  const handleSubmit = async (values) => {
+    values.signup_type = "email";
+    setLoading(true);
+    const { res, err } = await post("/users/signIn", null, null, values);
+    if (err) {
+      setError(err?.response?.data?.message);
+      setLoading(false);
+    }
+    if (res) {
+      if (res.result.role !== "admin") {
+        console.log("You don't have permission to access admin panel");
+        setError("Only admins can access");
+        setLoading(false);
+      } else {
+        localStorage.setItem("token", JSON.stringify(res.token));
+        localStorage.setItem("user", JSON.stringify(res.result));
+        window.location = '/dashboard'
+        setError("");
+        setLoading(false);
+      }
+    }
   };
+
 
   return (
     <CardLayout
@@ -40,6 +60,11 @@ const SignIn = () => {
       subTitle="Sign In"
       description="Sign in to your account"
     >
+      {error && (
+        <Alert severity="error" sx={{ mb: 5 }}>
+          {error}
+        </Alert>
+      )}
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={validationSchema}
@@ -185,7 +210,7 @@ const SignIn = () => {
                 },
               }}
             >
-              Sign In
+              {loading ? <CircularProgress size={24} /> : "Sign In"}
             </Button>
           </Form>
         )}

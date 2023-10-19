@@ -56,7 +56,9 @@ const Layout = () => {
     }
 
     const onLogout = () => {
-        navigate('/auth/sign-in');
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        window.location = "/auth/sign-in";
     }
 
     React.useEffect(() => {
