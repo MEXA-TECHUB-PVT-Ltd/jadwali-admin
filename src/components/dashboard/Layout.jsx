@@ -237,6 +237,7 @@ const TopHeader = ({ handleDeleteModal, handleDeleteCloseModal, isDeleteModalOpe
     const handleClose = () => {
         setAnchorEl(null);
     };
+  const user = JSON.parse(localStorage.getItem("user")) || null;
 
 
     return (
@@ -309,7 +310,7 @@ const TopHeader = ({ handleDeleteModal, handleDeleteCloseModal, isDeleteModalOpe
                 >
                     <div className="flex items-center pe-2 bg-[#6C309C] cursor-pointer" onClick={handleDeleteModal} >
                         <MenuItem className='flex-grow' sx={{ color: 'white' }}>
-                            example@gamil.com
+                            {user.email}
                         </MenuItem>
                         <LogoutIcon sx={{ color: 'white' }} />
                     </div>
