@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import {
@@ -30,17 +30,19 @@ const BlockUser = ({
   handleCloseToast,
   user,
   fetchAllUsers,
+  setOpenDetailModal,
+  setOpenDetail,
+  setOpenDetailedModal,
 }) => {
   const [error, setError] = React.useState("");
   const [loading, setLoading] = React.useState(false);
+  const currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
 
-  const currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
-  
   const handleBlockStatus = async () => {
     setLoading(true);
     const { res, err } = await put("/users/updateBlockStatus", null, null, {
-      block_status: !currentUser.block_status,
-      user_id: currentUser.user_id,
+      block_status: !currentUser?.block_status,
+      user_id: currentUser?.user_id,
     });
 
     if (err) {
@@ -50,15 +52,25 @@ const BlockUser = ({
     }
     if (res) {
       setToastOpen(true);
+      setLoading(false);
       setError(null);
       localStorage.removeItem("currentUser");
+      const op = JSON.parse(localStorage.getItem("detailModalOpen")) || null;
+      if (op) {
+        console.log("Close it");
+        localStorage.setItem("detailModalOpen", false);
+      }
+      if (typeof setOpenDetail === "function") {
+        setOpenDetail();
+      }
+      setOpenDetailedModal(false);
+
       if (fetchAllUsers) {
         fetchAllUsers();
       }
       setTimeout(() => {
         setOpen(false);
-      }, 1000)
-      setLoading(false);
+      }, 1000);
     }
   };
 
@@ -138,7 +150,7 @@ const BlockUser = ({
   const opLow = { opacity: 0.2 };
   const opHigh = { opacity: 0.5 };
 
-  // const backdropStyle = title === "Block User" ? opLow : opHigh;
+  const backdropStyle = opLow;
 
   return (
     <Modal
@@ -146,13 +158,11 @@ const BlockUser = ({
       onClose={handleClose}
       aria-labelledby="user-detail-modal-title"
       aria-describedby="user-detail-modal-description"
-      slotProps={
-        {
-          // backdrop: {
-          //   style: { ...backdropStyle, backgroundColor: "rgba(0, 0, 0, 1)" },
-          // },
-        }
-      }
+      slotProps={{
+        backdrop: {
+          style: { ...backdropStyle, backgroundColor: "rgba(0, 0, 0, 1)" },
+        },
+      }}
     >
       {body}
     </Modal>

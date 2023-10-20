@@ -11,6 +11,7 @@ import {
   Avatar,
   Box,
   Pagination,
+  Tooltip
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import { useState, useEffect, useCallback } from "react";
@@ -24,6 +25,7 @@ import BorderColorIcon from "@mui/icons-material/BorderColor";
 import EditFeaturesModal from "../Models/EditFeaturesModal";
 import DeleteModal from "../Models/DeleteModel";
 import DeleteFeatures from "../Models/features/DeleteFeatures";
+import FeatureDetails from "../Models/features/FeaturesDetails";
 
 const FeaturesTable = ({
   features,
@@ -42,6 +44,17 @@ const FeaturesTable = ({
   const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
   const [currentFeature, setCurrentFeature] = React.useState(null);
+  const [detailData, setDetailData] = React.useState(null);
+  const [openDetailModal, setOpenDetailModal] = React.useState(false);
+
+  const handleDetailModalOpen = (features) => {
+    setDetailData(features);
+    setOpenDetailModal(true);
+  }
+
+  const handleDetailModalClose = () => { 
+setOpenDetailModal(false);
+  }
 
   const theme = useTheme();
 
@@ -177,57 +190,66 @@ const handleClick = useCallback(
         <Table sx={{ minWidth: "250px" }}>
           <TableHead style={{ backgroundColor: "#F4E9FD" }}>
             <TableRow>
-              <TableCell padding="checkbox" sx={{ minWidth: 170 }}>
-                <Checkbox
-                  color="primary"
-                  onChange={handleSelectAllClick}
-                  style={{ color: "#C4C4C4" }}
-                />
+              <TableCell
+                padding="checkbox"
+                sx={{ minWidth: 170 }}
+                align="center"
+              >
+                #
               </TableCell>
               <TableCell
                 style={{ color: "#6C309C", minWidth: 170 }}
                 sx={{ fontWeight: "bold" }}
+                // align="center"
               >
                 Features Description
               </TableCell>
               <TableCell
                 style={{ color: "#6C309C", minWidth: 170 }}
                 sx={{ fontWeight: "bold" }}
+                // align="center"
               >
                 Actions
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginationData.map((feature) => (
-              <TableRow
-                hover
-                key={feature.id}
-                role="checkbox"
-                tabIndex={-1}
-                selected={isSelected(feature.feature_id)}
-                onClick={(event) => handleClick(event, feature.feature_id)}
-              >
-                <TableCell padding="checkbox" sx={{}}>
-                  <Checkbox
-                    color="primary"
-                    checked={isSelected(feature.feature_id)}
-                    style={{ color: "#C4C4C4" }}
-                    onChange={(event) => {
-                      event.stopPropagation(); 
-                      handleClick(event, feature.feature_id);
-                    }}
-                  />
+            {paginationData.map((feature, index) => (
+              <TableRow hover key={feature.id} tabIndex={-1}>
+                <TableCell padding="checkbox" sx={{}} align="center">
+                  {index + 1}
                 </TableCell>
 
-                <TableCell sx={{}}>
-                  <div style={{ display: "flex", flexWrap: "wrap" }}>
-                    <Avatar src="" style={{ marginRight: "8px" }} />
-                    {feature?.description}
+                <TableCell align="center" style={{ verticalAlign: "middle" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      maxWidth: "200px",
+                    }}
+                  >
+                    <Avatar
+                      src=""
+                      style={{ marginRight: "8px", flexShrink: 0 }}
+                    />
+                    <div
+                      style={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                        flexBasis: "0%",
+                        flexGrow: 1,
+                        flexShrink: 1,
+                      }}
+                    >
+                      {feature?.description}
+                    </div>
                   </div>
                 </TableCell>
 
-                <TableCell sx={{}}>
+                <TableCell sx={{}}
+                  // align="center"
+                >
                   <BorderColorIcon
                     sx={{
                       color: "#6C309C",
@@ -237,9 +259,20 @@ const handleClick = useCallback(
                     onClick={() => handleIsEditModalOpen(feature)}
                   />
                   <DeleteIcon
-                    sx={{ color: "red", cursor: "pointer" }}
+                    sx={{
+                      color: "red",
+                      cursor: "pointer",
+                      marginRight: "20px",
+                    }}
                     onClick={() => handleOpenDeleteModal(feature)}
                   />
+                  <Tooltip text="view">
+                    <Visibility
+                      sx={{ color: "rgba(0, 0, 0, 0.4)", fontSize: "20px" }}
+                      className="cursor-pointer me-5"
+                      onClick={() => handleDetailModalOpen(feature)}
+                    />
+                  </Tooltip>
                 </TableCell>
               </TableRow>
             ))}
@@ -267,6 +300,12 @@ const handleClick = useCallback(
         setToastOpen={setToastOpen}
         toastOpen={toastOpen}
         handleCloseToast={handleCloseToast}
+      />
+      <FeatureDetails
+        detailData={detailData}
+        openDetailModal={openDetailModal}
+        setOpenDetailModal={setOpenDetailModal}
+        handleDetailModalClose={handleDetailModalClose}
       />
     </div>
   );
