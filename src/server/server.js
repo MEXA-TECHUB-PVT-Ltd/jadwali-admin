@@ -37,7 +37,6 @@ export const post = async (url, token, id, body) => {
 };
 
 export const put = async (url, token, id, body) => {
-  console.log(url, token, id, body);
   let res, err;
   try {
     const response = await api.put(url, body, {
@@ -53,11 +52,11 @@ export const put = async (url, token, id, body) => {
   return { res, err };
 };
 
-export const del = async (url, token, id) => {
-  console.log(url, token, id);
+export const del = async (url, token, id, body) => {
+  console.log(body)
   let res, err;
   try {
-    const response = await api.delete(url, {
+    const response = await api.delete(url, body, {
       headers: {
         id: id,
         Authorization: token,
