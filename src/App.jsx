@@ -20,6 +20,7 @@ import SubscriptionPlan from "./pages/dashboard/SubscriptionPlan";
 import Tb from "./components/Tb";
 import Features from "./pages/dashboard/Features";
 import { Navigate } from "react-router-dom";
+import ReferralUsers from "./pages/dashboard/ReferralUsers";
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
               <Route path="all-users" element={<AllUsers />} />
               <Route path="subscribed-users" element={<SubscribedUsers />} />
               <Route path="privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="referral-users" element={<ReferralUsers />} />
               <Route
                 path="terms-and-conditions"
                 element={<TermsConditions />}

@@ -12,6 +12,7 @@ import {
   Box,
   Pagination,
   Typography,
+  Tooltip,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import { useState, useEffect } from "react";
@@ -38,6 +39,7 @@ const UserTable = ({
   const [toastMessage, setToastMessage] = useState("");
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [blockUser, setBlockUser] = useState(null);
+
 
   const handleOpenDeleteModal = (user) => {
     localStorage.setItem("currentUser", JSON.stringify(user));
@@ -108,129 +110,128 @@ const UserTable = ({
 
   return (
     <div>
-      <TableContainer
-        component={Paper}
-        sx={{
-          borderRadius: "10px",
-          width: "100%",
-          maxWidth: "100%",
-          overflowX: "scroll",
-        }}
-      >
-        <Table sx={{ minWidth: "250px" }}>
-          <TableHead style={{ backgroundColor: "#F4E9FD" }}>
-            <TableRow>
-              <TableCell align="left" sx={{ minWidth: 120, color: "#6C309C" }}>
-                NO
-              </TableCell>
-              <TableCell
-                align="left"
-                style={{ color: "#6C309C", minWidth: 120 }}
-                sx={{ fontWeight: "bold" }}
-              >
-                USER
-              </TableCell>
-              <TableCell
-                align="left"
-                style={{ color: "#6C309C", minWidth: 120 }}
-                sx={{ fontWeight: "bold" }}
-              >
-                EMAIL ADDRESS
-              </TableCell>
-              <TableCell
-                align="left"
-                style={{ color: "#6C309C", minWidth: 120 }}
-                sx={{ fontWeight: "bold" }}
-              >
-                TOTAL EVENTS
-              </TableCell>
-              <TableCell
-                align="left"
-                style={{ color: "#6C309C", minWidth: 120 }}
-                sx={{ fontWeight: "bold" }}
-              >
-                ACTIONS
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {getDisplayedUsers()?.map((user, index) => (
-              <TableRow
-                hover
-                key={user.id}
-                role="checkbox"
-                tabIndex={-1}
-                selected={isSelected(user.id)}
-              >
-                <TableCell align="left" sx={{}}>
-                  {index + 1}
+      <Paper sx={{ width: "100%", mb: 2, borderRadius: "20px" }}>
+        <TableContainer sx={{ borderRadius: "10px" }}>
+          <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+            <TableHead style={{ backgroundColor: "#F4E9FD" }}>
+              <TableRow>
+                <TableCell
+                  align="left"
+                  sx={{ minWidth: 120, color: "#6C309C" }}
+                >
+                  NO
                 </TableCell>
-
-                <TableCell align="left" sx={{}}>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      flexWrap: "wrap",
-                    }}
-                  >
-                    <Avatar src="" style={{ marginRight: "8px" }} />
-                    {user.full_name}
-                  </div>
+                <TableCell
+                  align="left"
+                  style={{ color: "#6C309C", minWidth: 120 }}
+                  sx={{ fontWeight: "bold" }}
+                >
+                  USER
                 </TableCell>
-                <TableCell align="left" sx={{}}>
-                  {user.email}
+                <TableCell
+                  align="left"
+                  style={{ color: "#6C309C", minWidth: 120 }}
+                  sx={{ fontWeight: "bold" }}
+                >
+                  EMAIL ADDRESS
                 </TableCell>
-                <TableCell align="left" sx={{}}>
-                  {user.events || "Null"}
+                <TableCell
+                  align="left"
+                  style={{ color: "#6C309C", minWidth: 120 }}
+                  sx={{ fontWeight: "bold" }}
+                >
+                  TOTAL EVENTS
                 </TableCell>
-                <TableCell align="left">
-                  <Visibility
-                    sx={{ color: "rgba(0, 0, 0, 0.4)", fontSize: "20px" }}
-                    className="cursor-pointer me-5"
-                    onClick={() => {
-                      if (location.pathname === "/dashboard/all-users") {
-                        handleOpenModal(user);
-                      } else {
-                        handleOpenModal(user);
-                      }
-                    }}
-                  />
-                  {location.pathname === "/dashboard/all-users" ||
-                  location.pathname === "/dashboard" ||
-                  location.pathname === "/" ? (
-                    <Button
-                      variant="contained"
-                      sx={{
-                        backgroundColor: user.block_status
-                          ? "#FF5858"
-                          : "#00C342",
-                        "&:hover": {
-                          backgroundColor: !user.block_status
-                            ? "#00C342"
-                            : "#FF5858",
-                        },
-                        marginRight: "10px",
-                        width: "100px",
-                      }}
-                      size="small"
-                      onClick={() => handleOpenDeleteModal(user)}
-                    >
-                      {user.block_status === false
-                        ? "Unblock"
-                        : "Block" || "Null"}
-                    </Button>
-                  ) : (
-                    ""
-                  )}
+                <TableCell
+                  align="left"
+                  style={{ color: "#6C309C", minWidth: 120 }}
+                  sx={{ fontWeight: "bold" }}
+                >
+                  ACTIONS
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {getDisplayedUsers()?.map((user, index) => (
+                <TableRow
+                  hover
+                  key={user.id}
+                  role="checkbox"
+                  tabIndex={-1}
+                  selected={isSelected(user.id)}
+                >
+                  <TableCell align="left" sx={{}}>
+                    {index + 1}
+                  </TableCell>
+
+                  <TableCell align="left" sx={{}}>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <Avatar src="" style={{ marginRight: "8px" }} />
+                      {user.full_name}
+                    </div>
+                  </TableCell>
+                  <TableCell align="left" sx={{}}>
+                    {user.email}
+                  </TableCell>
+                  <TableCell align="left" sx={{}}>
+                    {user.events || "Null"}
+                  </TableCell>
+                  <TableCell align="left">
+                    <Tooltip title="View">
+
+                    <Visibility
+                      sx={{ color: "rgba(0, 0, 0, 0.4)", fontSize: "20px" }}
+                      className="cursor-pointer me-5"
+                      onClick={() => {
+                        if (location.pathname === "/dashboard/all-users") {
+                          handleOpenModal(user);
+                        } else {
+                          handleOpenModal(user);
+                        }
+                      }}
+                    />
+                    </Tooltip>
+                    {location.pathname === "/dashboard/all-users" ||
+                    location.pathname === "/dashboard" ||
+                    location.pathname === "/" ? (
+                      <Button
+                        variant="contained"
+                        sx={{
+                          backgroundColor: user.block_status
+                            ? "#FF5858"
+                            : "#00C342",
+                          "&:hover": {
+                            backgroundColor: !user.block_status
+                              ? "#00C342"
+                              : "#FF5858",
+                          },
+                          marginRight: "10px",
+                          width: "100px",
+                        }}
+                        size="small"
+                        onClick={() => handleOpenDeleteModal(user)}
+                      >
+                        {user.block_status === false
+                          ? "Unblock"
+                          : "Block" || "Null"}
+                      </Button>
+                    ) : (
+                      ""
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
       <Pagination
-        // ... other props
         onChange={handlePageChange}
         page={page}
         sx={{ display: "none" }}

@@ -9,7 +9,7 @@ const SubscribedUsers = () => {
               title='Subscribed Users'
               status='STATUS'
           />
-          <UserDetailModel />
+          {/* <UserDetailModel /> */}
       </>
   )
 }

@@ -11,7 +11,7 @@ import {
   Avatar,
   Box,
   Pagination,
-  Tooltip
+  Tooltip,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import { useState, useEffect, useCallback } from "react";
@@ -33,6 +33,7 @@ const FeaturesTable = ({
   fetchFeatures,
   toastOpen,
   setToastOpen,
+  filteredUsers,
 }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [page, setPage] = useState(1);
@@ -50,11 +51,11 @@ const FeaturesTable = ({
   const handleDetailModalOpen = (features) => {
     setDetailData(features);
     setOpenDetailModal(true);
-  }
+  };
 
-  const handleDetailModalClose = () => { 
-setOpenDetailModal(false);
-  }
+  const handleDetailModalClose = () => {
+    setOpenDetailModal(false);
+  };
 
   const theme = useTheme();
 
@@ -120,35 +121,34 @@ setOpenDetailModal(false);
     setSelectedUsers([]);
   }, []);
 
-const handleClick = useCallback(
-  (event, id) => {
-    event.preventDefault();
-    event.stopPropagation();
+  const handleClick = useCallback(
+    (event, id) => {
+      event.preventDefault();
+      event.stopPropagation();
 
-    const selectedIndex = selectedUsers.indexOf(id);
-    let newSelected = [];
+      const selectedIndex = selectedUsers.indexOf(id);
+      let newSelected = [];
 
-    // Toggle logic: If the user is already selected, unselect it.
-    // If the user is not selected, select it.
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selectedUsers, id);
-    } else {
-      newSelected = [
-        ...selectedUsers.slice(0, selectedIndex),
-        ...selectedUsers.slice(selectedIndex + 1),
-      ];
-    }
+      // Toggle logic: If the user is already selected, unselect it.
+      // If the user is not selected, select it.
+      if (selectedIndex === -1) {
+        newSelected = newSelected.concat(selectedUsers, id);
+      } else {
+        newSelected = [
+          ...selectedUsers.slice(0, selectedIndex),
+          ...selectedUsers.slice(selectedIndex + 1),
+        ];
+      }
 
-    const clickedUser = features?.find((user) => user.feature_id === id);
-    if (clickedUser) {
-      setSelectedStatus(clickedUser.status);
-    }
+      const clickedUser = features?.find((user) => user.feature_id === id);
+      if (clickedUser) {
+        setSelectedStatus(clickedUser.status);
+      }
 
-    setSelectedUsers(newSelected);
-  },
-  [selectedUsers]
-);
-
+      setSelectedUsers(newSelected);
+    },
+    [selectedUsers]
+  );
 
   const isSelected = (id) => selectedUsers.indexOf(id) !== -1;
 
@@ -165,7 +165,6 @@ const handleClick = useCallback(
   const handlePageChange = (event, value) => {
     setPage(value);
   };
-  // const paginatedUsers = users.slice((page - 1) * rowsPerPage, page * rowsPerPage);
   const paginationData = features.slice(
     (page - 1) * rowsPerPage,
     page * rowsPerPage
@@ -214,7 +213,7 @@ const handleClick = useCallback(
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginationData.map((feature, index) => (
+            {filteredUsers?.map((feature, index) => (
               <TableRow hover key={feature.id} tabIndex={-1}>
                 <TableCell padding="checkbox" sx={{}} align="center">
                   {index + 1}
@@ -247,9 +246,11 @@ const handleClick = useCallback(
                   </div>
                 </TableCell>
 
-                <TableCell sx={{}}
+                <TableCell
+                  sx={{}}
                   // align="center"
                 >
+                  <Tooltip title="Edit">
                   <BorderColorIcon
                     sx={{
                       color: "#6C309C",
@@ -258,6 +259,8 @@ const handleClick = useCallback(
                     }}
                     onClick={() => handleIsEditModalOpen(feature)}
                   />
+                  </Tooltip>
+                  <Tooltip title="Delete">
                   <DeleteIcon
                     sx={{
                       color: "red",
@@ -266,7 +269,8 @@ const handleClick = useCallback(
                     }}
                     onClick={() => handleOpenDeleteModal(feature)}
                   />
-                  <Tooltip text="view">
+                  </Tooltip>
+                  <Tooltip title="View">
                     <Visibility
                       sx={{ color: "rgba(0, 0, 0, 0.4)", fontSize: "20px" }}
                       className="cursor-pointer me-5"
@@ -284,29 +288,34 @@ const handleClick = useCallback(
         handleClose={handleCloseModal}
         status={selectedStatus}
       />
-      <EditFeaturesModal
-        open={isEditModalOpen}
-        handleClose={handleIsEditModalClose}
-        setOpen={handleIsEditModalClose}
-        feature={editData}
-        fetchFeatures={fetchFeatures}
-      />
-      <DeleteFeatures
-        open={isDeleteModalOpen}
-        setOpen={setIsDeleteModalOpen}
-        handleClose={handleDeleteCloseModal}
-        currentFeature={currentFeature}
-        fetchFeatures={fetchFeatures}
-        setToastOpen={setToastOpen}
-        toastOpen={toastOpen}
-        handleCloseToast={handleCloseToast}
-      />
-      <FeatureDetails
-        detailData={detailData}
-        openDetailModal={openDetailModal}
-        setOpenDetailModal={setOpenDetailModal}
-        handleDetailModalClose={handleDetailModalClose}
-      />
+
+      {features?.length > 0 && (
+        <div>
+          <EditFeaturesModal
+            open={isEditModalOpen}
+            handleClose={handleIsEditModalClose}
+            setOpen={handleIsEditModalClose}
+            feature={editData}
+            fetchFeatures={fetchFeatures}
+          />
+          <DeleteFeatures
+            open={isDeleteModalOpen}
+            setOpen={setIsDeleteModalOpen}
+            handleClose={handleDeleteCloseModal}
+            currentFeature={currentFeature}
+            fetchFeatures={fetchFeatures}
+            setToastOpen={setToastOpen}
+            toastOpen={toastOpen}
+            handleCloseToast={handleCloseToast}
+          />
+          <FeatureDetails
+            detailData={detailData}
+            openDetailModal={openDetailModal}
+            setOpenDetailModal={setOpenDetailModal}
+            handleDetailModalClose={handleDetailModalClose}
+          />
+        </div>
+      )}
     </div>
   );
 };
