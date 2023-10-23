@@ -11,6 +11,7 @@ import {
   Avatar,
   Box,
   Pagination,
+  Typography,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import { useState, useEffect } from "react";
@@ -30,7 +31,6 @@ const UserTable = ({
   fetchAllUsers,
 }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
-  //   const [page, setPage] = useState(1);
   const [selectedUser, setSelectedUser] = useState(null);
   const [currentUsers, setCurrentUsers] = useState(users);
   const [toastOpen, setToastOpen] = useState(false);
@@ -46,51 +46,32 @@ const UserTable = ({
     setIsDeleteModalOpen(true);
   };
 
+  useEffect(() => {
+    const op = JSON.parse(localStorage.getItem("detailModalOpen")) || null;
+    if (!op) {
+      console.log("NOT false");
+      setIsModalOpen(false);
+    }
+  }, [isModalOpen]);
+
   const theme = useTheme();
 
   const rowsPerPage = 10;
 
   const location = useLocation();
 
-  const toggleUserStatus = (userId) => {
-    const updatedUsers = currentUsers.map((user) => {
-      if (user.id === userId) {
-        const newStatus = user.status === "Block" ? "Unblock" : "Block";
-        setToastMessage(
-          `User ${
-            newStatus === "Block" ? "blocked" : "unblocked"
-          } successfully!`
-        );
-        return {
-          ...user,
-          status: newStatus,
-        };
-      }
-      return user;
-    });
-
-    setCurrentUsers(updatedUsers);
-
-    if (toastOpen) {
-      setToastOpen(false);
-    }
-
-    setTimeout(() => {
-      setToastOpen(true);
-    }, 100);
-  };
-
   const handleOpenModal = (user) => {
-    localStorage.setItem('currentUser', JSON.stringify(user));
+    localStorage.setItem("currentUser", JSON.stringify(user));
+    localStorage.setItem("detailModalOpen", JSON.stringify(true));
     setSelectedUser(user);
     setIsModalOpen(true);
   };
 
-
-  const handleCloseModal = () => {
-    localStorage.removeItem('currentUser');
+  const handleCloseModal = React.useCallback(() => {
+    localStorage.removeItem("currentUser");
+    localStorage.setItem("detailModalOpen", JSON.stringify(false));
     setIsModalOpen(false);
-  };
+  }, []);
 
   const isSelected = (id) => selectedUsers.indexOf(id) !== -1;
 
@@ -99,25 +80,34 @@ const UserTable = ({
   const paginatedUsers = users.slice(
     (page - 1) * rowsPerPage,
     page * rowsPerPage
-    );
-    
-    const numAdjacentButtons = 1;
-    const handleCloseToast = () => {
-      setToastOpen(false);
-    };
-    
-    const handleDeleteCloseModal = () => {
-      setIsDeleteModalOpen(false);
-      localStorage.removeItem('currentUser');
+  );
+
+  const numAdjacentButtons = 1;
+  const handleCloseToast = () => {
+    setToastOpen(false);
+  };
+
+  const handleDeleteCloseModal = () => {
+    setIsDeleteModalOpen(false);
+    localStorage.removeItem("currentUser");
+  };
+
+  const getDisplayedUsers = () => {
+    switch (location.pathname) {
+      case "/":
+      case "/dashboard":
+        return users.slice(0, 10);
+      case "/dashboard/subscribed-users":
+        return users
+          .filter((user) => user.payment)
+          .slice((page - 1) * rowsPerPage, page * rowsPerPage);
+      default:
+        return paginatedUsers;
+    }
   };
 
   return (
     <div>
-      {/* <ToastModal
-        open={toastOpen}
-        onClose={handleCloseToast}
-        eventMessage={toastMessage}
-      /> */}
       <TableContainer
         component={Paper}
         sx={{
@@ -154,15 +144,6 @@ const UserTable = ({
               >
                 TOTAL EVENTS
               </TableCell>
-              {status && (
-                <TableCell
-                  align="left"
-                  style={{ color: "#6C309C" }}
-                  sx={{ fontWeight: "bold" }}
-                >
-                  Status
-                </TableCell>
-              )}
               <TableCell
                 align="left"
                 style={{ color: "#6C309C", minWidth: 120 }}
@@ -173,10 +154,7 @@ const UserTable = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {(location.pathname === "/" || location.pathname === "/dashboard"
-              ? users.slice(0, 10)
-              : paginatedUsers
-            ).map((user, index) => (
+            {getDisplayedUsers()?.map((user, index) => (
               <TableRow
                 hover
                 key={user.id}
@@ -197,7 +175,7 @@ const UserTable = ({
                     }}
                   >
                     <Avatar src="" style={{ marginRight: "8px" }} />
-                    {user.first_name}
+                    {user.full_name}
                   </div>
                 </TableCell>
                 <TableCell align="left" sx={{}}>
@@ -206,32 +184,6 @@ const UserTable = ({
                 <TableCell align="left" sx={{}}>
                   {user.events || "Null"}
                 </TableCell>
-                {status && (
-                  <TableCell align="left" sx={{}}>
-                    {user.payment ? (
-                      <div
-                        style={{
-                          backgroundColor:
-                            user.payment === "Unpaid" ? "#FF5858" : "#00C342",
-                          borderRadius: "10px",
-                          borderColor: "inherit",
-                          color: "white",
-                          marginTop: "10px",
-                          padding: "6px 16px",
-                          // display: 'inline-block',
-                          fontWeight: "bold",
-                          width: "100px",
-                          textAlign: "center",
-                        }}
-                      >
-                        NULL
-                      </div>
-                    ) : (
-                      "NULL"
-                    )}
-                  </TableCell>
-                )}
-
                 <TableCell align="left">
                   <Visibility
                     sx={{ color: "rgba(0, 0, 0, 0.4)", fontSize: "20px" }}
@@ -306,6 +258,7 @@ const UserTable = ({
         setToastOpen={setToastOpen}
         toastOpen={toastOpen}
         handleCloseToast={handleCloseToast}
+        setOpenDetailedModal={setIsModalOpen}
       />
     </div>
   );

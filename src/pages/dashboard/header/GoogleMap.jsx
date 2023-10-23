@@ -9,6 +9,7 @@ import map from '../../../../public/images/map.png'
 
 
 export const WorldWideUsers = () => {
+
     return (
         <Grid container spacing={2} mt={5}>
             <Grid item xs={12} md={12} lg={7} className='flex'>

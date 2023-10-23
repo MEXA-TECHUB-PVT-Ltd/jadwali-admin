@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import {
@@ -8,10 +8,13 @@ import {
   Avatar,
   Button,
   Modal,
+  CircularProgress,
 } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteModal from "./DeleteModel";
 import BlockUser from "./users/BlockUser";
+import { get } from "../../server/server";
+import { useLocation } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -38,6 +41,37 @@ const UserDetailModel = ({
     setToastOpen(false);
     setIsDeleteModalOpen(true);
   };
+  const location = useLocation();
+  const [details, setDetails] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const op = JSON.parse(localStorage.getItem("detailModalOpen")) || null;
+    if (!op) {
+      console.log("Close the open modal")
+      setOpen(false);
+    }
+  }, [open]);
+
+  const getUserDetails = async () => {
+    if (user) {
+      setLoading(true);
+      const { res, err } = await get(`/users/${user?.user_id}/details`);
+      if (err) {
+        console.error(err);
+        setLoading(false);
+      }
+      if (res) {
+        // console.log(res);
+        setDetails(res?.result);
+        setLoading(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getUserDetails();
+  }, [user]);
 
   const body = (
     <Box style={style}>
@@ -66,28 +100,95 @@ const UserDetailModel = ({
                 gutterBottom
                 color="rgba(108, 48, 156, 1)"
               >
-                {user?.first_name}
+                {user?.full_name}
               </Typography>
               <div className="flex">
                 <Typography color="textSecondary">Total Events:</Typography>
                 <strong className="text-dark ms-2">Null</strong>
               </div>
-              <Button
-                sx={{
-                  backgroundColor: !user?.block_status ? "#FF5858" : "#00C342",
-                  borderRadius: "10px",
-                  "&:hover": {
-                    backgroundColor: !user?.block_status ? "#FF5858" : "#00C342",
-                  },
-                  borderColor: "inherit",
-                  color: "white",
-                  mt: 6,
-                }}
-                fullWidth
-                onClick={handleOpenBlockModal}
-              >
-                {!user?.block_status ? "Block" : "Unblock"}
-              </Button>
+              {loading ? (
+                <CircularProgress size={24} />
+              ) : (
+                <div className="flex flex-wrap items-center">
+                  <Box mt={1}>
+                    <Typography fontWeight="bold" gutterBottom>
+                      Availability
+                    </Typography>
+                    <ul>
+                      {details?.availability === null && (
+                        <Typography variant="body2" mr={2}>
+                          NO RESULT FOUND
+                        </Typography>
+                      )}
+
+                      {details?.availability?.map((availability, index) => (
+                        <li key={index}>
+                          {availability.day}: {availability.start_time} -{" "}
+                          {availability.end_time}
+                        </li>
+                      ))}
+                    </ul>
+                  </Box>
+
+                  <Box mt={1} mr={2}>
+                    <Typography fontWeight="bold" gutterBottom>
+                      User Appointments
+                    </Typography>
+                    <ul>
+                      {details?.user_appointments === null && (
+                        <Typography variant="body2" mr={2}>
+                          NO RESULT FOUND
+                        </Typography>
+                      )}
+                      {details?.user_appointments?.map((appointment, index) => (
+                        <li key={index}>
+                          Name: {appointment.name}, Service ID:{" "}
+                          {appointment.service_id}
+                        </li>
+                      ))}
+                    </ul>
+                  </Box>
+                  <Box mt={1}>
+                    <Typography fontWeight="bold" gutterBottom>
+                      User Services
+                    </Typography>
+                    <ul>
+                      {details?.user_services === null && (
+                        <Typography variant="body2">NO RESULT FOUND</Typography>
+                      )}
+
+                      {details?.user_services?.map((services, index) => (
+                        <li key={index}>
+                          Name: {services.name}, Service ID:{" "}
+                          {services.service_id}
+                        </li>
+                      ))}
+                    </ul>
+                  </Box>
+                </div>
+              )}
+              {location.pathname === "/dashboard/subscribed-users" ? null : (
+                <Button
+                  sx={{
+                    backgroundColor: !user?.block_status
+                      ? "#FF5858"
+                      : "#00C342",
+                    borderRadius: "10px",
+                    "&:hover": {
+                      backgroundColor: !user?.block_status
+                        ? "#FF5858"
+                        : "#00C342",
+                    },
+                    borderColor: "inherit",
+                    color: "white",
+                    mt: 6,
+                  }}
+                  fullWidth
+                  onClick={handleOpenBlockModal}
+                >
+                  {!user?.block_status ? "Block" : "Unblock"}
+                </Button>
+              )}
             </Box>
           </CardContent>
         </CardContent>
@@ -115,12 +216,14 @@ const UserDetailModel = ({
       <BlockUser
         open={isDeleteModalOpen}
         setOpen={setIsDeleteModalOpen}
+        // setOpenDetailModal={setOpen}
         handleClose={handleDeleteCloseModal}
         user={user}
         fetchAllUsers={fetchAllUsers}
         setToastOpen={setToastOpen}
         toastOpen={toastOpen}
         handleCloseToast={handleCloseToast}
+        setOpenDetail={handleClose}
       />
     </>
   );
