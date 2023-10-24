@@ -36,6 +36,7 @@ const BlockUser = ({
 }) => {
   const [error, setError] = React.useState("");
   const [loading, setLoading] = React.useState(false);
+  const [status, setStatus] = React.useState();
   const currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
 
   const handleBlockStatus = async () => {
@@ -54,6 +55,7 @@ const BlockUser = ({
       setToastOpen(true);
       setLoading(false);
       setError(null);
+      setStatus(res?.result.block_status);
       localStorage.removeItem("currentUser");
       const op = JSON.parse(localStorage.getItem("detailModalOpen")) || null;
       if (op) {
@@ -80,7 +82,7 @@ const BlockUser = ({
         open={toastOpen}
         onClose={handleCloseToast}
         eventMessage={`User ${
-          currentUser?.block_status ? "Unblock" : "Block"
+          status && status ? "Block" : "Unblock"
         } Successfully!`}
       />
       <Box style={style}>

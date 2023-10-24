@@ -25,9 +25,18 @@ export const navItems = [
     path: "/dashboard/features",
   },
   {
+    text: "Referral Link",
+    icon: <FormatListBulletedIcon />,
+    path: "/dashboard/referral-users",
+  },
+  {
     text: "Terms & Conditions",
     icon: <DescriptionIcon />,
     path: "/dashboard/terms-and-conditions",
   },
-  { text: "Privacy Policy", icon: <PrivacyTipIcon />, path: "/dashboard/privacy-policy" },
+  {
+    text: "Privacy Policy",
+    icon: <PrivacyTipIcon />,
+    path: "/dashboard/privacy-policy",
+  },
 ];

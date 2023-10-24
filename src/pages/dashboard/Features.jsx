@@ -79,13 +79,6 @@ const Features = () => {
     fetchFeatures();
   }, []);
 
-  // React.useEffect(() => {
-  //     if (previousFeatures && previousFeatures.length > 0) {
-  //         const featuresToStore = [...new Set([...selectedFeatures, ...previousFeatures])];
-  //         localStorage.setItem("EditFeatures", JSON.stringify(featuresToStore));
-  //     }
-  // }, [selectedFeatures, previousFeatures]);
-
   React.useEffect(() => {
     setPage(1);
   }, [searchTerm]);
@@ -107,10 +100,9 @@ const Features = () => {
   };
   const numAdjacentButtons = 1;
 
-  const filteredUsers = users.filter((user) => {
+  const filteredUsers = features.filter((user) => {
     return (
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase())
+      user.description.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
 
@@ -207,6 +199,7 @@ const Features = () => {
         fetchFeatures={fetchFeatures}
         toastOpen={toastOpen}
         setToastOpen={setToastOpen}
+        filteredUsers={filteredUsers}
       />
 
       <Box

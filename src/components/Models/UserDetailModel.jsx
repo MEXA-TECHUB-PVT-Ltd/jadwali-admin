@@ -49,7 +49,7 @@ const UserDetailModel = ({
     const op = JSON.parse(localStorage.getItem("detailModalOpen")) || null;
     if (!op) {
       console.log("Close the open modal")
-      setOpen(false);
+      setOpen && setOpen(false);
     }
   }, [open]);
 
@@ -106,90 +106,87 @@ const UserDetailModel = ({
                 <Typography color="textSecondary">Total Events:</Typography>
                 <strong className="text-dark ms-2">Null</strong>
               </div>
-              {loading ? (
-                <CircularProgress size={24} />
-              ) : (
-                <div className="flex flex-wrap items-center">
-                  <Box mt={1}>
-                    <Typography fontWeight="bold" gutterBottom>
-                      Availability
-                    </Typography>
-                    <ul>
-                      {details?.availability === null && (
-                        <Typography variant="body2" mr={2}>
-                          NO RESULT FOUND
-                        </Typography>
-                      )}
+            </Box>
+            {loading ? (
+              <CircularProgress size={24} />
+            ) : (
+              <div className="flex flex-col">
+                <Box mt={1}>
+                  <Typography fontWeight="bold" gutterBottom>
+                    Availability
+                  </Typography>
+                  <ul>
+                    {details?.availability === null && (
+                      <Typography variant="body2" mr={2}>
+                        NO RESULT FOUND
+                      </Typography>
+                    )}
 
-                      {details?.availability?.map((availability, index) => (
-                        <li key={index}>
-                          {availability.day}: {availability.start_time} -{" "}
-                          {availability.end_time}
-                        </li>
-                      ))}
-                    </ul>
-                  </Box>
+                    {details?.availability?.map((availability, index) => (
+                      <li key={index}>
+                        {availability.day}: {availability.start_time} -{" "}
+                        {availability.end_time}
+                      </li>
+                    ))}
+                  </ul>
+                </Box>
 
-                  <Box mt={1} mr={2}>
-                    <Typography fontWeight="bold" gutterBottom>
-                      User Appointments
-                    </Typography>
-                    <ul>
-                      {details?.user_appointments === null && (
-                        <Typography variant="body2" mr={2}>
-                          NO RESULT FOUND
-                        </Typography>
-                      )}
-                      {details?.user_appointments?.map((appointment, index) => (
-                        <li key={index}>
-                          Name: {appointment.name}, Service ID:{" "}
-                          {appointment.service_id}
-                        </li>
-                      ))}
-                    </ul>
-                  </Box>
-                  <Box mt={1}>
-                    <Typography fontWeight="bold" gutterBottom>
-                      User Services
-                    </Typography>
-                    <ul>
-                      {details?.user_services === null && (
-                        <Typography variant="body2">NO RESULT FOUND</Typography>
-                      )}
+                <Box mt={1} mr={2}>
+                  <Typography fontWeight="bold" gutterBottom>
+                    User Appointments
+                  </Typography>
+                  <ul>
+                    {details?.user_appointments === null && (
+                      <Typography variant="body2" mr={2}>
+                        NO RESULT FOUND
+                      </Typography>
+                    )}
+                    {details?.user_appointments?.map((appointment, index) => (
+                      <li key={index}>
+                        Name: {appointment.name}, Service ID:{" "}
+                        {/* {appointment.service_id} */}
+                      </li>
+                    ))}
+                  </ul>
+                </Box>
+                <Box mt={1}>
+                  <Typography fontWeight="bold" gutterBottom>
+                    User Services
+                  </Typography>
+                  <ul>
+                    {details?.user_services === null && (
+                      <Typography variant="body2">NO RESULT FOUND</Typography>
+                    )}
 
-                      {details?.user_services?.map((services, index) => (
-                        <li key={index}>
-                          Name: {services.name}, Service ID:{" "}
-                          {services.service_id}
-                        </li>
-                      ))}
-                    </ul>
-                  </Box>
-                </div>
-              )}
-              {location.pathname === "/dashboard/subscribed-users" ? null : (
-                <Button
-                  sx={{
+                    {details?.user_services?.map((services, index) => (
+                      <li key={index}>
+                        Name: {services.name}
+                      </li>
+                    ))}
+                  </ul>
+                </Box>
+              </div>
+            )}
+            {location.pathname === "/dashboard/subscribed-users" ? null : (
+              <Button
+                sx={{
+                  backgroundColor: !user?.block_status ? "#FF5858" : "#00C342",
+                  borderRadius: "10px",
+                  "&:hover": {
                     backgroundColor: !user?.block_status
                       ? "#FF5858"
                       : "#00C342",
-                    borderRadius: "10px",
-                    "&:hover": {
-                      backgroundColor: !user?.block_status
-                        ? "#FF5858"
-                        : "#00C342",
-                    },
-                    borderColor: "inherit",
-                    color: "white",
-                    mt: 6,
-                  }}
-                  fullWidth
-                  onClick={handleOpenBlockModal}
-                >
-                  {!user?.block_status ? "Block" : "Unblock"}
-                </Button>
-              )}
-            </Box>
+                  },
+                  borderColor: "inherit",
+                  color: "white",
+                  mt: 6,
+                }}
+                fullWidth
+                onClick={handleOpenBlockModal}
+              >
+                {!user?.block_status ? "Block" : "Unblock"}
+              </Button>
+            )}
           </CardContent>
         </CardContent>
       </Card>

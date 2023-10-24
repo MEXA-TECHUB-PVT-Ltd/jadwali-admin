@@ -12,6 +12,11 @@
   font-family: 'Noto Sans', sans-serif !important; 
 }
 
+
+body {
+  scroll-behavior: smooth;
+}
+
 .activeLink,
 .link:hover {
   color: rgba(108, 48, 156, 1) !important;
@@ -46,6 +51,10 @@
   color: black
 }
 
+
+
+
+/* ------------- */
 
 
 /* Add this to your CSS */

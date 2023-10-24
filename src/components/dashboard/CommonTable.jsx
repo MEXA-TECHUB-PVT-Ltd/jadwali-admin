@@ -70,7 +70,7 @@ const CommonTable = ({ title, status }) => {
   );
   return (
     <>
-      <div className="flex justify-between items mb-5">
+      <div className="flex flex-wrap justify-between items mb-5">
         <Typography fontSize="25px" fontWeight="medium" color="#342E59">
           {title}
         </Typography>
@@ -107,7 +107,7 @@ const CommonTable = ({ title, status }) => {
         </div>
       )}
       {!error && (
-        <>
+        <div className="w-full" style={{ width: '100%'}}>
           {searchTerm === "" ? (
             <UserTable
               users={allUsers}
@@ -217,7 +217,7 @@ const CommonTable = ({ title, status }) => {
               </Button>
             </Box>
           </Box>
-        </>
+        </div>
       )}
     </>
   );

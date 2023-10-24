@@ -2,6 +2,7 @@ import { Typography } from '@mui/material';
 import Overview from './Overview';
 import { WorldWideUsers } from './GoogleMap';
 import UserDataTable from './UserDataTable';
+import Dummy from '../../../components/dashboard/Dummy';
 
 
 
@@ -10,8 +11,9 @@ const Dashboard = () => {
         <div>
             <Typography sx={{ fontSize: '25px', fontWeight: 'medium' }}>Dashboard</Typography>
             <Overview />
-            <WorldWideUsers />
+            <WorldWideUsers /> 
             <UserDataTable />
+            {/* <Dummy /> */}
         </div >
     );
 };
