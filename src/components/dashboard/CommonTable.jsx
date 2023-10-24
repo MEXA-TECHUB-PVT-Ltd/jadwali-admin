@@ -1,6 +1,6 @@
 import React from "react";
 import UserTable from "./UserTable";
-import { users } from "../../utils/dashboard";
+// import { users } from "../../utils/dashboard";
 import { Box, Button, Typography, InputBase } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { get, post } from "../../server/server";
@@ -11,16 +11,20 @@ const CommonTable = ({ title, status }) => {
   const [error, setError] = React.useState("");
   const [allUsers, setAllUsers] = React.useState([]);
   const [filteredUsers, setFilteredUsers] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
 
   const rowsPerPage = 10;
 
   const fetchAllUsers = async () => {
+    setLoading(true);
     const { res, err } = await get("/users/get");
     if (err) {
       console.error(err);
+      setLoading(false);
     }
     if (res) {
       setAllUsers(res.result);
+      setLoading(false);
     }
   };
 
@@ -65,9 +69,34 @@ const CommonTable = ({ title, status }) => {
       handleSearch();
     }
   }, [searchTerm]);
-  const maxPages = Math.ceil(
-    (searchTerm ? filteredUsers.length : allUsers.length) / rowsPerPage
-  );
+
+  // console.log(users)
+  
+  const getDisplayedUsers = () => {
+    switch (location.pathname) {
+      case "/":
+        case "/dashboard":
+          return allUsers?.slice(0, 10);
+        case "/dashboard/subscribed-users":
+          return allUsers
+            ?.filter((user) => user.payment === "true")
+            ?.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+        default:
+          return paginatedUsers;
+        }
+  };
+  
+
+      const maxPages = Math.ceil(
+        (searchTerm ? filteredUsers.length : allUsers.length) / rowsPerPage
+      );
+    
+      // const maxPages = Math.ceil(getDisplayedUsers.length / rowsPerPage);
+    
+      const paginatedUsers = allUsers?.slice(
+        (page - 1) * rowsPerPage,
+        page * rowsPerPage
+      );
   return (
     <>
       <div className="flex flex-wrap justify-between items mb-5">
@@ -107,14 +136,15 @@ const CommonTable = ({ title, status }) => {
         </div>
       )}
       {!error && (
-        <div className="w-full" style={{ width: '100%'}}>
+        <div className="w-full" style={{ width: "100%" }}>
           {searchTerm === "" ? (
             <UserTable
-              users={allUsers}
+              users={getDisplayedUsers}
               status={status}
               page={page}
               handlePageChange={handlePageChange}
               fetchAllUsers={fetchAllUsers}
+              loading={loading}
             />
           ) : (
             <UserTable
@@ -124,6 +154,7 @@ const CommonTable = ({ title, status }) => {
               page={page}
               handlePageChange={handlePageChange}
               fetchAllUsers={fetchAllUsers}
+              loading={loading}
             />
           )}
           <Box
