@@ -26,6 +26,7 @@ import EditFeaturesModal from "../Models/EditFeaturesModal";
 import DeleteModal from "../Models/DeleteModel";
 import DeleteFeatures from "../Models/features/DeleteFeatures";
 import FeatureDetails from "../Models/features/FeaturesDetails";
+import Progress from "../CommonProgress/Progress";
 
 const FeaturesTable = ({
   features,
@@ -34,6 +35,7 @@ const FeaturesTable = ({
   toastOpen,
   setToastOpen,
   filteredUsers,
+  loading
 }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [page, setPage] = useState(1);
@@ -177,6 +179,11 @@ const FeaturesTable = ({
 
   return (
     <div>
+      {
+        loading ? (
+                <Progress />
+        )
+          :
       <TableContainer
         component={Paper}
         sx={{
@@ -283,6 +290,7 @@ const FeaturesTable = ({
           </TableBody>
         </Table>
       </TableContainer>
+      }
       <UserDetailModel
         open={isModalOpen}
         handleClose={handleCloseModal}

@@ -23,6 +23,7 @@ import { useLocation } from "react-router-dom";
 import ToastModal from "../Models/TostModal";
 import * as React from "react";
 import BlockUser from "../Models/users/BlockUser";
+import Progress from "../CommonProgress/Progress";
 
 const UserTable = ({
   users,
@@ -89,6 +90,9 @@ const UserTable = ({
 
   return (
     <div>
+              {loading ? (
+                <Progress />
+              ) : (
       <Paper sx={{ width: "100%", mb: 2, borderRadius: "20px" }}>
         <TableContainer sx={{ borderRadius: "10px" }}>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
@@ -130,96 +134,97 @@ const UserTable = ({
                 </TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
-              {loading ? (
-                <CircularProgress size={24} sx={{ m: 5 }} />
-              ) : (
-                (typeof users === "function" ? users() : users)?.map(
-                  (user, index) => (
-                    <TableRow
-                      hover
-                      key={user.id}
-                      role="checkbox"
-                      tabIndex={-1}
-                      selected={isSelected(user.id)}
-                    >
-                      <TableCell align="left" sx={{}}>
-                        {index + 1}
-                      </TableCell>
+            <TableBody style={{ position: "relative" }}>
+                  {(typeof users === "function" ? users() : users)?.map(
+                    (user, index) => (
+                      <TableRow
+                        hover
+                        key={user.id}
+                        role="checkbox"
+                        tabIndex={-1}
+                        selected={isSelected(user.id)}
+                      >
+                        <TableCell align="left" sx={{}}>
+                          {index + 1}
+                        </TableCell>
 
-                      <TableCell align="left" sx={{}}>
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            flexWrap: "wrap",
-                          }}
-                        >
-                          <Avatar src="" style={{ marginRight: "8px" }} />
-                          {user.full_name}
-                        </div>
-                      </TableCell>
-                      <TableCell align="left" sx={{}}>
-                        {user.email}
-                      </TableCell>
-                      <TableCell align="left" sx={{}}>
-                        {user.events || "Null"}
-                      </TableCell>
-                      <TableCell align="left">
-                        <Tooltip title="View">
-                          <Visibility
-                            sx={{
-                              color: "rgba(0, 0, 0, 0.4)",
-                              fontSize: "20px",
+                        <TableCell align="left" sx={{}}>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              flexWrap: "wrap",
                             }}
-                            className="cursor-pointer me-5"
-                            onClick={() => {
-                              if (
-                                location.pathname === "/dashboard/all-users"
-                              ) {
-                                handleOpenModal(user);
-                              } else {
-                                handleOpenModal(user);
-                              }
-                            }}
-                          />
-                        </Tooltip>
-                        {location.pathname === "/dashboard/all-users" ||
-                        location.pathname === "/dashboard" ||
-                        location.pathname === "/" ? (
-                          <Button
-                            variant="contained"
-                            sx={{
-                              backgroundColor: user.block_status
-                                ? "#FF5858"
-                                : "#00C342",
-                              "&:hover": {
-                                backgroundColor: !user.block_status
-                                  ? "#00C342"
-                                  : "#FF5858",
-                              },
-                              marginRight: "10px",
-                              width: "100px",
-                            }}
-                            size="small"
-                            onClick={() => handleOpenDeleteModal(user)}
                           >
-                            {user.block_status === false
-                              ? "Unblock"
-                              : "Block" || "Null"}
-                          </Button>
-                        ) : (
-                          ""
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  )
-                )
-              )}
+                            <Avatar src="" style={{ marginRight: "8px" }} />
+                            {user.full_name}
+                          </div>
+                        </TableCell>
+                        <TableCell align="left" sx={{}}>
+                          {user.email}
+                        </TableCell>
+                        <TableCell align="left" sx={{}}>
+                          {user.events || "Null"}
+                        </TableCell>
+                        <TableCell align="left">
+                          <Tooltip title="View">
+                            <Visibility
+                              sx={{
+                                color: "rgba(0, 0, 0, 0.4)",
+                                fontSize: "20px",
+                              }}
+                              className="cursor-pointer me-5"
+                              onClick={() => {
+                                if (
+                                  location.pathname === "/dashboard/all-users"
+                                ) {
+                                  handleOpenModal(user);
+                                } else {
+                                  handleOpenModal(user);
+                                }
+                              }}
+                            />
+                          </Tooltip>
+                          {location.pathname === "/dashboard/all-users" ||
+                            location.pathname === "/dashboard" ||
+                            location.pathname === "/" ? (
+                            <Button
+                              variant="contained"
+                              sx={{
+                                backgroundColor: user.block_status
+                                  ? "#FF5858"
+                                  : "#00C342",
+                                "&:hover": {
+                                  backgroundColor: !user.block_status
+                                    ? "#00C342"
+                                    : "#FF5858",
+                                },
+                                marginRight: "10px",
+                                width: "100px",
+                              }}
+                              size="small"
+                              onClick={() => handleOpenDeleteModal(user)}
+                            >
+                              {user.block_status === false
+                                ? "Unblock"
+                                : "Block" || "Null"}
+                            </Button>
+                          ) : (
+                            ""
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    )
+                  )}
             </TableBody>
           </Table>
         </TableContainer>
       </Paper>
+  )
+}
+<>
+
+
       <Pagination
         onChange={handlePageChange}
         page={page}
@@ -250,6 +255,7 @@ const UserTable = ({
         handleCloseToast={handleCloseToast}
         setOpenDetailedModal={setIsModalOpen}
       />
+</>
     </div>
   );
 };
