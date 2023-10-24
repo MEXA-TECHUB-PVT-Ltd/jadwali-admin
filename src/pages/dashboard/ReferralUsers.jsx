@@ -5,19 +5,21 @@ import ReferralTable from "../../components/dashboard/ReferralTable";
 const ReferralUsers = () => {
     const [users, setUsers] = useState();
     const [pendingUsers, setPendingUsers] = useState(0);
-    const [approvedUsers, setApprovedUsers] = useState(0)
-    console.log("HELLO WORLD")
+  const [approvedUsers, setApprovedUsers] = useState(0);
+  const [loading, setLoading] = useState(false);
 
-    const fetchUsers = async () => {
+  const fetchUsers = async () => {
+      setLoading(true);
         const { res, err } = await get("/users/get");
         if (err) {
-            console.error(err);
+          console.error(err);
+          setLoading(false);
         }
         if (res) {
-            console.log(res);
-            setUsers(res.result);
-            setPendingUsers(res.pendingUsersCount);
-            setApprovedUsers(res.approvedUsersCount);
+          setUsers(res.result);
+          setPendingUsers(res.pendingUsersCount);
+          setApprovedUsers(res.approvedUsersCount);
+          setLoading(false);
         }
     }
     useEffect(() => {
@@ -25,7 +27,13 @@ const ReferralUsers = () => {
     },[])
   return (
     <div>
-      <ReferralTable users={users} pendingUsers={pendingUsers} approvedUsers={approvedUsers} />
+      <ReferralTable
+        users={users}
+        pendingUsers={pendingUsers}
+        approvedUsers={approvedUsers}
+        fetchUsers={fetchUsers}
+        loading={loading}
+      />
     </div>
   );
 };

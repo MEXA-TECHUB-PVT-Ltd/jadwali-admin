@@ -15,9 +15,10 @@ import FirstPageIcon from "@mui/icons-material/FirstPage";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
-import { Button, TableHead, Tooltip } from "@mui/material";
+import { Button, CircularProgress, TableHead, Tooltip } from "@mui/material";
 import { Visibility } from "@mui/icons-material";
 import DiscountModal from "../Models/referral/DiscountModal";
+import DetailModal from "../Models/referral/DetailModal";
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -89,21 +90,31 @@ TablePaginationActions.propTypes = {
 };
 
 
-export default function ReferralTable({ users, pendingUsers, approvedUsers }) {
+export default function ReferralTable({ users, pendingUsers, approvedUsers, fetchUsers, loading }) {
   const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const [openDiscount, setOpenDiscount] = React.useState(false);
-    const [currentUser, setCurrentUser] = React.useState();
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [openDiscount, setOpenDiscount] = React.useState(false);
+  const [currentUser, setCurrentUser] = React.useState();
+  const [toastOpen, setToastOpen] = React.useState(false);
+  const [openDetail, setOpenDetail] = React.useState(false);
 
+  const handleOpenDiscount = (user) => {
+    setCurrentUser(user);
+    setOpenDiscount(true);
+    setToastOpen(false);
+  };
 
-    const handleOpenDiscount = (user) => {
-        setCurrentUser(user);
-        setOpenDiscount(true);
-    }
+  const handleCloseDiscount = () => {
+    setOpenDiscount(false);
+  };
 
-    const handleCloseDiscount = () => { 
-        setOpenDiscount(false);
-    }
+  const handleViewModal = (user) => {
+    setCurrentUser(user);
+    setOpenDetail(true);
+  }
+  const handleCloseViewMmodal = () => { 
+    setOpenDetail(false);
+  }
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -168,7 +179,7 @@ export default function ReferralTable({ users, pendingUsers, approvedUsers }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {(rowsPerPage > 0
+            { loading ? <CircularProgress size={24} sx={{ m: 5}} /> : (rowsPerPage > 0
               ? users?.slice(
                   page * rowsPerPage,
                   page * rowsPerPage + rowsPerPage
@@ -197,6 +208,7 @@ export default function ReferralTable({ users, pendingUsers, approvedUsers }) {
                       <Visibility
                         sx={{ color: "rgba(0, 0, 0, 0.4)", fontSize: "20px" }}
                         className="cursor-pointer me-5"
+                        onClick={() => handleViewModal(row)}
                       />
                     </Tooltip>
                     <Button
@@ -254,6 +266,15 @@ export default function ReferralTable({ users, pendingUsers, approvedUsers }) {
         setOpen={setOpenDiscount}
         handleClose={handleCloseDiscount}
         currentUser={currentUser}
+        fetchUsers={fetchUsers}
+        toastOpen={toastOpen}
+        setToastOpen={setToastOpen}
+      />
+      <DetailModal 
+        open={openDetail}
+        setOpen={setOpenDetail}
+        handleClose={handleCloseViewMmodal}
+        user={currentUser}
       />
     </Paper>
   );

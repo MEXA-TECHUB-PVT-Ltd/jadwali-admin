@@ -8,16 +8,19 @@ import { get } from '../../../server/server';
 
 const UserDataTable = () => {
 
-      const [allUsers, setAllUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-
-      const fetchAllUsers = async () => {
+  const fetchAllUsers = async () => {
+        setLoading(true);
         const { res, err } = await get("/users/get");
         if (err) {
           console.error(err);
+          setLoading(false);
         }
         if (res) {
           setAllUsers(res.result);
+          setLoading(false);
         }
       };
 
@@ -46,7 +49,7 @@ const UserDataTable = () => {
             View All Users
           </Button>
         </div>
-        <UserTable users={allUsers} />
+        <UserTable users={allUsers} loading={loading} />
       </>
     );
 }

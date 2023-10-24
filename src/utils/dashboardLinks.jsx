@@ -5,6 +5,7 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import PrivacyTipIcon from "@mui/icons-material/PrivacyTip";
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import LinkIcon from "@mui/icons-material/Link";
 
 export const navItems = [
   { text: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
@@ -26,7 +27,7 @@ export const navItems = [
   },
   {
     text: "Referral Link",
-    icon: <FormatListBulletedIcon />,
+    icon: <LinkIcon />,
     path: "/dashboard/referral-users",
   },
   {
