@@ -8,10 +8,12 @@ import {
   Avatar,
   Button,
   Modal,
+  useTheme,
 } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import ToastModal from "./TostModal";
 import { useLocation } from "react-router-dom";
+import BoxStyle from "./StylesModal/BoxStyle";
 
 const style = {
   position: "absolute",
@@ -34,6 +36,8 @@ const DeleteModal = ({
   setToastOpen,
 }) => {
   const location = useLocation();
+const theme = useTheme();
+
 
   const body = (
     <>
@@ -46,8 +50,8 @@ const DeleteModal = ({
             : eventMessage
         }
       />
-      <Box style={style}>
-        <Card className="sm:w-[450px] w-[80%]" sx={{ borderRadius: "30px" }}>
+      <BoxStyle>
+        <Card className="sm:w-[550px] mx-5" sx={{ borderRadius: "30px" }}>
           <CardContent className="p-0" sx={{ m: 2 }}>
             <Typography
               sx={{
@@ -90,7 +94,7 @@ const DeleteModal = ({
             </div>
           </CardContent>
         </Card>
-      </Box>
+      </BoxStyle>
     </>
   );
 
@@ -108,6 +112,14 @@ const DeleteModal = ({
       slotProps={{
         backdrop: {
           style: { ...backdropStyle, backgroundColor: "rgba(0, 0, 0, 1)" },
+        },
+      }}
+      sx={{
+        display: "flex", // Use flexbox for centering
+        alignItems: "center", // Vertically center the modal
+        justifyContent: "center", // Horizontally center the modal // Apply some padding on the x-axis
+        [theme.breakpoints.down("sm")]: {
+          overflowY: "auto", // Add scroll on smaller screens if needed
         },
       }}
     >

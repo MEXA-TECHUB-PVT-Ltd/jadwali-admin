@@ -18,6 +18,7 @@ const Features = () => {
   const [selectedFeatures, setSelectedFeatures] = React.useState([]);
   const [features, setFeatures] = React.useState([]);
   const [toastOpen, setToastOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   const handleIsAddModalOpen = React.useCallback(() => {
     setIsAddModalOpen(true);
@@ -66,12 +67,15 @@ const Features = () => {
   }, [previousFeatures]);
 
   const fetchFeatures = async () => {
+    setLoading(true);
     const { res, err } = await get("/features/get");
     if (err) {
       console.error(err);
+      setLoading(false);
     }
     if (res) {
       setFeatures(res.result);
+      setLoading(false);
     }
   };
 
@@ -200,6 +204,7 @@ const Features = () => {
         toastOpen={toastOpen}
         setToastOpen={setToastOpen}
         filteredUsers={filteredUsers}
+        loading={loading}
       />
 
       <Box

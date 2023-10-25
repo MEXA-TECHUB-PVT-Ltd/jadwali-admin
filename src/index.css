@@ -52,7 +52,27 @@ body {
 }
 
 
+.highlighted {
+  color: rgba(108, 48, 156, 1);
+}
 
+.link-term {
+  color: #000;
+  /* Default link color */
+  text-decoration: none;
+  /* Remove underline from links */
+}
+
+.link-term:hover {
+  color: #4a90e2;
+  /* Color when hovering over the link */
+}
+
+.active-link-term {
+  color: rgba(108, 48, 156, 1);
+  text-decoration: underline;
+  /* Color for the active link */
+}
 
 /* ------------- */
 

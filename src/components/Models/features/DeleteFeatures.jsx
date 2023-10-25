@@ -9,10 +9,12 @@ import {
   Button,
   Modal,
   Alert,
+  useTheme,
 } from "@mui/material";
 import ToastModal from "../TostModal";
 import { del, put } from "../../../server/server";
 import { CircularProgress } from "@material-ui/core";
+import BoxStyle from "../StylesModal/BoxStyle";
 
 const style = {
   position: "absolute",
@@ -34,6 +36,8 @@ const DeleteFeatures = ({
 }) => {
   const [error, setError] = React.useState("");
   const [loading, setLoading] = React.useState(false);
+const theme = useTheme();
+
 
   const handleDeleteFeature = async () => {
     setLoading(true);
@@ -68,8 +72,8 @@ const DeleteFeatures = ({
         onClose={handleCloseToast}
         eventMessage="Feature Delete Successfully!"
       />
-      <Box style={style}>
-        <Card className="sm:w-[450px] w-[80%]" sx={{ borderRadius: "30px" }}>
+      <BoxStyle>
+        <Card className="sm:w-[550px] mx-5" sx={{ borderRadius: "30px" }}>
           <CardContent className="p-0" sx={{ m: 2 }}>
             <Typography
               sx={{
@@ -117,14 +121,13 @@ const DeleteFeatures = ({
             </div>
           </CardContent>
         </Card>
-      </Box>
+      </BoxStyle>
     </>
   );
 
   const opLow = { opacity: 0.2 };
   const opHigh = { opacity: 0.5 };
 
-  // const backdropStyle = title === "Block User" ? opLow : opHigh;
 
   return (
     <Modal
@@ -132,13 +135,20 @@ const DeleteFeatures = ({
       onClose={handleClose}
       aria-labelledby="user-detail-modal-title"
       aria-describedby="user-detail-modal-description"
-      slotProps={
-        {
-          // backdrop: {
-          //   style: { ...backdropStyle, backgroundColor: "rgba(0, 0, 0, 1)" },
-          // },
-        }
-      }
+      slotProps={{
+        backdrop: {
+          // style: { opacity: 0.5, backgroundColor: "rgba(0, 0, 0, 1)" },
+        },
+      }}
+      sx={{
+        display: "flex", // Use flexbox for centering
+        alignItems: "center", // Vertically center the modal
+        justifyContent: "center", // Horizontally center the modal
+        px: 2, // Apply some padding on the x-axis
+        [theme.breakpoints.down("sm")]: {
+          overflowY: "auto", // Add scroll on smaller screens if needed
+        },
+      }}
     >
       {body}
     </Modal>

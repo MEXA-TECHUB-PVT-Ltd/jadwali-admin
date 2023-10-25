@@ -32,7 +32,7 @@ const UserDataTable = () => {
 
     return (
       <>
-        <div className="flex justify-between items-center mt-10 mb-5">
+        <div className="flex justify-between items-center flex-wrap mt-10 mb-5">
           <Typography fontSize="25px">Recent Users</Typography>
           <Button
             variant="contained"

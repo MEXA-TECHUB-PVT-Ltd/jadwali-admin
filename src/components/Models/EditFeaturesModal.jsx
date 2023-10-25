@@ -9,6 +9,7 @@ import {
   Button,
   Modal,
   TextField,
+  useTheme,
 } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -16,6 +17,7 @@ import * as Yup from "yup";
 import ToastModal from "./TostModal";
 import { put } from "../../server/server";
 import { CircularProgress } from "@material-ui/core";
+import BoxStyle from "./StylesModal/BoxStyle";
 
 const SubscriptionSchema = Yup.object().shape({
   description: Yup.string().required("Required"),
@@ -38,20 +40,22 @@ const EditFeaturesModal = ({
   const [toastOpen, setToastOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(null);
+const theme = useTheme();
+
 
   const handleCloseToast = () => {
     setToastOpen(false);
   };
 
   const body = (
-    <div style={{ backgroundColor: "rgba(0, 0, 0, 0.16)" }}>
+    <div>
       <ToastModal
         open={toastOpen}
         onClose={handleCloseToast}
         eventMessage={"Feature Edit Successfully"}
       />
-      <Box style={style}>
-        <Card className="sm:w-[500px] w-[80%]" sx={{ borderRadius: "30px" }}>
+      <BoxStyle>
+        <Card className="sm:w-[550px] mx-5" sx={{ borderRadius: "30px" }}>
           <CardContent className="p-0" sx={{ padding: 0 }}>
             <div className="mb-12 bg-[#C7AEDB] px-5 py-3 flex justify-between items-center">
               <Typography
@@ -179,7 +183,7 @@ const EditFeaturesModal = ({
             </CardContent>
           </CardContent>
         </Card>
-      </Box>
+      </BoxStyle>
     </div>
   );
 
@@ -193,6 +197,14 @@ const EditFeaturesModal = ({
         slotProps={{
           backdrop: {
             style: { opacity: 0.1, backgroundColor: "rgba(0, 0, 0, 0.5)" },
+          },
+        }}
+        sx={{
+          display: "flex", // Use flexbox for centering
+          alignItems: "center", // Vertically center the modal
+          justifyContent: "center", // Horizontally center the modal // Apply some padding on the x-axis
+          [theme.breakpoints.down("sm")]: {
+            overflowY: "auto", // Add scroll on smaller screens if needed
           },
         }}
       >

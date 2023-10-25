@@ -21,9 +21,9 @@ import Tb from "./components/Tb";
 import Features from "./pages/dashboard/Features";
 import { Navigate } from "react-router-dom";
 import ReferralUsers from "./pages/dashboard/ReferralUsers";
+import CustomTable from "./pages/CustomTable";
 
 function App() {
-
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
