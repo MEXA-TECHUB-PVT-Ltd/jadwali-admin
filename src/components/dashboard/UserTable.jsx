@@ -95,7 +95,7 @@ const UserTable = ({
               ) : (
       <Paper sx={{ width: "100%", mb: 2, borderRadius: "20px" }}>
         <TableContainer sx={{ borderRadius: "10px" }}>
-          <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+          <Table aria-labelledby="tableTitle">
             <TableHead style={{ backgroundColor: "#F4E9FD" }}>
               <TableRow>
                 <TableCell
@@ -225,11 +225,11 @@ const UserTable = ({
 <>
 
 
-      <Pagination
+      {/* <Pagination
         onChange={handlePageChange}
         page={page}
         sx={{ display: "none" }}
-      />
+      /> */}
       <UserDetailModel
         open={isModalOpen}
         setOpen={setIsModalOpen}

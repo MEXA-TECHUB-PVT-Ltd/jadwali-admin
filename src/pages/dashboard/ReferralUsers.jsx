@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { get } from "../../server/server";
 import ReferralTable from "../../components/dashboard/ReferralTable";
+import { Typography } from "@mui/material";
 
 const ReferralUsers = () => {
     const [users, setUsers] = useState();
@@ -27,6 +28,9 @@ const ReferralUsers = () => {
     },[])
   return (
     <div>
+      <Typography fontSize="25px" fontWeight="medium" color="#342E59" mb={5}>
+        Referral Link
+      </Typography>
       <ReferralTable
         users={users}
         pendingUsers={pendingUsers}

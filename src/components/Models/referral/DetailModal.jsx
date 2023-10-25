@@ -13,6 +13,9 @@ import {
 import CancelIcon from "@mui/icons-material/Cancel";
 import { useLocation } from "react-router-dom";
 import { get } from "../../../server/server";
+import BoxStyle from "../StylesModal/BoxStyle";
+import { useTheme } from "@mui/material/styles";
+
 
 const style = {
   position: "absolute",
@@ -37,6 +40,7 @@ const DetailModal = ({
 }) => {
   const [details, setDetails] = useState("");
   const [loading, setLoading] = useState(false);
+  const theme = useTheme();
 
   const getUserDetails = async () => {
     if (user) {
@@ -59,8 +63,8 @@ const DetailModal = ({
   }, [user]);
 
   const body = (
-    <Box style={style}>
-      <Card className="sm:w-[550px] w-[80%]" sx={{ borderRadius: "30px" }}>
+    <BoxStyle>
+      <Card className="sm:w-[550px] mx-5" sx={{ borderRadius: "30px" }}>
         <CardContent className="p-0" sx={{ padding: 0 }}>
           <div className="px-5 py-3 flex justify-between items-center">
             <Typography
@@ -153,7 +157,7 @@ const DetailModal = ({
           </CardContent>
         </CardContent>
       </Card>
-    </Box>
+    </BoxStyle>
   );
 
   return (
@@ -167,6 +171,15 @@ const DetailModal = ({
           slotProps={{
             backdrop: {
               style: { opacity: 0.5, backgroundColor: "rgba(0, 0, 0, 1)" },
+            },
+          }}
+          sx={{
+            display: "flex", // Use flexbox for centering
+            alignItems: "center", // Vertically center the modal
+            justifyContent: "center", // Horizontally center the modal
+            px: 2, // Apply some padding on the x-axis
+            [theme.breakpoints.down("sm")]: {
+              overflowY: "auto", // Add scroll on smaller screens if needed
             },
           }}
         >

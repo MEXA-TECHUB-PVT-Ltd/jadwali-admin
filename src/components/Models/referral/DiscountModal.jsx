@@ -17,6 +17,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { post } from "../../../server/server";
 import ToastModal from "../TostModal";
+import BoxStyle from "../StylesModal/BoxStyle";
+import { useTheme } from "@mui/material/styles";
 
 const style = {
   position: "absolute",
@@ -37,6 +39,8 @@ const DiscountModal = ({
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(null);
+const theme = useTheme();
+
   const validationSchema = Yup.object({
     discount: Yup.number()
       .required("Discount is required")
@@ -95,8 +99,8 @@ const DiscountModal = ({
         onClose={handleCloseToast}
         eventMessage={success}
       />
-      <Box style={style}>
-        <Card className="sm:w-[550px] w-[80%]" sx={{ borderRadius: "30px" }}>
+      <BoxStyle>
+        <Card className="sm:w-[550px] mx-5" sx={{ borderRadius: "30px" }}>
           <CardContent className="p-0" sx={{ padding: 0 }}>
             <div className="px-5 py-3 flex justify-between items-center">
               <Typography
@@ -171,13 +175,13 @@ const DiscountModal = ({
             </CardContent>
           </CardContent>
         </Card>
-      </Box>
+      </BoxStyle>
     </>
   );
 
   return (
     <>
-      <div style={{ backgroundColor: "rgba(0, 0, 0, 0.16)" }}>
+      <div style={{ backgroundColor: "rgba(0, 0, 0, 0.16)", width: '100%' }}>
         <Modal
           open={open}
           onClose={handleCloseModal}
@@ -187,6 +191,16 @@ const DiscountModal = ({
             backdrop: {
               style: { opacity: 0.5, backgroundColor: "rgba(0, 0, 0, 1)" },
             },
+          }}
+          sx={{
+            display: "flex", // Use flexbox for centering
+            alignItems: "center", // Vertically center the modal
+            justifyContent: "center", // Horizontally center the modal
+            // px: 2, // Apply some padding on the x-axis
+            [theme.breakpoints.down("sm")]: {
+              overflowY: "auto", // Add scroll on smaller screens if needed
+            },
+            width: "100%"
           }}
         >
           {body}

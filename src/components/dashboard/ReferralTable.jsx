@@ -19,6 +19,7 @@ import { Button, CircularProgress, TableHead, Tooltip } from "@mui/material";
 import { Visibility } from "@mui/icons-material";
 import DiscountModal from "../Models/referral/DiscountModal";
 import DetailModal from "../Models/referral/DetailModal";
+import Progress from "../CommonProgress/Progress";
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -89,8 +90,13 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-
-export default function ReferralTable({ users, pendingUsers, approvedUsers, fetchUsers, loading }) {
+export default function ReferralTable({
+  users,
+  pendingUsers,
+  approvedUsers,
+  fetchUsers,
+  loading,
+}) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [openDiscount, setOpenDiscount] = React.useState(false);
@@ -111,10 +117,10 @@ export default function ReferralTable({ users, pendingUsers, approvedUsers, fetc
   const handleViewModal = (user) => {
     setCurrentUser(user);
     setOpenDetail(true);
-  }
-  const handleCloseViewMmodal = () => { 
+  };
+  const handleCloseViewMmodal = () => {
     setOpenDetail(false);
-  }
+  };
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -130,152 +136,166 @@ export default function ReferralTable({ users, pendingUsers, approvedUsers, fetc
   };
 
   return (
-    <Paper sx={{ width: "100%", mb: 2, borderRadius: "20px" }}>
-      <TableContainer sx={{ borderRadius: "10px" }}>
-        <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
-          <TableHead style={{ backgroundColor: "#F4E9FD" }}>
-            <TableRow>
-              <TableCell
-                align="center"
-                sx={{ minWidth: 120, color: "#6C309C" }}
-              >
-                USERS
-              </TableCell>
-              <TableCell
-                align="center"
-                style={{ color: "#6C309C", minWidth: 120 }}
-                sx={{ fontWeight: "bold" }}
-              >
-                REFERRAL LINK
-              </TableCell>
-              <TableCell
-                align="center"
-                style={{ color: "#6C309C", minWidth: 120 }}
-                sx={{ fontWeight: "bold" }}
-              >
-                Referred Users
-              </TableCell>
-              <TableCell
-                align="center"
-                style={{ color: "#6C309C", minWidth: 120 }}
-                sx={{ fontWeight: "bold" }}
-              >
-                Converted Users
-              </TableCell>
-              <TableCell
-                align="center"
-                style={{ color: "#6C309C", minWidth: 120 }}
-                sx={{ fontWeight: "bold" }}
-              >
-                Discount Received
-              </TableCell>
-              <TableCell
-                align="center"
-                style={{ color: "#6C309C", minWidth: 120 }}
-                sx={{ fontWeight: "bold" }}
-              >
-                Actions
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            { loading ? <CircularProgress size={24} sx={{ m: 5}} /> : (rowsPerPage > 0
-              ? users?.slice(
-                  page * rowsPerPage,
-                  page * rowsPerPage + rowsPerPage
-                )
-              : users
-            )?.map((row) => (
-              <TableRow key={row.name}>
-                <TableCell component="th" scope="row" align="center">
-                  {row.full_name}
-                </TableCell>
-                <TableCell style={{ width: 160 }} align="center">
-                  {import.meta.env.VITE_BASE_URL}/auth/signup
-                </TableCell>
-                <TableCell style={{ width: 160 }} align="center">
-                  {row.pendingreferralscount}
-                </TableCell>
-                <TableCell style={{ width: 160 }} align="center">
-                  {row.approvedreferralscount}
-                </TableCell>
-                <TableCell style={{ width: 160 }} align="center">
-                  {row.discountusers || 0}
-                </TableCell>
-                <TableCell style={{ width: 160 }} align="center">
-                  <div className="flex items-center">
-                    <Tooltip title="View">
-                      <Visibility
-                        sx={{ color: "rgba(0, 0, 0, 0.4)", fontSize: "20px" }}
-                        className="cursor-pointer me-5"
-                        onClick={() => handleViewModal(row)}
-                      />
-                    </Tooltip>
-                    <Button
-                      variant="contained"
-                      sx={{
-                        backgroundColor: "#6C309C",
-                        borderRadius: "20px",
-                        padding: "4px 12px", // Adjust padding as per your design
-                        fontSize: "0.75rem", // Adjust font size as per your design
-                        textTransform: "none", // Optional: if you want to keep the text case as is
-                        "&:hover": {
-                          backgroundColor: "#6C309C",
-                        },
-                        width: "130px",
-                      }}
-                      onClick={() => handleOpenDiscount(row)}
-                    >
-                      Give Discount
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-            {emptyRows > 0 && (
-              <TableRow style={{ height: 53 * emptyRows }}>
-                <TableCell colSpan={6} />
-              </TableRow>
-            )}
-          </TableBody>
-          <TableFooter>
-            <TableRow style={{ display: "flex", alignItems: "center" }}>
-              <TablePagination
-                rowsPerPageOptions={[10, 25, { label: "All", value: -1 }]}
-                colSpan={3}
-                count={users?.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                SelectProps={{
-                  inputProps: {
-                    "aria-label": "rows per page",
-                  },
-                  native: true,
-                }}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-                ActionsComponent={TablePaginationActions}
-                style={{ flexShrink: 0, marginRight: "auto" }}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </TableContainer>
-      <DiscountModal
-        open={openDiscount}
-        setOpen={setOpenDiscount}
-        handleClose={handleCloseDiscount}
-        currentUser={currentUser}
-        fetchUsers={fetchUsers}
-        toastOpen={toastOpen}
-        setToastOpen={setToastOpen}
-      />
-      <DetailModal 
-        open={openDetail}
-        setOpen={setOpenDetail}
-        handleClose={handleCloseViewMmodal}
-        user={currentUser}
-      />
-    </Paper>
+    <>
+      {loading ? (
+        <Progress />
+      ) : (
+        <Paper sx={{ width: "100%", mb: 2, borderRadius: "20px" }}>
+          <TableContainer sx={{ borderRadius: "10px", overflow: 'auto', width: "100%" }}>
+              <Table
+                table-layout="fixed"
+                word-wrap="nowrap"
+              // sx={{ minWidth: "250px" }}
+              aria-label="custom pagination table"
+            >
+              <TableHead style={{ backgroundColor: "#F4E9FD" }}>
+                <TableRow>
+                  <TableCell
+                    align="center"
+                    sx={{ minWidth: 120, color: "#6C309C" }}
+                  >
+                    USERS
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    style={{ color: "#6C309C", minWidth: 120 }}
+                    sx={{ fontWeight: "bold" }}
+                  >
+                    REFERRAL LINK
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    style={{ color: "#6C309C", minWidth: 120 }}
+                    sx={{ fontWeight: "bold" }}
+                  >
+                    Referred Users
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    style={{ color: "#6C309C", minWidth: 120 }}
+                    sx={{ fontWeight: "bold" }}
+                  >
+                    Converted Users
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    style={{ color: "#6C309C", minWidth: 120 }}
+                    sx={{ fontWeight: "bold" }}
+                  >
+                    Discount Received
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    style={{ color: "#6C309C", minWidth: 120 }}
+                    sx={{ fontWeight: "bold" }}
+                  >
+                    Actions
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {(rowsPerPage > 0
+                  ? users?.slice(
+                      page * rowsPerPage,
+                      page * rowsPerPage + rowsPerPage
+                    )
+                  : users
+                )?.map((row) => (
+                  <TableRow key={row.name}>
+                    <TableCell component="th" scope="row" align="center">
+                      {row.full_name}
+                    </TableCell>
+                    <TableCell style={{ width: 160 }} align="center">
+                      {import.meta.env.VITE_BASE_URL}/auth/signup
+                    </TableCell>
+                    <TableCell style={{ width: 160 }} align="center">
+                      {row.pendingreferralscount}
+                    </TableCell>
+                    <TableCell style={{ width: 160 }} align="center">
+                      {row.approvedreferralscount}
+                    </TableCell>
+                    <TableCell style={{ width: 160 }} align="center">
+                      {row.discountusers || 0}
+                    </TableCell>
+                    <TableCell style={{ width: 160 }} align="center">
+                      <div className="flex items-center gap-2">
+                        <Tooltip title="View">
+                          <Visibility
+                            sx={{
+                              color: "rgba(0, 0, 0, 0.4)",
+                              fontSize: "20px",
+                            }}
+                            className="cursor-pointer me-5"
+                            onClick={() => handleViewModal(row)}
+                          />
+                        </Tooltip>
+                        <Button
+                          variant="contained"
+                          sx={{
+                            backgroundColor: "#6C309C",
+                            borderRadius: "20px",
+                            fontSize: "0.75rem", // Adjust font size as per your design
+                            textTransform: "none", // Optional: if you want to keep the text case as is
+                            "&:hover": {
+                              backgroundColor: "#6C309C",
+                            },
+                            width: "130px",
+                          }}
+                          onClick={() => handleOpenDiscount(row)}
+                        >
+                          Give Discount
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: 53 * emptyRows }}>
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )}
+              </TableBody>
+              <TableFooter>
+                <TableRow style={{ display: "flex", alignItems: "center" }}>
+                  <TablePagination
+                    rowsPerPageOptions={[10, 25, { label: "All", value: -1 }]}
+                    colSpan={3}
+                    count={users?.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    SelectProps={{
+                      inputProps: {
+                        "aria-label": "rows per page",
+                      },
+                      native: true,
+                    }}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    ActionsComponent={TablePaginationActions}
+                    style={{ flexShrink: 0, marginRight: "auto" }}
+                  />
+                </TableRow>
+              </TableFooter>
+            </Table>
+          </TableContainer>
+          <DiscountModal
+            open={openDiscount}
+            setOpen={setOpenDiscount}
+            handleClose={handleCloseDiscount}
+            currentUser={currentUser}
+            fetchUsers={fetchUsers}
+            toastOpen={toastOpen}
+            setToastOpen={setToastOpen}
+          />
+          <DetailModal
+            open={openDetail}
+            setOpen={setOpenDetail}
+            handleClose={handleCloseViewMmodal}
+            user={currentUser}
+          />
+        </Paper>
+      )}
+    </>
   );
 }

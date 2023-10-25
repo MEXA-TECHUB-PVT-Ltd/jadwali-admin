@@ -10,6 +10,7 @@ import {
   Modal,
   TextField,
   Alert,
+  useTheme,
 } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -21,6 +22,7 @@ import * as Yup from "yup";
 import ToastModal from "./TostModal";
 import { CircularProgress } from "@material-ui/core";
 import { put } from "../../server/server";
+import BoxStyle from "./StylesModal/BoxStyle";
 
 const style = {
   position: "absolute",
@@ -46,6 +48,8 @@ const ChangePasswordModel = ({ open, setOpen, handleClose, status }) => {
   const [toastOpen, setToastOpen] = React.useState(false);
   const [error, setError] = React.useState("");
   const [loading, setLoading] = React.useState(false);
+const theme = useTheme();
+
 
   const handleTogglePassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -70,8 +74,8 @@ const ChangePasswordModel = ({ open, setOpen, handleClose, status }) => {
         onClose={handleCloseToast}
         eventMessage="Password Changed Successfully!"
       />
-      <Box style={style}>
-        <Card className="sm:w-[500px] w-[80%]" sx={{ borderRadius: "30px" }}>
+      <BoxStyle>
+        <Card className="sm:w-[550px] mx-5" sx={{ borderRadius: "30px" }}>
           <CardContent className="p-0" sx={{ padding: 0 }}>
             <div className="mb-12 bg-[#C7AEDB] px-5 py-3 flex justify-between items-center">
               <Typography
@@ -371,7 +375,11 @@ const ChangePasswordModel = ({ open, setOpen, handleClose, status }) => {
                           color: "#fff",
                         }}
                       >
-                        {loading ? <CircularProgress size={24} /> : "Change Password"}
+                        {loading ? (
+                          <CircularProgress size={24} />
+                        ) : (
+                          "Change Password"
+                        )}
                       </Button>
                     </div>
                   </Form>
@@ -380,7 +388,7 @@ const ChangePasswordModel = ({ open, setOpen, handleClose, status }) => {
             </CardContent>
           </CardContent>
         </Card>
-      </Box>
+      </BoxStyle>
     </div>
   );
 
@@ -394,6 +402,14 @@ const ChangePasswordModel = ({ open, setOpen, handleClose, status }) => {
         slotProps={{
           backdrop: {
             style: { opacity: 0.1, backgroundColor: "rgba(0, 0, 0, 0.5)" },
+          },
+        }}
+        sx={{
+          display: "flex", // Use flexbox for centering
+          alignItems: "center", // Vertically center the modal
+          justifyContent: "center", // Horizontally center the modal // Apply some padding on the x-axis
+          [theme.breakpoints.down("sm")]: {
+            overflowY: "auto", // Add scroll on smaller screens if needed
           },
         }}
       >

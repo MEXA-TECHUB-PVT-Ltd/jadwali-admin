@@ -9,10 +9,12 @@ import {
   Button,
   Modal,
   Alert,
+  useTheme,
 } from "@mui/material";
 import ToastModal from "../TostModal";
 import { put } from "../../../server/server";
 import { CircularProgress } from "@material-ui/core";
+import BoxStyle from "../StylesModal/BoxStyle";
 
 const style = {
   position: "absolute",
@@ -38,6 +40,8 @@ const BlockUser = ({
   const [loading, setLoading] = React.useState(false);
   const [status, setStatus] = React.useState();
   const currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
+const theme = useTheme();
+
 
   const handleBlockStatus = async () => {
     setLoading(true);
@@ -85,8 +89,8 @@ const BlockUser = ({
           status && status ? "Block" : "Unblock"
         } Successfully!`}
       />
-      <Box style={style}>
-        <Card className="sm:w-[450px] w-[80%]" sx={{ borderRadius: "30px" }}>
+      <BoxStyle>
+        <Card className="sm:w-[550px] mx-5" sx={{ borderRadius: "30px" }}>
           <CardContent className="p-0" sx={{ m: 2 }}>
             <Typography
               sx={{
@@ -145,7 +149,7 @@ const BlockUser = ({
             </div>
           </CardContent>
         </Card>
-      </Box>
+      </BoxStyle>
     </>
   );
 
@@ -163,6 +167,14 @@ const BlockUser = ({
       slotProps={{
         backdrop: {
           style: { ...backdropStyle, backgroundColor: "rgba(0, 0, 0, 1)" },
+        },
+      }}
+      sx={{
+        display: "flex", // Use flexbox for centering
+        alignItems: "center", // Vertically center the modal
+        justifyContent: "center", // Horizontally center the modal // Apply some padding on the x-axis
+        [theme.breakpoints.down("sm")]: {
+          overflowY: "auto", // Add scroll on smaller screens if needed
         },
       }}
     >

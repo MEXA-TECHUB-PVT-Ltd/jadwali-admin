@@ -9,8 +9,10 @@ import {
   Button,
   Modal,
   TextField,
+  useTheme,
 } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
+import BoxStyle from "../StylesModal/BoxStyle";
 
 const style = {
   position: "absolute",
@@ -28,11 +30,13 @@ const FeatureDetails = ({
   const handleCloseToast = () => {
     setToastOpen(false);
   };
+const theme = useTheme();
+
 
   const body = (
-    <div style={{ backgroundColor: "rgba(0, 0, 0, 0.16)" }}>
-      <Box style={style}>
-        <Card className="sm:w-[500px] w-[80%]" sx={{ borderRadius: "30px" }}>
+    <div>
+      <BoxStyle>
+        <Card className="sm:w-[550px] mx-5" sx={{ borderRadius: "30px" }}>
           <CardContent className="p-0" sx={{ padding: 0 }}>
             <div className="mb-12 bg-[#C7AEDB] px-5 py-3 flex justify-between items-center">
               <Typography
@@ -88,7 +92,7 @@ const FeatureDetails = ({
             </CardContent>
           </CardContent>
         </Card>
-      </Box>
+      </BoxStyle>
     </div>
   );
 
@@ -101,7 +105,16 @@ const FeatureDetails = ({
         aria-describedby="user-detail-modal-description"
         slotProps={{
           backdrop: {
-            style: { opacity: 0.1, backgroundColor: "rgba(0, 0, 0, 0.5)" },
+            // style: { opacity: 0.5, backgroundColor: "rgba(0, 0, 0, 1)" },
+          },
+        }}
+        sx={{
+          display: "flex", // Use flexbox for centering
+          alignItems: "center", // Vertically center the modal
+          justifyContent: "center", // Horizontally center the modal
+          px: 2, // Apply some padding on the x-axis
+          [theme.breakpoints.down("sm")]: {
+            overflowY: "auto", // Add scroll on smaller screens if needed
           },
         }}
       >

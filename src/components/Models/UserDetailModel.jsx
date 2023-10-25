@@ -15,12 +15,15 @@ import DeleteModal from "./DeleteModel";
 import BlockUser from "./users/BlockUser";
 import { get } from "../../server/server";
 import { useLocation } from "react-router-dom";
+import { useTheme } from "@mui/material/styles";
+import BoxStyle from "./StylesModal/BoxStyle";
+
 
 const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
+  // position: "absolute",
+  // top: "50%",
+  // left: "50%",
+  // transform: "translate(-50%, -50%)",
 };
 
 const UserDetailModel = ({
@@ -37,6 +40,7 @@ const UserDetailModel = ({
   toastOpen,
   handleCloseToast,
 }) => {
+  const theme = useTheme();
   const handleOpenBlockModal = () => {
     setToastOpen(false);
     setIsDeleteModalOpen(true);
@@ -44,6 +48,8 @@ const UserDetailModel = ({
   const location = useLocation();
   const [details, setDetails] = useState("");
   const [loading, setLoading] = useState(false);
+
+
 
   useEffect(() => {
     const op = JSON.parse(localStorage.getItem("detailModalOpen")) || null;
@@ -74,8 +80,8 @@ const UserDetailModel = ({
   }, [user]);
 
   const body = (
-    <Box style={style}>
-      <Card className="sm:w-[550px] w-[80%]" sx={{ borderRadius: "30px" }}>
+    <BoxStyle>
+      <Card className="sm:w-[550px] mx-5" sx={{ borderRadius: "30px" }}>
         <CardContent className="p-0" sx={{ padding: 0 }}>
           <div className="px-5 py-3 flex justify-between items-center">
             <Typography
@@ -159,9 +165,7 @@ const UserDetailModel = ({
                     )}
 
                     {details?.user_services?.map((services, index) => (
-                      <li key={index}>
-                        Name: {services.name}
-                      </li>
+                      <li key={index}>Name: {services.name}</li>
                     ))}
                   </ul>
                 </Box>
@@ -190,7 +194,7 @@ const UserDetailModel = ({
           </CardContent>
         </CardContent>
       </Card>
-    </Box>
+    </BoxStyle>
   );
 
   return (
@@ -204,6 +208,14 @@ const UserDetailModel = ({
           slotProps={{
             backdrop: {
               style: { opacity: 0.5, backgroundColor: "rgba(0, 0, 0, 1)" },
+            },
+          }}
+          sx={{
+            display: "flex", // Use flexbox for centering
+            alignItems: "center", // Vertically center the modal
+            justifyContent: "center", // Horizontally center the modal // Apply some padding on the x-axis
+            [theme.breakpoints.down("sm")]: {
+              overflowY: "auto", // Add scroll on smaller screens if needed
             },
           }}
         >

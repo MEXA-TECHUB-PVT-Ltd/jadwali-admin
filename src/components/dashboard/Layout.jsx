@@ -22,13 +22,6 @@ import DeleteModal from "../Models/DeleteModel";
 import { useNavigate } from "react-router-dom";
 import { users } from "../../utils/dashboard";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Checkbox,
   Drawer,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
@@ -43,7 +36,7 @@ import { get } from "../../server/server";
 const Layout = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = React.useState(false);
-  const [innerWidth, setInnerWidth] = React.useState(window.innerWidth > 1100);
+  const [innerWidth, setInnerWidth] = React.useState(window.innerWidth > 1200);
 
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
 
@@ -86,11 +79,16 @@ const Layout = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [innerWidth]);
 
   return (
     <>
-      <div style={{ display: "flex" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: innerWidth ? "row" : "column",
+        }}
+      >
         {innerWidth && (
           <SideNav
             handleDeleteModal={handleDeleteModal}
@@ -100,7 +98,15 @@ const Layout = () => {
             setIsDrawerOpen={setIsDrawerOpen}
           />
         )}
-        <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+        <div
+        style={{
+          flexGrow: 1,
+          flexShrink: 1,
+          flexBasis: "auto",
+          display: "flex",
+          flexDirection: "column",
+        }}
+        >
           <TopHeader
             handleDeleteModal={handleDeleteModal}
             handleDeleteCloseModal={handleDeleteCloseModal}
@@ -115,8 +121,8 @@ const Layout = () => {
           <div
             style={{ padding: "20px", marginLeft: innerWidth ? "250px" : "0" }}
           >
-            <CssBaseline />
-            <Outlet />
+          <CssBaseline />
+          <Outlet />
           </div>
         </div>
       </div>
@@ -373,6 +379,7 @@ const TopHeader = ({
                   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                   mt: 1,
                   py: 1,
+                  zIndex: 999999999,
                 }}
               >
                 {searchResults.map((result, index) => (
@@ -382,7 +389,6 @@ const TopHeader = ({
                       px: 2,
                       py: 1,
                       "&:hover": { backgroundColor: "#f0f0f0" },
-                      zIndex: 999999999,
                     }}
                     onClick={() => handleResultClick(result)}
                   >
