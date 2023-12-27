@@ -17,18 +17,16 @@ const CommonTable = ({ title, status }) => {
 
   const fetchAllUsers = async () => {
     setLoading(true);
-    const { res, err } = await get("/users/get");
+    const { res, err } = await get("/users/getAll");
     if (err) {
       console.error(err);
       setLoading(false);
     }
     if (res) {
-      setAllUsers(res.result);
+      setAllUsers(res?.users);
       setLoading(false);
     }
   };
-
-
 
   const handleNextPage = () => {
     if (page < maxPages) setPage(page + 1);
@@ -43,23 +41,18 @@ const CommonTable = ({ title, status }) => {
   };
   const numAdjacentButtons = 1;
 
-  const handleSearch = async () => {
+  const handleSearch = () => {
     if (searchTerm === "") {
       console.error("Query search is not defined");
+      return;
     }
-    const { res, err } = await post("/search", null, null, {
-      text: searchTerm,
-      type: "users",
-    });
-    if (err) {
-      console.error(err);
-      setError(err?.response?.data?.message);
-    }
-    if (res) {
-      setFilteredUsers(res.result);
-      setError("");
-      setPage(1);
-    }
+
+    const filtered = allUsers?.filter((user) =>
+      user?.full_name?.toLowerCase()?.includes(searchTerm.toLowerCase())
+    );
+
+    setFilteredUsers(filtered);
+    setPage(1);
   };
 
   React.useEffect(() => {
@@ -70,33 +63,30 @@ const CommonTable = ({ title, status }) => {
     }
   }, [searchTerm]);
 
-  // console.log(users)
-  
   const getDisplayedUsers = () => {
     switch (location.pathname) {
       case "/":
-        case "/dashboard":
-          return allUsers?.slice(0, 10);
-        case "/dashboard/subscribed-users":
-          return allUsers
-            ?.filter((user) => user.payment === "true")
-            ?.slice((page - 1) * rowsPerPage, page * rowsPerPage);
-        default:
-          return paginatedUsers;
-        }
+      case "/dashboard":
+        return allUsers?.slice(0, 10);
+      case "/dashboard/subscribed-users":
+        return allUsers
+          ?.filter((user) => user.payment === "true")
+          ?.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+      default:
+        return paginatedUsers;
+    }
   };
-  
 
-      const maxPages = Math.ceil(
-        (searchTerm ? filteredUsers.length : allUsers.length) / rowsPerPage
-      );
-    
-      // const maxPages = Math.ceil(getDisplayedUsers.length / rowsPerPage);
-    
-      const paginatedUsers = allUsers?.slice(
-        (page - 1) * rowsPerPage,
-        page * rowsPerPage
-      );
+  const maxPages = Math.ceil(
+    (searchTerm ? filteredUsers.length : allUsers.length) / rowsPerPage
+  );
+
+  // const maxPages = Math.ceil(getDisplayedUsers.length / rowsPerPage);
+
+  const paginatedUsers = allUsers?.slice(
+    (page - 1) * rowsPerPage,
+    page * rowsPerPage
+  );
   return (
     <>
       <div className="flex flex-wrap justify-between items mb-5">

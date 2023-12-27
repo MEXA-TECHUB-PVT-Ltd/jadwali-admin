@@ -3,7 +3,7 @@ import FormLayout from "../../components/Form/Layout";
 import CardLayout from "../../components/Card/CardLayout";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
-import { Alert, Button } from "@mui/material";
+import { Alert, Button, CircularProgress } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { post } from "../../server/server";
 
@@ -55,8 +55,9 @@ const VerificationCode = () => {
   };
 
   const handleVerification = async () => {
+    setLoading(true);
     const otp = values.join("");
-    const { res, err } = await post("/users/verify", null, null, {
+    const { res, err } = await post("/users/verify_otp", null, null, {
       email: email,
       otp: otp,
     });
@@ -67,8 +68,8 @@ const VerificationCode = () => {
     }
     if (res) {
       setLoading(false);
-        setError("");
-        window.location = `/auth/reset-password?email=${email}`;
+      setError("");
+      window.location = `/auth/reset-password?email=${email}`;
     }
   };
 

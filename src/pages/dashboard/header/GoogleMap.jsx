@@ -33,7 +33,7 @@ export const WorldWideUsers = () => {
 
   return (
     <Grid container spacing={2} mt={5}>
-      <Grid item xs={12} md={12} lg={7} className="flex">
+      {/* <Grid item xs={12} md={12} lg={7} className="flex">
         <Card sx={{ borderRadius: "10px", flexGrow: 1 }}>
           <CardContent>
             <Grid container spacing={3}>
@@ -64,9 +64,9 @@ export const WorldWideUsers = () => {
             </Grid>
           </CardContent>
         </Card>
-      </Grid>
+      </Grid> */}
 
-      <Grid item xs={12} md={12} lg={5}>
+      <Grid item xs={12} md={12} lg={12}>
         <AppStatistics chartUsers={chartUsers} />
       </Grid>
     </Grid>

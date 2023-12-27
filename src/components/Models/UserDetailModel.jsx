@@ -54,7 +54,7 @@ const UserDetailModel = ({
   useEffect(() => {
     const op = JSON.parse(localStorage.getItem("detailModalOpen")) || null;
     if (!op) {
-      console.log("Close the open modal")
+      // console.log("Close the open modal")
       setOpen && setOpen(false);
     }
   }, [open]);

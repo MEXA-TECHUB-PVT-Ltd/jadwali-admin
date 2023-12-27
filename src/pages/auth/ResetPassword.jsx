@@ -48,7 +48,7 @@ const Forgot = () => {
         setLoading(true);
         const { res, err } = await put("/users/resetPassword", null, null, {
           email: email,
-          newPassword: values.confirmPassword,
+          new_password: values.confirmPassword,
         });
         if (err) {
             console.error(err);
@@ -56,7 +56,6 @@ const Forgot = () => {
             setLoading(false);
         }
         if (res) {
-            console.log(res);
             setToastOpen(true);
             setError('')
             setLoading(false);

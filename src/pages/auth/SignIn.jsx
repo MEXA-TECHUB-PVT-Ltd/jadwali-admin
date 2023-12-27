@@ -31,7 +31,7 @@ const SignIn = () => {
   };
 
   const handleSubmit = async (values) => {
-    values.signup_type = "email";
+    values.type = "email";
     setLoading(true);
     const { res, err } = await post("/users/signIn", null, null, values);
     if (err) {

@@ -25,11 +25,10 @@ const Forgot = () => {
   const [error, setError] = React.useState("");
   const [loading, setLoading] = React.useState(false);
 
-  const navigate = useNavigate();
   const handleSubmit = async (values, { setSubmitting }) => {
     setLoading(true);
     const { res, err } = await post(
-      "/users/forgetPassword",
+      "/users/forgotPassword",
       null,
       null,
       values
@@ -40,10 +39,9 @@ const Forgot = () => {
       setLoading(false);
     }
     if (res) {
-      console.log(res);
       setLoading(false);
+      window.location = `/auth/verification-code?email=${values.email}`;
       setError("");
-      window.location = `/auth/verification-code?email=${res.data.email}`;
     }
     setSubmitting(false);
   };
