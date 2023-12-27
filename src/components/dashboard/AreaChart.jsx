@@ -1,29 +1,15 @@
 import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
-
-const monthOrder = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-
 const AreaChart = ({ chartUsers }) => {
-  const [series, setSeries] = useState([
-    {
-      name: "Users",
-      data: [],
-    },
-  ]);
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [series, setSeries] = useState([{ name: "Users", data: [] }]);
+  // const [series, setSeries] = useState([
+  //   {
+  //     name: "Users",
+  //     data: [],
+  //   },
+  // ]);
 
   const [options, setOptions] = useState({
     chart: {
@@ -51,14 +37,24 @@ const AreaChart = ({ chartUsers }) => {
       },
     },
     xaxis: {
-      categories: monthOrder,
+      categories: [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ],
     },
   });
 
-useEffect(() => {
-  if (chartUsers && typeof chartUsers === "object") {
-    console.log("chartUsers:", chartUsers); // Debug log
-
+  useEffect(() => {
     const initialData = {
       Jan: 0,
       Feb: 0,
@@ -74,35 +70,44 @@ useEffect(() => {
       Dec: 0,
     };
 
-    // Convert chartUsers keys to proper case
-    const formattedChartUsers = {};
-    Object.keys(chartUsers).forEach((key) => {
-      const formattedKey =
-        key.charAt(0).toUpperCase() + key.slice(1, 3).toLowerCase();
-      formattedChartUsers[formattedKey] = chartUsers[key];
-    });
+    if (chartUsers && Array.isArray(chartUsers)) {
+      const filteredData = chartUsers.filter(
+        (data) => data.year === selectedYear.toString()
+      );
 
-    const updatedData = { ...initialData, ...formattedChartUsers };
-    console.log("updatedData:", updatedData); // Debug log
+      filteredData.forEach((item) => {
+        const monthKey = item.month.slice(0, 3);
+        initialData[monthKey] = Number(item.count);
+      });
 
-    const sortedData = monthOrder.map((month) => Number(updatedData[month]));
-    console.log("sortedData:", sortedData); // Debug log
+      setSeries([{ name: "Users", data: Object.values(initialData) }]);
+    }
+  }, [chartUsers, selectedYear]);
 
-    setSeries([{ name: "Users", data: sortedData }]);
-  }
-}, [chartUsers]);
+  const handleYearChange = (e) => {
+    setSelectedYear(e.target.value);
+  };
 
+  const years = Array.from(new Set(chartUsers?.map((item) => item.year)))?.sort();
 
   return (
-    <div id="chart" className="bg-white">
-      <ReactApexChart
-        options={options}
-        series={series}
-        type="area"
-        height={350}
-      />
+    <div>
+      <select value={selectedYear} onChange={handleYearChange}>
+        {years?.map((year) => (
+          <option key={year} value={year}>
+            {year}
+          </option>
+        ))}
+      </select>
+      <div id="chart" className="bg-white">
+        <ReactApexChart
+          options={options}
+          series={series}
+          type="area"
+          height={350}
+        />
+      </div>
     </div>
   );
 };
-
 export default AreaChart;

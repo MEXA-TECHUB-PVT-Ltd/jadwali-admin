@@ -13,20 +13,20 @@ const UserDataTable = () => {
 
   const fetchAllUsers = async () => {
         setLoading(true);
-        const { res, err } = await get("/users/get");
+        const { res, err } = await get("/users/getAll?limit=5&page=1");
         if (err) {
           console.error(err);
           setLoading(false);
         }
-        if (res) {
-          setAllUsers(res.result);
+    if (res) {
+          setAllUsers(res?.users);
           setLoading(false);
         }
       };
 
     
     useEffect(() => {
-        fetchAllUsers();
+      fetchAllUsers();
     }, [])
       
 
@@ -49,7 +49,7 @@ const UserDataTable = () => {
             View All Users
           </Button>
         </div>
-        <UserTable users={allUsers} loading={loading} />
+        <UserTable users={allUsers} loading={loading} fetchAllUsers={fetchAllUsers}  />
       </>
     );
 }

@@ -7,19 +7,16 @@ import { useEffect, useState } from 'react';
 import { get } from '../../../server/server';
 
 const Overview = () => {
-    const [userCount, setUserCount] = useState();
-      const [subscribedUserCount, setSubscribedUserCount] = useState(0);
+    const [counts, setCounts] = useState();
 
         const fetchUsers = async () => {
-          const { res, err } = await get("/users/get");
+          const { res, err } = await get("/universal/count");
           if (err) {
             console.error(err);
           }
           if (res) {
-              setUserCount(res?.count);
-              const subscribedUsers =
-                res?.result?.filter((user) => user.payment) || [];
-              setSubscribedUserCount(subscribedUsers?.length);
+            console.log(res);
+            setCounts(res?.result);
           }
         };
 
@@ -55,7 +52,7 @@ const Overview = () => {
                   Active Users
                 </Typography>
                 <Typography className="text" variant="h4" fontWeight="medium">
-                  {userCount && userCount}
+                  {(counts && counts?.usersCount) || 0}
                 </Typography>
               </div>
             </CardContent>
@@ -88,7 +85,7 @@ const Overview = () => {
                   Subscribed Users
                 </Typography>
                 <Typography className="text" variant="h4" fontWeight="medium">
-                  {subscribedUserCount && subscribedUserCount}
+                  {(counts && counts?.subscribedUsersCount) || 0}
                 </Typography>
               </div>
             </CardContent>
@@ -118,10 +115,10 @@ const Overview = () => {
               />
               <div>
                 <Typography className="text" variant="body2" color="gray">
-                  Total Downloads
+                  Total Queries
                 </Typography>
                 <Typography className="text" variant="h4" fontWeight="medium">
-                  5000
+                  {(counts && counts?.queriesCount) || 0}
                 </Typography>
               </div>
             </CardContent>

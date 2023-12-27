@@ -12,7 +12,7 @@ import {
   useTheme,
 } from "@mui/material";
 import ToastModal from "../TostModal";
-import { put } from "../../../server/server";
+import { del, put } from "../../../server/server";
 import { CircularProgress } from "@material-ui/core";
 import BoxStyle from "../StylesModal/BoxStyle";
 
@@ -23,33 +23,19 @@ const style = {
   transform: "translate(-50%, -50%)",
 };
 
-const BlockUser = ({
-  open,
-  setOpen,
-  handleClose,
-  toastOpen,
-  setToastOpen,
-  handleCloseToast,
-  user,
-  fetchAllUsers,
-  setOpenDetailModal,
-  setOpenDetail,
-  setOpenDetailedModal,
-}) => {
+const DeleteQuery = ({ open, handleClose, fetchQueries, data }) => {
+  const [toastOpen, setToastOpen] = React.useState(false);
   const [error, setError] = React.useState("");
   const [loading, setLoading] = React.useState(false);
-  const [status, setStatus] = React.useState();
-  const currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
   const theme = useTheme();
-  
 
+  const handleCloseToast = () => {
+    setToastOpen(false);
+  };
 
-  const handleBlockStatus = async () => {
+  const handleDelete = async () => {
     setLoading(true);
-    const { res, err } = await put("/users/updateBlockStatus", null, null, {
-      user_id: currentUser?.id,
-      block_status: !currentUser?.block_status,
-    });
+    const { res, err } = await del(`/queries/delete/${data?.id}`);
 
     if (err) {
       console.error(err);
@@ -57,39 +43,28 @@ const BlockUser = ({
       setLoading(false);
     }
     if (res) {
-      setToastOpen(true);
+    //   setToastOpen(true);
       setLoading(false);
       setError(null);
-      setStatus(res?.result.block_status);
-      localStorage.removeItem("currentUser");
-      const op = JSON.parse(localStorage.getItem("detailModalOpen")) || null;
-      if (op) {
-        console.log("Close it");
-        localStorage.setItem("detailModalOpen", false);
-      }
-      if (typeof setOpenDetail === "function") {
-        setOpenDetail();
-      }
-      setOpenDetailedModal(false);
-
-      if (fetchAllUsers) {
-        fetchAllUsers();
-      }
       setTimeout(() => {
-        setOpen(false);
+        // setOpen(false);
+        handleClose();
       }, 1000);
+      if (fetchQueries) {
+        fetchQueries();
+      }
     }
   };
 
   const body = (
     <>
-      <ToastModal
+      {/* <ToastModal
         open={toastOpen}
         onClose={handleCloseToast}
         eventMessage={`User ${
           status && status ? "Block" : "Unblock"
         } Successfully!`}
-      />
+      /> */}
       <BoxStyle>
         <Card className="sm:w-[550px] mx-5" sx={{ borderRadius: "30px" }}>
           <CardContent className="p-0" sx={{ m: 2 }}>
@@ -102,11 +77,10 @@ const BlockUser = ({
                 fontWeight: "bold",
               }}
             >
-              {currentUser?.block_status ? "Unblock" : "Block"} User
+              Delete Query
             </Typography>
             <Typography color="GrayText" variant="body2">
-              Do you really want to{" "}
-              {currentUser?.block_status ? "Unblock" : "Block"} this user?
+              Do you really want to delete this query?
             </Typography>
             {error && (
               <Alert severity="error" sx={{ mb: 5 }}>
@@ -124,28 +98,21 @@ const BlockUser = ({
               </Button>
               <Button
                 sx={{
-                  backgroundColor: !currentUser?.block_status
-                    ? "#FF5858"
-                    : "#00C342",
                   borderRadius: "20px",
+                  backgroundColor: "red",
+                  "&.Mui-focused": {
+                    backgroundColor: "rgba(0, 0, 0, 0.06)",
+                  },
                   "&:hover": {
-                    backgroundColor: !currentUser?.block_status
-                      ? "#FF5858"
-                      : "#00C342",
+                    backgroundColor: "rgba(0, 0, 0, 0.05)",
                   },
                   color: "#fff",
                   padding: "0 20px",
                   ml: 2,
                 }}
-                onClick={handleBlockStatus}
+                onClick={handleDelete}
               >
-                {loading ? (
-                  <CircularProgress size={24} />
-                ) : currentUser?.block_status ? (
-                  "Unblock"
-                ) : (
-                  "Block"
-                )}
+                {loading ? <CircularProgress size={24} /> : "Delete"}
               </Button>
             </div>
           </CardContent>
@@ -184,4 +151,4 @@ const BlockUser = ({
   );
 };
 
-export default BlockUser;
+export default DeleteQuery;

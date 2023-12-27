@@ -22,6 +22,10 @@ import Features from "./pages/dashboard/Features";
 import { Navigate } from "react-router-dom";
 import ReferralUsers from "./pages/dashboard/ReferralUsers";
 import CustomTable from "./pages/CustomTable";
+import UserDetails from "./pages/dashboard/UserDetails";
+import Feedbacks from "./pages/dashboard/Feedbacks";
+import FAQs from "./pages/dashboard/FAQs";
+import Queries from "./pages/dashboard/Queries";
 
 function App() {
   const router = createBrowserRouter(
@@ -39,6 +43,10 @@ function App() {
               <Route path="subscribed-users" element={<SubscribedUsers />} />
               <Route path="privacy-policy" element={<PrivacyPolicy />} />
               <Route path="referral-users" element={<ReferralUsers />} />
+              <Route path="feedbacks" element={<Feedbacks />} />
+              <Route path="faq" element={<FAQs />} />
+              <Route path="queries" element={<Queries />} />
+              <Route path="user-details/:id" element={<UserDetails />} />
               <Route
                 path="terms-and-conditions"
                 element={<TermsConditions />}

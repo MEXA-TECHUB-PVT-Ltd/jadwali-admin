@@ -1,38 +1,50 @@
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
-import DescriptionIcon from "@mui/icons-material/Description";
+import PaymentIcon from "@mui/icons-material/Payment"; // or CardMembershipIcon
+import StarBorderIcon from "@mui/icons-material/StarBorder"; // or NewReleasesIcon
+import FeedbackIcon from "@mui/icons-material/Feedback";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline"; // or LiveHelpIcon
+import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer"; // or ContactSupportIcon
+import GavelIcon from "@mui/icons-material/Gavel"; // or stick with DescriptionIcon
 import PrivacyTipIcon from "@mui/icons-material/PrivacyTip";
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import LinkIcon from "@mui/icons-material/Link";
 
 export const navItems = [
   { text: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
   { text: "All Users", icon: <PeopleIcon />, path: "/dashboard/all-users" },
   {
     text: "Subscribed Users",
-    icon: <GroupAddIcon />,
+    icon: <SubscriptionsIcon />,
     path: "/dashboard/subscribed-users",
   },
   {
     text: "Subscription Plan",
-    icon: <SubscriptionsIcon />,
+    icon: <PaymentIcon />,
     path: "/dashboard/subscription-plan",
   },
   {
     text: "Features",
-    icon: <FormatListBulletedIcon />,
+    icon: <StarBorderIcon />,
     path: "/dashboard/features",
   },
   {
-    text: "Referral Link",
-    icon: <LinkIcon />,
-    path: "/dashboard/referral-users",
+    text: "Feedbacks",
+    icon: <FeedbackIcon />,
+    path: "/dashboard/feedbacks",
+  },
+  {
+    text: "FAQs",
+    icon: <HelpOutlineIcon />,
+    path: "/dashboard/faq",
+  },
+  {
+    text: "Queries",
+    icon: <QuestionAnswerIcon />,
+    path: "/dashboard/queries",
   },
   {
     text: "Terms & Conditions",
-    icon: <DescriptionIcon />,
+    icon: <GavelIcon />,
     path: "/dashboard/terms-and-conditions",
   },
   {

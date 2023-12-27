@@ -346,7 +346,7 @@ const TopHeader = ({
           }}
         >
           <Box sx={{ position: "relative" }}>
-            <Box
+            {/* <Box
               sx={{
                 display: "flex",
                 alignItems: "center",
@@ -363,7 +363,7 @@ const TopHeader = ({
                 value={searchTerm}
                 onChange={handleSearchChange}
               />
-            </Box>
+            </Box> */}
             {showDropdown && searchResults.length > 0 && (
               <Box
                 ref={dropdownRef}
