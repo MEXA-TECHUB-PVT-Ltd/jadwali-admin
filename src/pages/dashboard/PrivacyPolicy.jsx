@@ -48,6 +48,12 @@ const PrivacyPolicy = () => {
                   </Typography>
                 </div>
               ))}
+              <Typography variant="body2" color="#818181" mb={3}>
+                By using the Jadwali app, users agree to the terms outlined in
+                this privacy policy. It is recommended that users review this
+                policy regularly to stay informed about how their data is being
+                handled and protected.
+              </Typography>
             </Box>
             <Divider orientation="vertical" flexItem />
             <Box flex=".3" pl={5}>
@@ -80,34 +86,73 @@ const PrivacyPolicy = () => {
 
 
 
-
-
 const sections = [
   {
-    id: "content",
-    title: "Content Liability",
+    id: "collection-of-information",
+    title: "Collection of Information",
     content:
-      'The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and all Agreements: "Client", "You" and "Your" refers to you, the person log on this website and compliant to the Company’s terms and conditions. "The Company", "Ourselves", "We", "Our" and "Us", refers to our Company. "Party", "Parties", or "Us", refers to both the Client and ourselves.',
+      "Jadwali collects user information, including but not limited to, account details, event preferences, and transaction data. The platform may use cookies and similar technologies to enhance user experience.",
   },
   {
-    id: "iframe",
-    title: "iFrames",
+    id: "use-of-information",
+    title: "Use of Information",
     content:
-      "Without prior approval and written permission, you may not create frames around our Webpages that alter in any way the visual presentation or appearance of our Website.",
+      "User data is used to provide, personalize, and improve Jadwali's services. Information may be utilized for communication, account management, and to enhance the overall user experience.",
   },
   {
-    id: "cookies",
-    title: "Cookies",
+    id: "data-sharing",
+    title: "Data Sharing",
     content:
-      "We employ the use of cookies. By accessing [your site name], you agreed to use cookies in agreement with the [your company name]'s Privacy Policy.",
+      "Jadwali does not sell, trade, or rent user information to third parties. Data may be shared with service providers for platform functionality and improvement.",
   },
   {
-    id: "license",
-    title: "License",
-    // content:
-    //   "Unless otherwise stated, [your company name] and/or its licensors own the intellectual property rights for all material on [your site name]. All intellectual property rights are reserved. You may access this from [your site name] for your own personal use subjected to restrictions set in these terms and conditions.",
+    id: "event-information",
+    title: "Event Information",
+    content:
+      "Event details provided by users, including date, time, and location, are used to facilitate event organization and connections based on preferences.",
   },
-  // ... add any additional sections here
+  {
+    id: "payment-information",
+    title: "Payment Information",
+    content:
+      "Payment information for in-app purchases and event transactions is securely processed through third-party payment providers.",
+  },
+  {
+    id: "security-measures",
+    title: "Security Measures",
+    content:
+      "Jadwali employs reasonable security measures to protect user data from unauthorized access, disclosure, alteration, and destruction.",
+  },
+  {
+    id: "user-controls",
+    title: "User Controls",
+    content:
+      "Users have the right to access, modify, or delete their personal information through the app settings. Opt-out mechanisms are provided for promotional communications.",
+  },
+  {
+    id: "childrens-privacy",
+    title: "Children's Privacy",
+    content:
+      "Jadwali is not intended for users under the age of 13. The platform does not knowingly collect personal information from children.",
+  },
+  {
+    id: "changes-to-privacy-policy",
+    title: "Changes to Privacy Policy",
+    content:
+      "Jadwali reserves the right to update the privacy policy as needed. Users will be notified of significant changes, and continued use of the platform implies acceptance of the updated policy.",
+  },
+  {
+    id: "compliance-with-laws",
+    title: "Compliance with Laws",
+    content:
+      "Jadwali complies with applicable data protection laws and regulations. Users are encouraged to review the privacy policy regularly for any updates.",
+  },
+  {
+    id: "contact-information",
+    title: "Contact Information",
+    content:
+      "Users can contact Jadwali for inquiries or concerns related to privacy at [jadwalisupport@gmail.com]. By using the Jadwali app, users agree to the terms outlined in this privacy policy. It is recommended that users review this policy regularly to stay informed about how their data is being handled and protected.",
+  },
 ];
 
 

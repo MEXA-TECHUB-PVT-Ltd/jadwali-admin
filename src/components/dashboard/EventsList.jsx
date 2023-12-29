@@ -28,6 +28,8 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import EventDetailModalContent from "./EventDetailModalContent";
+import CloseIcon from "@mui/icons-material/Close";
+
 
 const style = {
   position: "absolute",
@@ -85,7 +87,7 @@ const EventsTable = ({ events }) => {
           <TableBody>
             {events
               ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((event) => (
+              ?.map((event) => (
                 <TableRow
                   key={event?.event?.id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -94,13 +96,21 @@ const EventsTable = ({ events }) => {
                   <TableCell component="th" scope="row">
                     {event?.event?.name}
                   </TableCell>
-                  <TableCell align="right">${event?.event?.event_price}</TableCell>
                   <TableCell align="right">
-                    {event?.event?.date_range && event?.event?.date_range.start_date
-                      ? format(new Date(event?.event?.date_range.start_date), "PP")
+                    ${event?.event?.event_price}
+                  </TableCell>
+                  <TableCell align="right">
+                    {event?.event?.date_range &&
+                    event?.event?.date_range.start_date
+                      ? format(
+                          new Date(event?.event?.date_range.start_date),
+                          "PP"
+                        )
                       : "N/A"}
                   </TableCell>
-                  <TableCell align="right">{event?.event?.duration} hrs</TableCell>
+                  <TableCell align="right">
+                    {event?.event?.duration} hrs
+                  </TableCell>
                   <TableCell align="right">
                     <IconButton onClick={() => handleOpen(event)}>
                       <VisibilityIcon />
@@ -127,7 +137,7 @@ const EventsTable = ({ events }) => {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <ModalContent event={selectedEvent} />
+          <ModalContent event={selectedEvent} onClose={handleClose} />
         </Modal>
       )}
     </Grid>
@@ -206,7 +216,7 @@ const LocationListItem = ({ location }) => {
   );
 };
 
-const ModalContent = ({ event }) => {
+const ModalContent = ({ event, onClose }) => {
 const style = {
   position: "absolute",
   top: "50%",
@@ -230,14 +240,27 @@ const style = {
 
   return (
     <Box sx={{ ...style }}>
-      <Typography
-        id="modal-modal-title"
-        variant="h6"
-        component="h2"
-        sx={{ mb: 2 }}
-      >
-        Event Details
-      </Typography>
+      <div className="flex justify-between items-center">
+        <Typography
+          id="modal-modal-title"
+          variant="h6"
+          component="h2"
+          sx={{ mb: 2 }}
+        >
+          Event Details
+        </Typography>
+        <IconButton
+          onClick={onClose}
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+          }}
+          aria-label="close"
+        >
+          <CloseIcon />
+        </IconButton>
+      </div>
       <Divider sx={{ mb: 2 }} />
       <EventDetailModalContent event={event} />
       <Divider sx={{ my: 2 }} />

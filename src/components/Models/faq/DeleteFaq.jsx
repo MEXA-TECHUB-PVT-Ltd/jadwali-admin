@@ -43,28 +43,26 @@ const DeleteFaq = ({ open, handleClose, fetchFAQs, data }) => {
       setLoading(false);
     }
     if (res) {
-      //   setToastOpen(true);
+      setToastOpen(true);
       setLoading(false);
       setError(null);
       setTimeout(() => {
         // setOpen(false);
         handleClose();
+        if (fetchFAQs) {
+          fetchFAQs();
+        }
       }, 1000);
-      if (fetchFAQs) {
-        fetchFAQs();
-      }
     }
   };
 
   const body = (
     <>
-      {/* <ToastModal
+      <ToastModal
         open={toastOpen}
         onClose={handleCloseToast}
-        eventMessage={`User ${
-          status && status ? "Block" : "Unblock"
-        } Successfully!`}
-      /> */}
+        eventMessage={`FAQ deleted Successfully!`}
+      />
       <BoxStyle>
         <Card className="sm:w-[550px] mx-5" sx={{ borderRadius: "30px" }}>
           <CardContent className="p-0" sx={{ m: 2 }}>

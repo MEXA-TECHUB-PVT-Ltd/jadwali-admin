@@ -68,7 +68,7 @@ const theme = useTheme();
   const user = JSON.parse(localStorage.getItem("user")) || null;
 
   const body = (
-    <div style={{ backgroundColor: "rgba(0, 0, 0, 0.16)" }}>
+    <div >
       <ToastModal
         open={toastOpen}
         onClose={handleCloseToast}
@@ -112,11 +112,11 @@ const theme = useTheme();
                 onSubmit={async (values) => {
                   setLoading(true);
                   const { res, err } = await put(
-                    "/users/updatePassword",
+                    "/users/changePassword",
                     null,
                     null,
                     {
-                      user_id: user.user_id,
+                      user_id: user.id,
                       password: values.oldPassword,
                       newPassword: values.confirmPassword,
                     }
@@ -407,7 +407,8 @@ const theme = useTheme();
         sx={{
           display: "flex", // Use flexbox for centering
           alignItems: "center", // Vertically center the modal
-          justifyContent: "center", // Horizontally center the modal // Apply some padding on the x-axis
+          justifyContent: "center", // Horizontally center the modal
+          px: 2, // Apply some padding on the x-axis
           [theme.breakpoints.down("sm")]: {
             overflowY: "auto", // Add scroll on smaller screens if needed
           },

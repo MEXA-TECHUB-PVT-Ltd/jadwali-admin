@@ -49,9 +49,9 @@ const AvailabilityProfiles = ({ user }) => {
           gutterBottom
           sx={{ fontWeight: 600, fontSize: "1.5rem", mb: 4 }}
         >
-          Availability Profiles
+          Availabilities
         </Typography>
-        {user.availability_profiles.map((profile, index) => (
+        {user.availability_profiles?.map((profile, index) => (
           <StyledAccordion key={profile.profile_id} sx={{ mb: 2 }}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -60,11 +60,11 @@ const AvailabilityProfiles = ({ user }) => {
               sx={{ backgroundColor: "background.default", p: 2 }}
             >
               <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
-                Profile {index + 1}
+                Availability {index + 1}
               </Typography>
             </AccordionSummary>
             <List>
-              {profile.availabilities.map((avail) => (
+              {profile.availabilities?.map((avail) => (
                 <ListItem
                   key={avail.availability_id}
                   sx={{

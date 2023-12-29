@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import {
@@ -35,6 +35,8 @@ const style = {
 };
 
 const UpdateQueryStatus = ({ open, handleClose, fetchQueries, data }) => {
+  const [loadingConnected, setLoadingConnected] = React.useState(false);
+  const [loadingDismissed, setLoadingDismissed] = React.useState(false);
   const [toastOpen, setToastOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(null);
@@ -44,37 +46,48 @@ const UpdateQueryStatus = ({ open, handleClose, fetchQueries, data }) => {
     setToastOpen(false);
   };
 
-  const updateStatus = async (status) => {
-    setLoading(true);
-    const { res, err } = await put("/queries/update", null, null, {
-      id: data?.id,
-      status,
-    });
-    if (err) {
-      console.error(err);
-      setLoading(false);
-      setError(err?.response?.data?.message);
-    }
-    if (res) {
-      setLoading(false);
-      setError(false);
-      setTimeout(() => {
-        // setOpen(false);
-        handleClose();
-      }, 1000);
-      if (fetchQueries) {
-        fetchQueries();
+  const updateStatus = useCallback(
+    async (buttonType) => {
+      const status = buttonType === "connected" ? "connected" : "dismissed";
+      if (buttonType === "connected") {
+        setLoadingConnected(true);
+      } else {
+        setLoadingDismissed(true);
       }
-    }
-  };
+
+      const { res, err } = await put("/queries/update", null, null, {
+        id: data?.id,
+        status,
+      });
+
+      if (err) {
+        console.error(err);
+        setLoadingConnected(false);
+        setLoadingDismissed(false);
+        setError(err?.response?.data?.message);
+      } else if (res) {
+        setToastOpen(true);
+        setLoadingConnected(false);
+        setLoadingDismissed(false);
+        setError(false);
+        setTimeout(() => {
+          handleClose();
+          if (fetchQueries) {
+            fetchQueries();
+          }
+        }, 1000);
+      }
+    },
+    [data?.id, fetchQueries, handleClose]
+  );
 
   const body = (
     <div>
-      {/* <ToastModal
+      <ToastModal
         open={toastOpen}
         onClose={handleCloseToast}
-        eventMessage={"Queries added Successfully"}
-      /> */}
+        eventMessage={"Status Updated Successfully"}
+      />
       <BoxStyle>
         <Card className="sm:w-[550px] mx-5" sx={{ borderRadius: "30px" }}>
           <CardContent className="p-0" sx={{ padding: 0 }}>
@@ -114,6 +127,12 @@ const UpdateQueryStatus = ({ open, handleClose, fetchQueries, data }) => {
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant="subtitle2" color="textSecondary">
+                    Status
+                  </Typography>
+                  <Typography variant="body1">{data?.status}</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="subtitle2" color="textSecondary">
                     Message
                   </Typography>
                   <TextField
@@ -145,7 +164,6 @@ const UpdateQueryStatus = ({ open, handleClose, fetchQueries, data }) => {
           <CardActions>
             <Button
               type="submit"
-              // disabled={!isValid}
               fullWidth
               sx={{
                 backgroundColor: "#6C309C",
@@ -155,13 +173,13 @@ const UpdateQueryStatus = ({ open, handleClose, fetchQueries, data }) => {
                 },
                 color: "#fff",
               }}
+              // onClick={handleConnectedClick}
               onClick={() => updateStatus("connected")}
             >
-              {loading ? <CircularProgress size={24} /> : "Connected"}
+              {loadingConnected ? <CircularProgress size={24} /> : "Connected"}
             </Button>
             <Button
               type="submit"
-              // disabled={!isValid}
               fullWidth
               sx={{
                 backgroundColor: "#6C309C",
@@ -171,9 +189,10 @@ const UpdateQueryStatus = ({ open, handleClose, fetchQueries, data }) => {
                 },
                 color: "#fff",
               }}
+              // onClick={handleDismissedClick}
               onClick={() => updateStatus("dismissed")}
             >
-              {loading ? <CircularProgress size={24} /> : "Dismissed"}
+              {loadingDismissed ? <CircularProgress size={24} /> : "Dismissed"}
             </Button>
           </CardActions>
         </Card>

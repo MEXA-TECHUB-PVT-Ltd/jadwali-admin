@@ -5,9 +5,6 @@ import {
   Typography,
   Grid,
   Box,
-  IconButton,
-  Collapse,
-  TextField,
 } from "@mui/material";
 import { format, parseISO } from "date-fns";
 
@@ -47,12 +44,15 @@ const EventDetailModalContent = ({ event }) => (
             </Typography>
           </Grid>
           <Grid item xs={12} sm={8}>
-            <TextField
+            <Typography variant="subtitle1" fontWeight="bold">
+              {event?.event?.description}
+            </Typography>
+            {/* <TextField
               multiline
               rows={3}
               value={event?.event?.description}
               readOnly
-            />
+            /> */}
           </Grid>
         </Grid>
       </ListItem>

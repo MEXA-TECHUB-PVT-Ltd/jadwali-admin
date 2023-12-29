@@ -96,15 +96,15 @@ const AddFaq = ({ open, setOpen, handleClose, fetchFAQs }) => {
                     setError(err?.response?.data?.message);
                   }
                   if (res) {
-                    if (fetchFAQs) {
-                      fetchFAQs();
-                    }
                     setLoading(false);
                     setError(false);
                   }
                   setToastOpen(true);
                   setTimeout(() => {
                     setOpen(false);
+                    if (fetchFAQs) {
+                      fetchFAQs();
+                    }
                   }, 1000);
                 }}
               >

@@ -96,14 +96,14 @@ const AddQueries = ({ open, setOpen, handleClose, fetchQueries }) => {
                     setError(err?.response?.data?.message);
                   }
                   if (res) {
-                    if (fetchQueries) {
-                      fetchQueries();
-                    }
                     setLoading(false);
                     setError(false);
                   }
                   setToastOpen(true);
                   setTimeout(() => {
+                    if (fetchQueries) {
+                      fetchQueries();
+                    }
                     setOpen(false);
                   }, 1000);
                 }}
