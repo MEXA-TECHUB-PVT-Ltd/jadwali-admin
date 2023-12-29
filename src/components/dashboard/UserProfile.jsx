@@ -30,12 +30,14 @@ const UserProfile = ({ user }) => {
           alignItems="center"
         >
           <Avatar
+            // src={`${SERVER_URL}/public/uploads/${user?.upload_details?.filename}`}
+            src={`http://localhost:3025/public/uploads/${user?.upload_details?.filename}`}
             sx={{
-              bgcolor: theme.palette.primary.main,
+              // bgcolor: theme.palette.primary.main,
               width: theme.spacing(20),
               height: theme.spacing(20),
               fontSize: theme.spacing(7),
-              color: theme.palette.background.paper,
+              // color: theme.palette.background.paper,
               mb: 3,
             }}
           >
@@ -68,7 +70,7 @@ const UserProfile = ({ user }) => {
               label: "Last Update",
               value: formatDate(user.updated_at),
             },
-          ].map((info, index) => (
+          ]?.map((info, index) => (
             <InfoLine
               key={index}
               icon={info.icon}

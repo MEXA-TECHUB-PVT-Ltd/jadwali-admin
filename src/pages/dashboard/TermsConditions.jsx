@@ -48,6 +48,11 @@ const TermsConditions = () => {
                     </Typography>
                   </div>
                 ))}
+                <Typography variant="body2" color="#818181" mb={3}>
+                  By using the Jadwali app, users agree to abide by these terms
+                  and conditions. Failure to comply may result in the
+                  termination of the user's account and access to the platform.
+                </Typography>
               </Box>
               <Divider orientation="vertical" flexItem />
               <Box flex=".3" pl={5}>
@@ -85,28 +90,70 @@ export default TermsConditions;
 
 const sections = [
   {
-    id: "content",
-    title: "Content Liability",
+    id: "account-creation",
+    title: "Account Creation",
     content:
-      'The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and all Agreements: "Client", "You" and "Your" refers to you, the person log on this website and compliant to the Company’s terms and conditions. "The Company", "Ourselves", "We", "Our" and "Us", refers to our Company. "Party", "Parties", or "Us", refers to both the Client and ourselves.',
+      "Users must create an account to access and use Jadwali's features. Account information must be accurate, and users are responsible for maintaining the confidentiality of their login credentials.",
   },
   {
-    id: "iframe",
-    title: "iFrames",
+    id: "event-creation",
+    title: "Event Creation",
     content:
-      "Without prior approval and written permission, you may not create frames around our Webpages that alter in any way the visual presentation or appearance of our Website.",
+      "Users are solely responsible for the accuracy of event details, including date, time, and location. The platform is not liable for any discrepancies in event information.",
   },
   {
-    id: "cookies",
-    title: "Cookies",
+    id: "event-privacy",
+    title: "Event Privacy",
     content:
-      "We employ the use of cookies. By accessing [your site name], you agreed to use cookies in agreement with the [your company name]'s Privacy Policy.",
+      "Private event organizers are responsible for sharing unique event links only with intended participants. Public events are open to users with similar preferences based on availability.",
   },
   {
-    id: "license",
-    title: "License",
-    // content:
-    //   "Unless otherwise stated, [your company name] and/or its licensors own the intellectual property rights for all material on [your site name]. All intellectual property rights are reserved. You may access this from [your site name] for your own personal use subjected to restrictions set in these terms and conditions.",
+    id: "availability-preferences",
+    title: "Availability and Preferences",
+    content:
+      "Users should provide accurate availability information and preferences. The platform facilitates connections based on user-provided data.",
   },
-  // ... add any additional sections here
+  {
+    id: "subscription-payments",
+    title: "Subscription and Payments",
+    content:
+      "In-app purchases for premium features are non-refundable. Users agree to the terms of the payment provider for subscription transactions. Tap payments for event participation are subject to the platform's payment policies.",
+  },
+  {
+    id: "event-joining",
+    title: "Event Joining",
+    content:
+      "Users joining private events through shared links must respect the privacy of the event and other participants. Participants in public events should adhere to the event's guidelines and purpose.",
+  },
+  {
+    id: "schedule-management",
+    title: "Schedule Management",
+    content:
+      "Users can view, schedule, reschedule, or cancel events based on availability. Event organizers should provide valid reasons for event cancellations.",
+  },
+  {
+    id: "community-conduct",
+    title: "Community Conduct",
+    content:
+      "Users are expected to engage respectfully and responsibly within the Jadwali community. Any form of harassment, abuse, or inappropriate behavior is strictly prohibited.",
+  },
+  {
+    id: "data-privacy",
+    title: "Data Privacy",
+    content:
+      "Jadwali collects and processes user data in accordance with its Privacy Policy. Users are encouraged to review and understand the Privacy Policy for information on data handling and security.",
+  },
+  {
+    id: "liability-dispute-resolution",
+    title: "Liability and Dispute Resolution",
+    content:
+      "Jadwali is not responsible for any inaccuracies in event details or disruptions during events. Disputes arising from the use of the platform will be resolved in accordance with applicable laws and regulations.",
+  },
+  {
+    id: "modifications-to-terms",
+    title: "Modifications to Terms",
+    content:
+      "Jadwali reserves the right to modify these terms and conditions at any time. Users will be notified of significant changes, and continued use of the platform implies acceptance of the updated terms.",
+  },
 ];
+

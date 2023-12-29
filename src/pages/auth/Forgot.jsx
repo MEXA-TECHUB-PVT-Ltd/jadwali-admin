@@ -26,6 +26,7 @@ const Forgot = () => {
   const [loading, setLoading] = React.useState(false);
 
   const handleSubmit = async (values, { setSubmitting }) => {
+    values.role = 'admin';
     setLoading(true);
     const { res, err } = await post(
       "/users/forgotPassword",

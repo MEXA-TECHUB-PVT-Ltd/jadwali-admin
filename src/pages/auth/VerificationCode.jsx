@@ -78,7 +78,7 @@ const VerificationCode = () => {
       <CardLayout
         title="JADWALI"
         subTitle="Verification"
-        description="Enter code that you received on example@gmail.com"
+        description={`Enter code that you received on ${email}`}
       >
         {error && (
           <Alert severity="error" sx={{ mb: 5 }}>
