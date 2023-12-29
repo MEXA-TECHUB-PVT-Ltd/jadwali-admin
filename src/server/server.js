@@ -1,7 +1,8 @@
 import axios from "axios";
+import { SERVER_URL } from "../baseUrl";
 
 export const api = axios.create({
-  baseURL: "http://localhost:3025/api",
+  baseURL: SERVER_URL,
 });
 
 export const get = async (url, token, id) => {
