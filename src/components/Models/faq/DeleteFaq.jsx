@@ -61,7 +61,7 @@ const DeleteFaq = ({ open, handleClose, fetchFAQs, data }) => {
       <ToastModal
         open={toastOpen}
         onClose={handleCloseToast}
-        eventMessage={`FAQ deleted Successfully!`}
+        eventMessage={`FAQs deleted Successfully!`}
       />
       <BoxStyle>
         <Card className="sm:w-[550px] mx-5" sx={{ borderRadius: "30px" }}>
