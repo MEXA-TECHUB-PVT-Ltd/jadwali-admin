@@ -47,7 +47,7 @@ const AddFaq = ({ open, setOpen, handleClose, fetchFAQs }) => {
       <ToastModal
         open={toastOpen}
         onClose={handleCloseToast}
-        eventMessage={"Feature added Successfully"}
+        eventMessage={"FAQs added Successfully"}
       />
       <BoxStyle>
         <Card className="sm:w-[550px] mx-5" sx={{ borderRadius: "30px" }}>
