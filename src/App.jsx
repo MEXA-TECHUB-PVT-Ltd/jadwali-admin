@@ -26,6 +26,7 @@ import UserDetails from "./pages/dashboard/UserDetails";
 import Feedbacks from "./pages/dashboard/Feedbacks";
 import FAQs from "./pages/dashboard/FAQs";
 import Queries from "./pages/dashboard/Queries";
+import EventPayments from "./pages/dashboard/EventPayments";
 
 function App() {
   const router = createBrowserRouter(
@@ -47,6 +48,7 @@ function App() {
               <Route path="faq" element={<FAQs />} />
               <Route path="queries" element={<Queries />} />
               <Route path="user-details/:id" element={<UserDetails />} />
+              <Route path="event-payments" element={<EventPayments />} />
               <Route
                 path="terms-and-conditions"
                 element={<TermsConditions />}

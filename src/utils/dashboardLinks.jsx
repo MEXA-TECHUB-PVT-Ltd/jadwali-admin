@@ -28,6 +28,11 @@ export const navItems = [
     path: "/dashboard/features",
   },
   {
+    text: "Event Payments",
+    icon: <StarBorderIcon />,
+    path: "/dashboard/event-payments",
+  },
+  {
     text: "Feedbacks",
     icon: <FeedbackIcon />,
     path: "/dashboard/feedbacks",
