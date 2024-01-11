@@ -42,7 +42,7 @@ const theme = useTheme();
   const handleDeleteFeature = async () => {
     setLoading(true);
     const { res, err } = await del(
-      `/features/delete?feature_id=${currentFeature?.feature_id}`,
+      `/features/delete?id=${currentFeature?.id}`,
       null,
       null
     );

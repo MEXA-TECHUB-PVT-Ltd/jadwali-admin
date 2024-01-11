@@ -137,19 +137,26 @@ const EventPaymentTable = ({ faqs, fetchFAQs }) => {
               >
                 Username
               </TableCell>
-              <TableCell
+              {/* <TableCell
                 style={{ color: "#6C309C", minWidth: 170 }}
                 sx={{ fontWeight: "bold" }}
                 // align="center"
               >
                 Event Name
-              </TableCell>
+              </TableCell> */}
               <TableCell
                 style={{ color: "#6C309C", minWidth: 170 }}
                 sx={{ fontWeight: "bold" }}
                 // align="center"
               >
                 Trans Amount
+              </TableCell>
+              <TableCell
+                style={{ color: "#6C309C", minWidth: 170 }}
+                sx={{ fontWeight: "bold" }}
+                // align="center"
+              >
+                Remaining Amount
               </TableCell>
               <TableCell
                 style={{ color: "#6C309C", minWidth: 170 }}
@@ -163,7 +170,7 @@ const EventPaymentTable = ({ faqs, fetchFAQs }) => {
                 sx={{ fontWeight: "bold" }}
                 // align="center"
               >
-                To be Pay
+                Status
               </TableCell>
               <TableCell
                 style={{ color: "#6C309C", minWidth: 170 }}
@@ -184,8 +191,26 @@ const EventPaymentTable = ({ faqs, fetchFAQs }) => {
                   </TableCell>
 
                   <CommentCell comment={faq?.details?.user?.full_name} />
-                  <CommentCell comment={faq?.details?.event?.name} />
-                  <CommentCell comment={faq?.tran_total || "0.00"} />
+                  {/* <CommentCell comment={faq?.details?.event?.name} /> */}
+                  <CommentCell
+                    comment={
+                      faq?.tran_remaining_amount !== null
+                        ? (
+                            parseFloat(faq?.tran_total) +
+                            parseFloat(faq?.tran_remaining_amount)
+                          ).toFixed(2)
+                        : faq?.tran_total || "0.00"
+                    }
+                  />
+
+                  <TableCell style={{ verticalAlign: "middle" }}>
+                    {faq?.is_deposit_paid
+                      ? (
+                          faq?.details?.event?.event_price -
+                          faq?.details?.event?.deposit_price
+                        ).toFixed(2)
+                      : "00.00"}
+                  </TableCell>
                   <TableCell style={{ verticalAlign: "middle" }}>
                     {faq?.status || "N/A"}
                   </TableCell>

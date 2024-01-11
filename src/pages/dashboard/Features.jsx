@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { users } from "../../utils/dashboard";
 import { Box, Button, Typography, InputBase } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
@@ -16,8 +16,8 @@ const Features = () => {
   const [searchTerm, setSearchTerm] = React.useState("");
   const [isAddModalOpen, setIsAddModalOpen] = React.useState(false);
   const [selectedFeatures, setSelectedFeatures] = React.useState([]);
-  const [features, setFeatures] = React.useState([]);
   const [toastOpen, setToastOpen] = React.useState(false);
+  const [features, setFeatures] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
 
   const handleIsAddModalOpen = React.useCallback(() => {
@@ -30,62 +30,21 @@ const Features = () => {
     setToastOpen(false);
   }, []);
 
-  const location = useLocation();
-
-  const { state } = location;
-  const {
-    plan = "",
-    previousPage = "",
-    previousFeatures = [],
-    openAddModal = "",
-    modalName = "",
-  } = state ?? {};
-
-  React.useEffect(() => {
-    if (
-      previousFeatures &&
-      previousFeatures.length > 0 &&
-      modalName === "Edit"
-    ) {
-      localStorage.setItem("shouldOpenSubEdit", "true");
-      const mergedFeatures = [
-        ...new Set([...selectedFeatures, ...previousFeatures]),
-      ];
-      localStorage.setItem(
-        "EditFeatures",
-        JSON.stringify([...new Set([...selectedFeatures, ...previousFeatures])])
-      );
-      setSelectedFeatures(mergedFeatures);
-    } else {
-      localStorage.setItem("shouldOpenModal", "true");
-      setSelectedFeatures([...selectedFeatures]);
-      localStorage.setItem(
-        "AddFeatures",
-        JSON.stringify([...selectedFeatures])
-      );
-    }
-  }, [previousFeatures]);
-
   const fetchFeatures = async () => {
-    setLoading(true);
-    const { res, err } = await get("/features/get");
-    if (err) {
-      console.error(err);
-      setLoading(false);
-    }
+    const { res, err } = await get("features/get?limit=200&page=1");
     if (res) {
-      setFeatures(res.result);
-      setLoading(false);
+      // console.log(res);
+      setFeatures(res?.results);
+    }
+    if (err) {
+      console.log(err);
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchFeatures();
   }, []);
 
-  React.useEffect(() => {
-    setPage(1);
-  }, [searchTerm]);
 
   const rowsPerPage = 10;
 
@@ -104,9 +63,9 @@ const Features = () => {
   };
   const numAdjacentButtons = 1;
 
-  const filteredUsers = features.filter((user) => {
+  const filteredUsers = features?.filter((item) => {
     return (
-      user.description.toLowerCase().includes(searchTerm.toLowerCase())
+      item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
 
@@ -114,46 +73,9 @@ const Features = () => {
     <>
       <div className="flex justify-between items mb-5">
         <Typography fontSize="25px" fontWeight="medium" color="#342E59">
-          {previousPage === "subscription" ? (
-            <div className="flex items-center gap-x-2">
-              <Link
-                to="/dashboard/subscription-plan"
-                className="cursor-pointer"
-              >
-                <ArrowBackIosNewIcon />
-              </Link>
-              <Typography>Select Features</Typography>
-            </div>
-          ) : (
             <Typography>Features</Typography>
-          )}
         </Typography>
         <div className="flex">
-          {previousPage === "subscription" && (
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: "#6C309C",
-                borderRadius: "20px",
-                "&:hover": {
-                  backgroundColor: "#6C309C",
-                },
-                padding: "0 30px",
-              }}
-              component={Link}
-              to="/dashboard/subscription-plan"
-              state={{
-                selectedFeatures: [
-                  ...new Set([...selectedFeatures, ...previousFeatures]),
-                ],
-                plan: plan,
-                previousPage: "features",
-                openAddModal: openAddModal,
-              }}
-            >
-              Select
-            </Button>
-          )}
           <Box
             sx={{
               display: "flex",

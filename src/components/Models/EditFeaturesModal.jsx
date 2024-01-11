@@ -10,6 +10,7 @@ import {
   Modal,
   TextField,
   useTheme,
+  Alert,
 } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -20,7 +21,7 @@ import { CircularProgress } from "@material-ui/core";
 import BoxStyle from "./StylesModal/BoxStyle";
 
 const SubscriptionSchema = Yup.object().shape({
-  description: Yup.string().required("Required"),
+  name: Yup.string().required("Required"),
 });
 
 const style = {
@@ -85,7 +86,7 @@ const theme = useTheme();
             <CardContent className="m-3">
               <Formik
                 initialValues={{
-                  description: feature?.description,
+                  name: feature?.name,
                 }}
                 validationSchema={SubscriptionSchema}
                 onSubmit={async (values) => {
@@ -95,8 +96,8 @@ const theme = useTheme();
                     null,
                     null,
                     {
-                      feature_id: feature.feature_id,
-                      description: values.description,
+                      id: feature?.id,
+                      name: values.name,
                     }
                   );
                   if (err) {
@@ -120,7 +121,7 @@ const theme = useTheme();
                   <Form>
                     <div className="mb-4">
                       <Field
-                        name="description"
+                        name="name"
                         as={TextField}
                         id="outlined-basic"
                         variant="outlined"
@@ -142,7 +143,7 @@ const theme = useTheme();
                         }}
                         size="small"
                       />
-                      {errors.description ? (
+                      {errors.name ? (
                         <Typography
                           sx={{
                             mt: 1,
@@ -151,7 +152,7 @@ const theme = useTheme();
                             ml: 2,
                           }}
                         >
-                          {errors.description}
+                          {errors.name}
                         </Typography>
                       ) : null}
                     </div>
@@ -193,7 +194,7 @@ const theme = useTheme();
         open={open}
         onClose={handleClose}
         aria-labelledby="user-detail-modal-title"
-        aria-describedby="user-detail-modal-description"
+        aria-describedby="user-detail-modal-name"
         slotProps={{
           backdrop: {
             style: { opacity: 0.1, backgroundColor: "rgba(0, 0, 0, 0.5)" },
