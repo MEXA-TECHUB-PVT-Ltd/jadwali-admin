@@ -157,6 +157,7 @@ const SideNav = ({
         backgroundColor: "rgba(108, 48, 156, 1)",
         height: "100%",
         position: "fixed",
+        overflow: "auto",
       }}
     >
       <div>

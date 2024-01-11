@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import {
@@ -14,6 +14,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import ToastModal from "./TostModal";
 import { useLocation } from "react-router-dom";
 import BoxStyle from "./StylesModal/BoxStyle";
+import { del } from "../../server/server";
 
 const style = {
   position: "absolute",
@@ -24,7 +25,6 @@ const style = {
 
 const DeleteModal = ({
   open,
-  setOpen,
   handleClose,
   onDelete,
   title,
@@ -34,10 +34,35 @@ const DeleteModal = ({
   handleCloseToast,
   toastOpen,
   setToastOpen,
+  modalData,
+  fetchData,
+  setOpen,
 }) => {
   const location = useLocation();
-const theme = useTheme();
+  const theme = useTheme();
 
+  const [loading, setLoading] = useState(false);
+
+  const handleDelete = async () => {
+    setLoading(true);
+    const { res, err } = await del(
+      `/subscription_plan/delete/${modalData?.id}`
+    );
+
+    if (res) {
+      console.log(res);
+      setLoading(false);
+      setOpen(false);
+      if (fetchData) {
+        fetchData();
+      }
+    }
+
+    if (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  };
 
   const body = (
     <>
@@ -77,6 +102,7 @@ const theme = useTheme();
                 Cancel
               </Button>
               <Button
+                disabled={loading}
                 sx={{
                   backgroundColor: "#6C309C",
                   borderRadius: "20px",
@@ -87,7 +113,7 @@ const theme = useTheme();
                   padding: "0 20px",
                   ml: 2,
                 }}
-                onClick={onDelete}
+                onClick={handleDelete}
               >
                 {actionText}
               </Button>

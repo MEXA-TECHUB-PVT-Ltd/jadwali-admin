@@ -48,8 +48,8 @@ const UpdateQueryStatus = ({ open, handleClose, fetchQueries, data }) => {
 
   const updateStatus = useCallback(
     async (buttonType) => {
-      const status = buttonType === "connected" ? "connected" : "dismissed";
-      if (buttonType === "connected") {
+      const status = buttonType === "contacted" ? "contacted" : "dismissed";
+      if (buttonType === "contacted") {
         setLoadingConnected(true);
       } else {
         setLoadingDismissed(true);
@@ -174,9 +174,9 @@ const UpdateQueryStatus = ({ open, handleClose, fetchQueries, data }) => {
                 color: "#fff",
               }}
               // onClick={handleConnectedClick}
-              onClick={() => updateStatus("connected")}
+              onClick={() => updateStatus("contacted")}
             >
-              {loadingConnected ? <CircularProgress size={24} /> : "Connected"}
+              {loadingConnected ? <CircularProgress size={24} /> : "Contacted"}
             </Button>
             <Button
               type="submit"

@@ -20,7 +20,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import ToastModal from "./TostModal";
 import BoxStyle from "./StylesModal/BoxStyle";
-import { get } from "../../server/server";
+import { get, post } from "../../server/server";
 
 
 
@@ -35,9 +35,15 @@ const MyErrorMessage = ({ name }) => (
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   features: Yup.array()
-    .of(Yup.string())
-    .min(1, "At least one feature is required"), 
+    .of(
+      Yup.object().shape({
+        id: Yup.number().required(),
+        name: Yup.string().required(),
+      })
+    )
+    .min(1, "At least one feature is required"),
 });
+
 
 
 
@@ -49,15 +55,18 @@ const SubscriptionModel = ({
   eventMessage,
   setToastOpen,
   toastOpen,
+  fetchData,
 }) => {
   const theme = useTheme();
 
   const [features, setFeatures] = useState([]);
 
+  const [loading, setLoading] = useState(false);
+
   const fetchFeatures = async () => {
     const { res, err } = await get("features/get?limit=200&page=1");
     if (res) {
-      console.log(res);
+      // console.log(res);
       setFeatures(res?.results);
     }
     if (err) {
@@ -78,7 +87,7 @@ const SubscriptionModel = ({
       <ToastModal
         open={toastOpen}
         onClose={handleCloseToast}
-        eventMessage="Add Plan Successfully"
+        eventMessage="Plan Added Successfully"
       />
       <BoxStyle>
         <Card className="sm:w-[550px] mx-5" sx={{ borderRadius: "30px" }}>
@@ -111,36 +120,72 @@ const SubscriptionModel = ({
                 }}
                 validationSchema={validationSchema}
                 onSubmit={async (values, { setSubmitting, resetForm }) => {
-                  console.log(values);
+                  const feature_ids = values.features.map(
+                    (feature) => feature.id
+                  );
+                  console.log(feature_ids);
+
+                  setLoading(true);
+
+                  const { res, err } = await post(
+                    "/subscription_plan/create",
+                    null,
+                    null,
+                    {
+                      name: values.name,
+                      feature_ids,
+                    }
+                  );
+
+                  if (res) {
+                    // console.log(res);
+                    setOpen(false);
+                    setLoading(false);
+                    if (fetchData) {
+                      fetchData();
+                    }
+                  }
+
+                  if (err) {
+                    console.log(err);
+                    setLoading(false);
+                  }
                 }}
               >
-                {({ isValid }) => (
+                {({ isValid, values, setFieldValue }) => (
                   <Form>
                     <Field as={TextField} label="Name" name="name" fullWidth />
                     <MyErrorMessage name="name" />
 
                     <FormControl fullWidth margin="normal">
-                      <InputLabel id="plan-label">Features</InputLabel>
-                      <Field
-                        as={Select}
+                      <InputLabel id="features-label">Features</InputLabel>
+                      <Select
                         labelId="features-label"
                         name="features"
-                        label="Features"
                         multiple
-                        renderValue={(selected) => selected.join(", ")}
+                        value={values.features}
+                        onChange={(event) => {
+                          setFieldValue("features", event.target.value);
+                        }}
+                        renderValue={(selected) =>
+                          selected.map((item) => item.name).join(", ")
+                        }
                       >
                         {features?.map((feature) => (
-                          <MenuItem key={feature?.id} value={feature?.name}>
+                          <MenuItem
+                            key={feature?.id}
+                            value={{ id: feature?.id, name: feature?.name }}
+                          >
                             {feature?.name}
                           </MenuItem>
                         ))}
-                      </Field>
+                      </Select>
                     </FormControl>
                     <MyErrorMessage name="features" />
                     <div className="mt-10">
                       <Button
                         type="submit"
-                        disabled={!isValid}
+                        disabled={loading}
                         fullWidth
                         sx={{
                           backgroundColor: "#6C309C",

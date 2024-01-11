@@ -65,8 +65,8 @@ const FeaturesTable = ({
 
   const location = useLocation();
 
-  const handleIsEditModalOpen = useCallback((data) => {
-    setEditData(data);
+  const handleIsEditModalOpen = useCallback((feature) => {
+    setEditData(feature);
     setIsEditModalOpen(true);
     setToastOpen(false);
 
@@ -114,43 +114,6 @@ const FeaturesTable = ({
     updateSelectedFeatures(selectedFeaturesData);
   }, [selectedUsers, features, updateSelectedFeatures]);
 
-  const handleSelectAllClick = useCallback((event) => {
-    if (event.target.checked) {
-      const newSelecteds = features.map((n) => n.id);
-      setSelectedUsers(newSelecteds);
-      return;
-    }
-    setSelectedUsers([]);
-  }, []);
-
-  const handleClick = useCallback(
-    (event, id) => {
-      event.preventDefault();
-      event.stopPropagation();
-
-      const selectedIndex = selectedUsers.indexOf(id);
-      let newSelected = [];
-
-      // Toggle logic: If the user is already selected, unselect it.
-      // If the user is not selected, select it.
-      if (selectedIndex === -1) {
-        newSelected = newSelected.concat(selectedUsers, id);
-      } else {
-        newSelected = [
-          ...selectedUsers.slice(0, selectedIndex),
-          ...selectedUsers.slice(selectedIndex + 1),
-        ];
-      }
-
-      const clickedUser = features?.find((user) => user.feature_id === id);
-      if (clickedUser) {
-        setSelectedStatus(clickedUser.status);
-      }
-
-      setSelectedUsers(newSelected);
-    },
-    [selectedUsers]
-  );
 
   const isSelected = (id) => selectedUsers.indexOf(id) !== -1;
 
@@ -234,10 +197,6 @@ const FeaturesTable = ({
                       maxWidth: "200px",
                     }}
                   >
-                    <Avatar
-                      src=""
-                      style={{ marginRight: "8px", flexShrink: 0 }}
-                    />
                     <div
                       style={{
                         overflow: "hidden",
@@ -248,7 +207,7 @@ const FeaturesTable = ({
                         flexShrink: 1,
                       }}
                     >
-                      {feature?.description}
+                      {feature?.name}
                     </div>
                   </div>
                 </TableCell>
