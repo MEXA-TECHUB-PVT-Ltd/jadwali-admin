@@ -105,6 +105,13 @@ const FeedbackTable = ({ feedbacks, dashboard }) => {
                 sx={{ fontWeight: "bold" }}
                 // align="center"
               >
+                Rating
+              </TableCell>
+              <TableCell
+                style={{ color: "#6C309C", minWidth: 170 }}
+                sx={{ fontWeight: "bold" }}
+                // align="center"
+              >
                 Action
               </TableCell>
             </TableRow>
@@ -122,6 +129,7 @@ const FeedbackTable = ({ feedbacks, dashboard }) => {
                     {feedback?.users?.full_name}
                   </TableCell>
                   <CommentCell comment={feedback?.comment} />
+                  <CommentCell comment={feedback?.rating} />
 
                   <TableCell sx={{}}>
                     <Tooltip title="View">

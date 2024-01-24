@@ -125,7 +125,6 @@ const SubscriptionModel = ({
                   const feature_ids = values.features.map(
                     (feature) => feature.id
                   );
-                  console.log(feature_ids);
 
                   setLoading(true);
 

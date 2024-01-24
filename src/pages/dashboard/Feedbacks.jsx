@@ -38,7 +38,7 @@ const Feedbacks = () => {
   }, []);
 
   if (loading) return <Progress />;
-  if (error) return <Alert severity="error">{error}</Alert>;
+  if (error) return <Alert severity="error">No records for feedbacks</Alert>;
 
   return (
     <>

@@ -69,6 +69,8 @@ const SubscriptionPlan = () => {
 
   const [data, setData] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [statusCode, setStatusCode] = React.useState();
+  const [isError, setIsError] = React.useState(false);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -78,11 +80,15 @@ const SubscriptionPlan = () => {
       console.log(res);
       setData(res?.result);
       setIsLoading(false);
+      setIsError(false);
+      setStatusCode(null);
     }
 
     if (err) {
       setIsLoading(false);
       console.log(err);
+      setIsError(true);
+      setStatusCode(err.response.status);
     }
   };
 
@@ -158,7 +164,8 @@ const SubscriptionPlan = () => {
         </Button>
       </div>
 
-      {isLoading ? (
+
+      {isError ? statusCode === 404 && <>No Subscription plan</> : isLoading ? (
         <Progress />
       ) : (
         data?.map((item) => (
