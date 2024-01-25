@@ -130,12 +130,19 @@ const EventPaymentTable = ({ faqs, fetchFAQs }) => {
               >
                 #
               </TableCell>
-              <TableCell
+              {/* <TableCell
                 style={{ color: "#6C309C", minWidth: 170 }}
                 sx={{ fontWeight: "bold" }}
                 // align="center"
               >
                 Username
+              </TableCell> */}
+              <TableCell
+                style={{ color: "#6C309C", minWidth: 170 }}
+                sx={{ fontWeight: "bold" }}
+                // align="center"
+              >
+                Total Price
               </TableCell>
               {/* <TableCell
                 style={{ color: "#6C309C", minWidth: 170 }}
@@ -190,7 +197,8 @@ const EventPaymentTable = ({ faqs, fetchFAQs }) => {
                     {index + 1}
                   </TableCell>
 
-                  <CommentCell comment={faq?.details?.user?.full_name} />
+                  {/* <CommentCell comment={faq?.details?.user?.full_name} /> */}
+                  <CommentCell comment={faq?.total_price} />
                   {/* <CommentCell comment={faq?.details?.event?.name} /> */}
                   <CommentCell
                     comment={

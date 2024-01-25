@@ -76,10 +76,12 @@ const SubscriptionModel = ({
   };
 
   // Transform modalData.features to the required format
-  const transformedFeatures = modalData?.features?.map((feature) => ({
-    id: feature.feature_id,
-    name: feature.feature_name,
-  }));
+  const transformedFeatures = modalData?.features
+    ?.filter((d) => d.isSelected)
+    ?.map((feature) => ({
+      id: feature.id,
+      name: feature.name,
+    }));
 
   // Set initial values based on modalData
   const initialValues = {
@@ -122,10 +124,10 @@ const SubscriptionModel = ({
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={async (values, { setSubmitting, resetForm }) => {
+
                   const feature_ids = values.features.map(
                     (feature) => feature.id
                   );
-                  console.log(feature_ids);
 
                   setLoading(true);
 

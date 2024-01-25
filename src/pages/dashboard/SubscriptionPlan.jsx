@@ -69,6 +69,8 @@ const SubscriptionPlan = () => {
 
   const [data, setData] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [statusCode, setStatusCode] = React.useState();
+  const [isError, setIsError] = React.useState(false);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -78,17 +80,23 @@ const SubscriptionPlan = () => {
       console.log(res);
       setData(res?.result);
       setIsLoading(false);
+      setIsError(false);
+      setStatusCode(null);
     }
 
     if (err) {
       setIsLoading(false);
       console.log(err);
+      setIsError(true);
+      setStatusCode(err.response.status);
     }
   };
 
   useEffect(() => {
     fetchData();
   }, []);
+
+
 
   const handleOpenModal = useCallback((title, message, data) => {
     setModalTitle(title);
@@ -158,7 +166,9 @@ const SubscriptionPlan = () => {
         </Button>
       </div>
 
-      {isLoading ? (
+      {isError ? (
+        statusCode === 404 && <>No Subscription plan</>
+      ) : isLoading ? (
         <Progress />
       ) : (
         data?.map((item) => (
@@ -201,21 +211,23 @@ const SubscriptionPlan = () => {
                 </div>
               </div>
 
-              {item?.features?.map((d, index) => (
-                <div className="mb-3 flex items-center gap-x-4" key={index}>
-                  <div
-                    style={{
-                      borderRadius: "50%",
-                      backgroundColor: "rgba(108, 48, 156, 1)",
-                      width: "10px",
-                      height: "10px",
-                    }}
-                  ></div>
-                  <Typography variant="h6" sx={{ fontSize: "16px" }}>
-                    {d.feature_name}
-                  </Typography>
-                </div>
-              ))}
+              {item?.features
+                ?.filter((d) => d.isSelected)
+                ?.map((d, index) => (
+                  <div className="mb-3 flex items-center gap-x-4" key={index}>
+                    <div
+                      style={{
+                        borderRadius: "50%",
+                        backgroundColor: "rgba(108, 48, 156, 1)",
+                        width: "10px",
+                        height: "10px",
+                      }}
+                    ></div>
+                    <Typography variant="h6" sx={{ fontSize: "16px" }}>
+                      {d.name}
+                    </Typography>
+                  </div>
+                ))}
             </CardContent>
           </Card>
         ))

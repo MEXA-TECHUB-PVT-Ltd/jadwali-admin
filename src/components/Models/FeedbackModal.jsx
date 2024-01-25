@@ -78,6 +78,14 @@ const FeedbackModal = ({
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant="subtitle2" color="textSecondary">
+                    Rating
+                  </Typography>
+                  <Typography variant="body1">
+                    {detailData?.rating} 
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="subtitle2" color="textSecondary">
                     Comment
                   </Typography>
                   <TextField

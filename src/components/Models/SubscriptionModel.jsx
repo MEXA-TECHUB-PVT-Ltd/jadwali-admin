@@ -165,7 +165,22 @@ const SubscriptionModel = ({
                         multiple
                         value={values.features}
                         onChange={(event) => {
-                          setFieldValue("features", event.target.value);
+                          const clickedFeature =
+                            event.target.value[event.target.value.length - 1];
+                          const isFeatureSelected = values.features.some(
+                            (feature) => feature.id === clickedFeature.id
+                          );
+
+                          let newFeatures;
+                          if (isFeatureSelected) {
+                            newFeatures = values.features.filter(
+                              (feature) => feature.id !== clickedFeature.id
+                            );
+                          } else {
+                            newFeatures = [...values.features, clickedFeature];
+                          }
+
+                          setFieldValue("features", newFeatures);
                         }}
                         renderValue={(selected) =>
                           selected.map((item) => item.name).join(", ")

@@ -66,47 +66,71 @@ const ViewModal = ({
               p: theme.spacing(3),
             }}
           >
-            <Typography variant="h6" sx={{ mb: 2 }}>
-              {detailData?.details?.user?.full_name}
-            </Typography>
-
             <Grid container spacing={2}>
+              <Grid item xs={6} sm={6}>
+                <Typography variant="h6" sx={{ mb: 2 }} color="GrayText">
+                  UserName:
+                </Typography>
+              </Grid>
+              <Grid item xs={6} sm={6}>
+                <Typography variant="h6" sx={{ mb: 2 }}>
+                  {detailData?.details?.user?.full_name}
+                </Typography>
+              </Grid>
               <Grid item xs={12} sm={6}>
                 <Typography sx={{ color: theme.palette.text.secondary, mb: 1 }}>
-                  Event: <strong>{detailData?.details?.event?.name}</strong>
+                  Event:{" "}
+                  <strong>
+                    {detailData?.details?.event?.name || "Not provided yet"}
+                  </strong>
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Typography sx={{ color: theme.palette.text.secondary, mb: 1 }}>
                   Deposit Price:{" "}
-                  <strong>{detailData?.details?.event?.deposit_price}</strong>
+                  <strong>
+                    {detailData?.details?.event?.deposit_price ||
+                      "Not provided yet"}
+                  </strong>
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Typography sx={{ color: theme.palette.text.secondary, mb: 1 }}>
                   Event Price:{" "}
-                  <strong>{detailData?.details?.event?.event_price}</strong>
+                  <strong>
+                    {detailData?.details?.event?.event_price ||
+                      "Not provided yet"}
+                  </strong>
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Typography sx={{ color: theme.palette.text.secondary, mb: 1 }}>
-                  Duration: <strong>{detailData?.details?.event?.duration} Hour</strong>
+                  Duration:{" "}
+                  <strong>
+                    {detailData?.details?.event?.duration || "Not provided yet"}{" "}
+                    Hour
+                  </strong>
                 </Typography>
               </Grid>
             </Grid>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <Typography sx={{ color: theme.palette.text.secondary, mb: 1 }}>
-                  Pricing: <strong>{detailData?.tran_total}</strong>
+                  Pricing:{" "}
+                  <strong>
+                    {detailData?.tran_total || "0.00"}
+                  </strong>
                 </Typography>
               </Grid>
-              <Grid item xs={12} sm={6}>
+              {/* <Grid item xs={12} sm={6}>
                 <Typography sx={{ color: theme.palette.text.secondary, mb: 1 }}>
-                  Pricing: <strong>{detailData?.cart_currency}</strong>
+                  Currency:{" "}
+                  <strong>
+                    {detailData?.cart_currency || "N"}
+                  </strong>
                 </Typography>
-              </Grid>
+              </Grid> */}
             </Grid>
-
             <Box
               sx={{
                 width: "100%",
@@ -130,7 +154,7 @@ const ViewModal = ({
                 </Grid>
                 <Grid item xs={6}>
                   <Typography sx={{ color: theme.palette.text.primary }}>
-                    {detailData?.details?.bank?.bank_name}
+                    {detailData?.details?.bank?.bank_name || "Not provided yet"}
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
@@ -138,7 +162,8 @@ const ViewModal = ({
                 </Grid>
                 <Grid item xs={6}>
                   <Typography sx={{ color: theme.palette.text.primary }}>
-                    {detailData?.details?.bank?.account_name}
+                    {detailData?.details?.bank?.account_name ||
+                      "Not provided yet"}
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
@@ -146,7 +171,8 @@ const ViewModal = ({
                 </Grid>
                 <Grid item xs={6}>
                   <Typography sx={{ color: theme.palette.text.primary }}>
-                    {detailData?.details?.bank?.account_number}
+                    {detailData?.details?.bank?.account_number ||
+                      "Not provided yet"}
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
@@ -154,7 +180,8 @@ const ViewModal = ({
                 </Grid>
                 <Grid item xs={6}>
                   <Typography sx={{ color: theme.palette.text.primary }}>
-                    {detailData?.details?.bank?.account_holder_number}
+                    {detailData?.details?.bank?.account_holder_number ||
+                      "Not provided yet"}
                   </Typography>
                 </Grid>
               </Grid>

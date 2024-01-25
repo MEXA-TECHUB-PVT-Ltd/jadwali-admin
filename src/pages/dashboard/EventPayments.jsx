@@ -20,7 +20,7 @@ const EventPayments = () => {
     setLoading(true);
     setError("");
     try {
-      const { res, err } = await get(`/schedule/getAllTempSchedules`);
+      const { res, err } = await get(`/schedule/getAllTempSchedules?limit=100000000`);
       if (res) {
         console.log(res);
         setFAQs(res?.result);
@@ -40,7 +40,7 @@ const EventPayments = () => {
   }, []);
 
   if (loading) return <Progress />;
-  if (error) return <Alert severity="error">{error}</Alert>;
+  if (error) return <Alert severity="error">Payment records are not available</Alert>;
 
   return (
     <>
