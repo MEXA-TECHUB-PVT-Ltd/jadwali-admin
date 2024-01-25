@@ -96,6 +96,8 @@ const SubscriptionPlan = () => {
     fetchData();
   }, []);
 
+
+
   const handleOpenModal = useCallback((title, message, data) => {
     setModalTitle(title);
     setEventMessage(message);
@@ -164,8 +166,9 @@ const SubscriptionPlan = () => {
         </Button>
       </div>
 
-
-      {isError ? statusCode === 404 && <>No Subscription plan</> : isLoading ? (
+      {isError ? (
+        statusCode === 404 && <>No Subscription plan</>
+      ) : isLoading ? (
         <Progress />
       ) : (
         data?.map((item) => (
@@ -208,21 +211,23 @@ const SubscriptionPlan = () => {
                 </div>
               </div>
 
-              {item?.features?.map((d, index) => (
-                <div className="mb-3 flex items-center gap-x-4" key={index}>
-                  <div
-                    style={{
-                      borderRadius: "50%",
-                      backgroundColor: "rgba(108, 48, 156, 1)",
-                      width: "10px",
-                      height: "10px",
-                    }}
-                  ></div>
-                  <Typography variant="h6" sx={{ fontSize: "16px" }}>
-                    {d.feature_name}
-                  </Typography>
-                </div>
-              ))}
+              {item?.features
+                ?.filter((d) => d.isSelected)
+                ?.map((d, index) => (
+                  <div className="mb-3 flex items-center gap-x-4" key={index}>
+                    <div
+                      style={{
+                        borderRadius: "50%",
+                        backgroundColor: "rgba(108, 48, 156, 1)",
+                        width: "10px",
+                        height: "10px",
+                      }}
+                    ></div>
+                    <Typography variant="h6" sx={{ fontSize: "16px" }}>
+                      {d.name}
+                    </Typography>
+                  </div>
+                ))}
             </CardContent>
           </Card>
         ))
