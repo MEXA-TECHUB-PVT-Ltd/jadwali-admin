@@ -31,6 +31,7 @@ const MyErrorMessage = ({ name }) => (
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
+  price: Yup.number().required("price is required"),
   features: Yup.array()
     .of(
       Yup.object().shape({
@@ -86,6 +87,7 @@ const SubscriptionModel = ({
   // Set initial values based on modalData
   const initialValues = {
     name: modalData?.name || "",
+    price: modalData?.price || "",
     features: transformedFeatures || [],
   };
 
@@ -124,11 +126,9 @@ const SubscriptionModel = ({
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={async (values, { setSubmitting, resetForm }) => {
-
                   const feature_ids = values.features.map(
                     (feature) => feature.id
                   );
-
                   setLoading(true);
 
                   const { res, err } = await put(
@@ -138,6 +138,7 @@ const SubscriptionModel = ({
                     {
                       id: modalData?.id,
                       name: values.name,
+                      price: values.price,
                       feature_ids,
                     }
                   );
@@ -161,6 +162,14 @@ const SubscriptionModel = ({
                   <Form>
                     <Field as={TextField} label="Name" name="name" fullWidth />
                     <MyErrorMessage name="name" />
+                    <Field
+                      as={TextField}
+                      label="Price"
+                      name="price"
+                      fullWidth
+                      sx={{marginTop: "10px"}}
+                    />
+                    <MyErrorMessage name="price" />
 
                     <FormControl fullWidth margin="normal">
                       <InputLabel id="features-label">Features</InputLabel>

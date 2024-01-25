@@ -34,6 +34,7 @@ const MyErrorMessage = ({ name }) => (
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
+  price: Yup.number().required("price is required"),
   features: Yup.array()
     .of(
       Yup.object().shape({
@@ -116,6 +117,7 @@ const SubscriptionModel = ({
               <Formik
                 initialValues={{
                   name: "",
+                  price: "",
                   features: [],
                 }}
                 validationSchema={validationSchema}
@@ -133,6 +135,7 @@ const SubscriptionModel = ({
                     null,
                     {
                       name: values.name,
+                      price: values.price,
                       feature_ids,
                     }
                   );
@@ -156,6 +159,15 @@ const SubscriptionModel = ({
                   <Form>
                     <Field as={TextField} label="Name" name="name" fullWidth />
                     <MyErrorMessage name="name" />
+
+                    <Field
+                      as={TextField}
+                      label="Price"
+                      name="price"
+                      fullWidth
+                      sx={{ marginTop: "10px" }}
+                    />
+                    <MyErrorMessage name="price" />
 
                     <FormControl fullWidth margin="normal">
                       <InputLabel id="features-label">Features</InputLabel>
