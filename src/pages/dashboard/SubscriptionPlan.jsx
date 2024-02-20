@@ -16,46 +16,6 @@ import DeleteModal from "../../components/Models/DeleteModel";
 import { get } from "../../server/server";
 import Progress from "../../components/CommonProgress/Progress";
 
-const bdata = [
-  { id: 1, featuresDescription: "Up to 50 appointments per month" },
-  { id: 2, featuresDescription: "Single user access" },
-  { id: 3, featuresDescription: "3 Appointment Type" },
-  { id: 4, featuresDescription: "E-mail notifications" },
-];
-
-const pdata = [
-  { id: 1, featuresDescription: "Up to 50 appointments per month" },
-  { id: 2, featuresDescription: "Single user access" },
-  { id: 3, featuresDescription: "3 Appointment Type" },
-  { id: 4, featuresDescription: "E-mail notifications" },
-  { id: 5, featuresDescription: "Basic +" },
-  { id: 6, featuresDescription: "Up to 300 appointments per month" },
-  { id: 7, featuresDescription: "6 Appointment Type" },
-  { id: 8, featuresDescription: "Accept Payments" },
-  { id: 9, featuresDescription: "Group Sessions" },
-];
-
-const ppdata = [
-  { id: 1, featuresDescription: "Up to 50 appointments per month" },
-  { id: 2, featuresDescription: "Single user access" },
-  { id: 3, featuresDescription: "3 Appointment Type" },
-  { id: 4, featuresDescription: "E-mail notifications" },
-  { id: 5, featuresDescription: "Basic +" },
-  { id: 6, featuresDescription: "Up to 300 appointments per month" },
-  { id: 7, featuresDescription: "6 Appointment Type" },
-  { id: 8, featuresDescription: "Accept Payments" },
-  { id: 9, featuresDescription: "Group Sessions" },
-  { id: 10, featuresDescription: "Professional +" },
-  { id: 11, featuresDescription: "Unlimited appointments" },
-  { id: 12, featuresDescription: "Multi-user access (10 sub accounts)" },
-  { id: 13, featuresDescription: "10 Appointment Types" },
-  {
-    id: 14,
-    featuresDescription:
-      "Payment Link generation (when adding override appointment or past appointment)",
-  },
-  { id: 15, featuresDescription: "Priority support" },
-];
 
 const SubscriptionPlan = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -176,7 +136,7 @@ const SubscriptionPlan = () => {
             <CardContent>
               <div className="flex justify-between flex-wrap items-center mb-4">
                 <Typography variant="h5" color="#6C309C" fontWeight="medium">
-                  {item?.name}
+                  {item?.name} -- {item?.price}
                 </Typography>
                 <div>
                   <Button

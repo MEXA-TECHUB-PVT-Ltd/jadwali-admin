@@ -14,6 +14,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Chip,
 } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -21,9 +22,6 @@ import * as Yup from "yup";
 import ToastModal from "./TostModal";
 import BoxStyle from "./StylesModal/BoxStyle";
 import { get, post } from "../../server/server";
-
-
-
 
 const MyErrorMessage = ({ name }) => (
   <ErrorMessage
@@ -34,6 +32,7 @@ const MyErrorMessage = ({ name }) => (
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
+  price: Yup.number().required("price is required"),
   features: Yup.array()
     .of(
       Yup.object().shape({
@@ -43,9 +42,6 @@ const validationSchema = Yup.object().shape({
     )
     .min(1, "At least one feature is required"),
 });
-
-
-
 
 const SubscriptionModel = ({
   open,
@@ -116,6 +112,7 @@ const SubscriptionModel = ({
               <Formik
                 initialValues={{
                   name: "",
+                  price: "",
                   features: [],
                 }}
                 validationSchema={validationSchema}
@@ -133,6 +130,7 @@ const SubscriptionModel = ({
                     null,
                     {
                       name: values.name,
+                      price: values.price,
                       feature_ids,
                     }
                   );
@@ -156,6 +154,15 @@ const SubscriptionModel = ({
                   <Form>
                     <Field as={TextField} label="Name" name="name" fullWidth />
                     <MyErrorMessage name="name" />
+
+                    <Field
+                      as={TextField}
+                      label="Price"
+                      name="price"
+                      fullWidth
+                      sx={{ marginTop: "10px" }}
+                    />
+                    <MyErrorMessage name="price" />
 
                     <FormControl fullWidth margin="normal">
                       <InputLabel id="features-label">Features</InputLabel>
@@ -182,16 +189,32 @@ const SubscriptionModel = ({
 
                           setFieldValue("features", newFeatures);
                         }}
-                        renderValue={(selected) =>
-                          selected.map((item) => item.name).join(", ")
-                        }
+                        renderValue={(selected) => (
+                          <Box display="flex" flexWrap="wrap" gap={0.5}>
+                            {selected.map((item) => (
+                              <Chip key={item.id} label={item.name} />
+                            ))}
+                          </Box>
+                        )}
+                        MenuProps={{
+                          PaperProps: {
+                            style: {
+                              maxHeight: 224, // You can adjust this value as needed
+                            },
+                          },
+                        }}
                       >
                         {features?.map((feature) => (
                           <MenuItem
-                            key={feature?.id}
-                            value={{ id: feature?.id, name: feature?.name }}
+                            key={feature.id}
+                            value={{ id: feature.id, name: feature.name }}
+                            // Use the selected prop to determine if the item is selected
+                            selected={values.features.some(
+                              (selectedFeature) =>
+                                selectedFeature.id === feature.id
+                            )}
                           >
-                            {feature?.name}
+                            {feature.name}
                           </MenuItem>
                         ))}
                       </Select>

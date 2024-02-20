@@ -14,6 +14,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Chip,
 } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -31,6 +32,7 @@ const MyErrorMessage = ({ name }) => (
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
+  price: Yup.number().required("price is required"),
   features: Yup.array()
     .of(
       Yup.object().shape({
@@ -86,6 +88,7 @@ const SubscriptionModel = ({
   // Set initial values based on modalData
   const initialValues = {
     name: modalData?.name || "",
+    price: modalData?.price || "",
     features: transformedFeatures || [],
   };
 
@@ -124,11 +127,9 @@ const SubscriptionModel = ({
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={async (values, { setSubmitting, resetForm }) => {
-
                   const feature_ids = values.features.map(
                     (feature) => feature.id
                   );
-
                   setLoading(true);
 
                   const { res, err } = await put(
@@ -138,6 +139,7 @@ const SubscriptionModel = ({
                     {
                       id: modalData?.id,
                       name: values.name,
+                      price: values.price,
                       feature_ids,
                     }
                   );
@@ -161,6 +163,14 @@ const SubscriptionModel = ({
                   <Form>
                     <Field as={TextField} label="Name" name="name" fullWidth />
                     <MyErrorMessage name="name" />
+                    <Field
+                      as={TextField}
+                      label="Price"
+                      name="price"
+                      fullWidth
+                      sx={{ marginTop: "10px" }}
+                    />
+                    <MyErrorMessage name="price" />
 
                     <FormControl fullWidth margin="normal">
                       <InputLabel id="features-label">Features</InputLabel>
@@ -187,16 +197,32 @@ const SubscriptionModel = ({
 
                           setFieldValue("features", newFeatures);
                         }}
-                        renderValue={(selected) =>
-                          selected.map((item) => item.name).join(", ")
-                        }
+                        renderValue={(selected) => (
+                          <Box display="flex" flexWrap="wrap" gap={0.5}>
+                            {selected.map((item) => (
+                              <Chip key={item.id} label={item.name} />
+                            ))}
+                          </Box>
+                        )}
+                        MenuProps={{
+                          PaperProps: {
+                            style: {
+                              maxHeight: 224, // You can adjust this value as needed
+                            },
+                          },
+                        }}
                       >
                         {features?.map((feature) => (
                           <MenuItem
-                            key={feature?.id}
-                            value={{ id: feature?.id, name: feature?.name }}
+                            key={feature.id}
+                            value={{ id: feature.id, name: feature.name }}
+                            // Use the selected prop to determine if the item is selected
+                            selected={values.features.some(
+                              (selectedFeature) =>
+                                selectedFeature.id === feature.id
+                            )}
                           >
-                            {feature?.name}
+                            {feature.name}
                           </MenuItem>
                         ))}
                       </Select>
